@@ -9,14 +9,14 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role } from '../role';
-import { Camp, SkillType, Property, EventType } from '../enum';
+import * as enums from '../../../other/enums'
 import { Direction } from '../common'
 import { random } from '../util';
 
 export class Skill_AttGain_1 extends SkillBase 
 {
     public res:string="battle/skill/Skill_AttGain_1";
-    public SkillType:SkillType=SkillType.Intensifier;
+    public SkillType:enums.SkillType=enums.SkillType.Intensifier;
 
     private numberOfRole:number=null;
     private dir:Direction=null;
@@ -72,7 +72,7 @@ export class Skill_AttGain_1 extends SkillBase
         try
         {
             let event = new Event();
-            event.type = EventType.IntensifierProperties;
+            event.type = enums.EventType.IntensifierProperties;
             event.spellcaster = selfInfo;
             event.recipient = [];
             event.isParallel=isPar;
@@ -85,11 +85,11 @@ export class Skill_AttGain_1 extends SkillBase
             roleInfo.camp = selfInfo.camp;
             roleInfo.index = 0;
 
-            if(Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
                 teamTemp=battle.GetSelfTeam();  
             }
-            if(Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 teamTemp=battle.GetEnemyTeam();
             }
@@ -151,9 +151,9 @@ export class Skill_AttGain_1 extends SkillBase
             if(null!=recipientRole)
             {
                 console.log("recipientRole:", recipientRole, " ChangeProperties!");
-                recipientRole.ChangeProperties(Property.HP, recipientRole.GetProperty(Property.HP) + this.health);
-                recipientRole.ChangeProperties(Property.TotalHP, recipientRole.GetProperty(Property.TotalHP) + this.health);
-                recipientRole.ChangeProperties(Property.Attack,recipientRole.GetProperty(Property.Attack) + this.attack);
+                recipientRole.ChangeProperties(enums.Property.HP, recipientRole.GetProperty(enums.Property.HP) + this.health);
+                recipientRole.ChangeProperties(enums.Property.TotalHP, recipientRole.GetProperty(enums.Property.TotalHP) + this.health);
+                recipientRole.ChangeProperties(enums.Property.Attack,recipientRole.GetProperty(enums.Property.Attack) + this.attack);
 
                 event.recipient.push(roleInfo);
                 event.value = [this.health, this.attack];
@@ -172,7 +172,7 @@ export class Skill_AttGain_1 extends SkillBase
         try
         {
             let event = new Event();
-            event.type = EventType.IntensifierProperties;
+            event.type = enums.EventType.IntensifierProperties;
             event.spellcaster = selfInfo;
             event.recipient = [];
             event.isParallel=isPar;
@@ -180,11 +180,11 @@ export class Skill_AttGain_1 extends SkillBase
             let recipientRoles:Role[]=new Array();
             let rolesTemp:Role[]=null;
 
-            if(Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
                 rolesTemp=battle.GetSelfTeam().GetRoles().slice();
             }
-            if(Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 rolesTemp=battle.GetEnemyTeam().GetRoles().slice();
             }
@@ -205,9 +205,9 @@ export class Skill_AttGain_1 extends SkillBase
             recipientRoles.forEach((role) => 
             {
                 console.log("recipientRoles role:", role, " ChangeProperties!");
-                role.ChangeProperties(Property.HP, role.GetProperty(Property.HP) + this.health);
-                role.ChangeProperties(Property.TotalHP, role.GetProperty(Property.TotalHP) + this.health);
-                role.ChangeProperties(Property.Attack,role.GetProperty(Property.Attack) + this.attack);
+                role.ChangeProperties(enums.Property.HP, role.GetProperty(enums.Property.HP) + this.health);
+                role.ChangeProperties(enums.Property.TotalHP, role.GetProperty(enums.Property.TotalHP) + this.health);
+                role.ChangeProperties(enums.Property.Attack,role.GetProperty(enums.Property.Attack) + this.attack);
             });
             event.value = [this.health,this.attack];
             battle.AddBattleEvent(event);
@@ -228,7 +228,7 @@ export class Skill_AttGain_1 extends SkillBase
         try
         {
             let event = new Event();
-            event.type = EventType.IntensifierProperties;
+            event.type = enums.EventType.IntensifierProperties;
             event.spellcaster = selfInfo;
             event.recipient = [];
 
@@ -236,12 +236,12 @@ export class Skill_AttGain_1 extends SkillBase
 
             let rolesTemp:Role[]=[];
 
-            if(Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
                 rolesTemp=battle.GetSelfTeam().GetRoles().slice();
             }
 
-            if(Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 rolesTemp=battle.GetEnemyTeam().GetRoles().slice();
             }

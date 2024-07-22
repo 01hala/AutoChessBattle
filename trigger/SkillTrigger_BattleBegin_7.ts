@@ -5,7 +5,7 @@
  * 触发器——战斗开始
  */
 import { Event, RoleInfo, SkillTriggerBase } from "../skill/skill_base";
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../../../other/enums';
 
 export class SkillTrigger_BattleBegin_7 extends SkillTriggerBase
 {
@@ -32,7 +32,7 @@ export class SkillTrigger_BattleBegin_7 extends SkillTriggerBase
             console.log("尝试触发战斗开始触发器事件");
             for(let b of frameEvent)
             {
-                if(EventType.BattleBegin==b.type)
+                if(enums.EventType.BattleBegin==b.type)
                 {
                     console.log("CheckSkillTrigger BattleBegin!");
                     return 2;

@@ -4,7 +4,7 @@
  * 2023/10/2
  */
 import { JsonAsset, resources, error } from 'cc';
-import { ChangePositionType, SwapPropertiesType } from '../enum';
+import * as enums from '../../../other/enums';
 import { Direction, Priority } from '../common';
 
 export class SkillConfig {
@@ -24,8 +24,8 @@ export class SkillConfig {
     public Level3Value_2: number;
     public SummonId: number[];
     public SummonLevel: number;
-    public ChangePositionType : ChangePositionType;
-    public SwapPropertiesType : SwapPropertiesType;
+    public ChangePositionType : enums.ChangePositionType;
+    public SwapPropertiesType : enums.SwapPropertiesType;
     public AddBufferID: number;
 }
 

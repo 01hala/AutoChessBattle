@@ -9,21 +9,21 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role } from '../role';
-import { Camp, SkillType, Property, EventType } from '../enum';
+import * as enums from '../../../other/enums';
 
 export class Skill_Summon_4 extends SkillBase 
 {
     public res:string="battle/skill/Skill_Summon_4";
-    public SkillType:SkillType=SkillType.Summon;
+    public SkillType:enums.SkillType=enums.SkillType.Summon;
 
     event:Event=new Event();
 
     private addedID: number;
     private addedLevel:number;
-    private addedProperties: Map<Property, number>;
+    private addedProperties: Map<enums.Property, number>;
     private eventSound:string;
 
-    public constructor(priority:number, id : number,level:number=1,roleProperties : Map<Property, number>=null,eventSound?:string) {
+    public constructor(priority:number, id : number,level:number=1,roleProperties : Map<enums.Property, number>=null,eventSound?:string) {
         super(priority);
 
         this.addedID=id;
@@ -53,7 +53,7 @@ export class Skill_Summon_4 extends SkillBase
         {
             console.log("召唤技能");
             let battleEvent : Event = new Event();
-            battleEvent.type = EventType.Summon;
+            battleEvent.type = enums.EventType.Summon;
             battleEvent.spellcaster = selfInfo;
             battleEvent.recipient = [];
             battleEvent.value = [];
@@ -61,12 +61,12 @@ export class Skill_Summon_4 extends SkillBase
             battleEvent.eventSound=this.eventSound;
 
             let addedIdx:number;
-            if(Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
                 //addedIdx=new Role(-1,this.addedID,0, this.addedLevel, Camp.Self, this.addedProperties,null);
                 addedIdx = battle.GetSelfTeam().GetVacancies();
             }
-            if(Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 //addedIdx=new Role(-1,this.addedID,0, this.addedLevel, Camp.Enemy, this.addedProperties, null);
                 addedIdx = battle.GetEnemyTeam().GetVacancies();
@@ -104,17 +104,17 @@ export class Skill_Summon_4 extends SkillBase
 export class Skill_SummonMecha extends SkillBase 
 {
     public res:string="battle/skill/Skill_SummonMecha";
-    public SkillType:SkillType=SkillType.Summon;
+    public SkillType:enums.SkillType=enums.SkillType.Summon;
 
     event:Event=new Event();
 
     private addedID: number;
     private addedLevel:number;
-    private addedProperties: Map<Property, number>;
+    private addedProperties: Map<enums.Property, number>;
     private addedBuildLevel:number;
     private eventSound:string;
 
-    public constructor(priority:number, id : number,level:number=1,buildValue:number=1,roleProperties : Map<Property, number>=null,eventSound?:string) {
+    public constructor(priority:number, id : number,level:number=1,buildValue:number=1,roleProperties : Map<enums.Property, number>=null,eventSound?:string) {
         super(priority);
 
         this.addedID=id;
@@ -145,7 +145,7 @@ export class Skill_SummonMecha extends SkillBase
         {
             console.log("召唤机甲技能");
             let battleEvent : Event = new Event();
-            battleEvent.type = EventType.Summon;
+            battleEvent.type = enums.EventType.Summon;
             battleEvent.spellcaster = selfInfo;
             battleEvent.recipient = [];
             battleEvent.value = [];
@@ -159,12 +159,12 @@ export class Skill_SummonMecha extends SkillBase
                 case 20:break;
                 case 40:break;
             }
-            if(Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
                 //addedIdx=new Role(-1,this.addedID, this.addedLevel,0, Camp.Self, this.addedProperties,null);
                 addedIdx = battle.GetSelfTeam().GetVacancies();
             }
-            if(Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 //addedIdx=new Role(-1,this.addedID, this.addedLevel,0, Camp.Enemy, this.addedProperties, null);
                 addedIdx= battle.GetEnemyTeam().GetVacancies();

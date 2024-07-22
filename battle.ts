@@ -7,7 +7,7 @@ import * as common from "./common"
 import * as skill from './skill/skill_base'
 import * as role from './role'
 import * as team from './team'
-import * as enums from './enum'
+import * as enums from '../../other/enums'
 
 function splitEvs(evs:skill.Event[]) {
     let injuredEvs:skill.Event[] = [];

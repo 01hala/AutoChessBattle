@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../../../other/enums';
 import { Battle } from '../battle';
 import { Fetters } from '../common';
 import { Role } from '../role';
@@ -37,7 +37,7 @@ export class SkillTrigger_AllMechaniSyncope extends SkillTriggerBase {
     }
 
     private checkHasMechaniFetter(selfInfo: RoleInfo, battle: Battle) {
-        let evTeam = selfInfo.camp == Camp.Self ? battle.GetSelfTeam() : battle.GetEnemyTeam();
+        let evTeam = selfInfo.camp == enums.Camp.Self ? battle.GetSelfTeam() : battle.GetEnemyTeam();
         for (let f of evTeam.GetBattleData().FettersList) {
             if (f.fetters_id == config.config.MechanicFetters && f.fetters_level > 0) {
                 return true;
@@ -47,7 +47,7 @@ export class SkillTrigger_AllMechaniSyncope extends SkillTriggerBase {
     }
 
     private checkAllMechaniSyncope(selfInfo: RoleInfo, battle: Battle) {
-        let evTeam = selfInfo.camp == Camp.Self ? battle.GetSelfTeam() : battle.GetEnemyTeam();
+        let evTeam = selfInfo.camp == enums.Camp.Self ? battle.GetSelfTeam() : battle.GetEnemyTeam();
         for (let r of evTeam.GetRoles()) {
             if (r != null && r.fetter.fetters_id == config.config.MechanicFetters && !r.CheckDead()) {
                 return false;

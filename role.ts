@@ -6,7 +6,7 @@
 import * as skill from './skill/skill_base'
 import * as buffer from './buffer/buffer'
 import * as battle from './battle'
-import * as enums from './enum'
+import * as enums from '../../other/enums'
 import * as common from './common'
 import * as create_skill from './create_skill'
 import * as create_fetters from './create_fetters'
@@ -67,6 +67,9 @@ export class Role {
     public fetter:common.Fetters;
     public buffer : buffer.Buffer[] = [];
     public equip:number[]=[];//装备id(一般只能装备一件装备)
+
+    public foeRoleIndex:number;//仇人（亡语效果释放的对象）
+
     private skill_is_lock : boolean = false;
 
     private properties : Map<enums.Property, number> = new Map<enums.Property, number>();
@@ -79,6 +82,7 @@ export class Role {
         this.exp=exp;
         this.selfCamp = selfCamp;
         this.fetter=fetters;
+        this.c_role=c_role;
         
         properties.forEach((v, k) => {
             this.properties.set(k, v);
@@ -172,7 +176,9 @@ export class Role {
         ev.roleParallel = enemy;
         battle.AddBattleEvent(ev);
         
-        if (this.CheckDead()) {
+        if (this.CheckDead()) 
+        {
+            this.foeRoleIndex=enemy.index;
             let ev = new skill.Event();
             ev.type = enums.EventType.Syncope;
             ev.spellcaster = new skill.RoleInfo();

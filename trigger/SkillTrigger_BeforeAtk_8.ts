@@ -6,12 +6,12 @@
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../../../other/enums';
 
 export class SkillTrigger_BeforeAtk_8 extends SkillTriggerBase
 {    
     public res:string="battle/skill/SkillTrigger_BeforeAtk_8";
-    public EventType:EventType=EventType.BeforeAttack;
+    public EventType:enums.EventType=enums.EventType.BeforeAttack;
 
     event:Event=new Event();
 
@@ -33,7 +33,7 @@ export class SkillTrigger_BeforeAtk_8 extends SkillTriggerBase
         try
         {
             for (let element of frameEvent) {
-                if(EventType.BeforeAttack==element.type) {
+                if(enums.EventType.BeforeAttack==element.type) {
                     console.log("CheckSkillTrigger BeforeAttack!");
                     return 1;
                 }

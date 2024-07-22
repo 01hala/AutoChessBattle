@@ -9,13 +9,13 @@ import { SkillBase, Event, RoleInfo, SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role } from '../role';
-import { Camp, SkillType, Property, EventType } from '../enum';
+import * as enums from '../../../other/enums';
 import { random } from '../util';
 
 export class Skill_AttGain_1_2 extends SkillBase 
 {
     public res: string = "battle/skill/Skill_AttGain_1_2.ts ";
-    public SkillType: SkillType = SkillType.Intensifier;
+    public SkillType: enums.SkillType = enums.SkillType.Intensifier;
 
     private numberOfRole: number = null;
     private isAll: boolean;
@@ -82,12 +82,12 @@ export class Skill_AttGain_1_2 extends SkillBase
             event.isParallel = isPar
             event.eventSound = this.eventSound;
 
-            if (Camp.Self == selfInfo.camp)
+            if (enums.Camp.Self == selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
                 enemyRoles = battle.GetEnemyTeam().GetRoles().slice();
             }
-            if (Camp.Enemy == selfInfo.camp)
+            if (enums.Camp.Enemy == selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles = battle.GetSelfTeam().GetRoles().slice();
@@ -101,22 +101,22 @@ export class Skill_AttGain_1_2 extends SkillBase
                 {
                     if (this.deattack > 0 && this.deattack <= 1)
                     {
-                        atk=Math.round((r.GetProperty(Property.Attack)*(1+this.deattack)));
+                        atk=Math.round((r.GetProperty(enums.Property.Attack)*(1+this.deattack)));
                         if(atk<1)
                         {
                             atk=1;
                         }
-                        r.ChangeProperties(Property.Attack, r.GetProperty(Property.Attack) - atk);
+                        r.ChangeProperties(enums.Property.Attack, r.GetProperty(enums.Property.Attack) - atk);
                     }
 
                     if (this.dehealth > 0 && this.dehealth <= 1)
                     {
-                        hp = Math.round(r.GetProperty(Property.HP) * (1 + this.dehealth));
+                        hp = Math.round(r.GetProperty(enums.Property.HP) * (1 + this.dehealth));
                         if (hp < 1)
                         {
                             hp = 1;
                         }
-                        r.ChangeProperties(Property.HP, r.GetProperty(Property.HP) - this.dehealth);
+                        r.ChangeProperties(enums.Property.HP, r.GetProperty(enums.Property.HP) - this.dehealth);
                     }
                 }
             }

@@ -1,6 +1,6 @@
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../../../other/enums';
 
 export class SkillTrigger_ChangeEnemyLocation_13 extends SkillTriggerBase {
     public res:string="battle/skill/SkillTrigger_ChangeEnemyLocation_13";
@@ -24,7 +24,7 @@ export class SkillTrigger_ChangeEnemyLocation_13 extends SkillTriggerBase {
         try
         {
             for (let element of frameEvent) {
-                if(EventType.ChangeLocation == element.type){
+                if(enums.EventType.ChangeLocation == element.type){
                     for (let _recipient of element.recipient) {
                         if(_recipient.camp != selfInfo.camp && _recipient.index == selfInfo.index) {
                             return 1;

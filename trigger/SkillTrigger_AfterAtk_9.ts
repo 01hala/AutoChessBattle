@@ -6,18 +6,18 @@
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../../../other/enums';
 
 export class SkillTrigger_AfterAtk_9 extends SkillTriggerBase
 {    
     public res:string="battle/skill/SkillTrigger_AfterAtk_9";
-    public EventType: EventType[];
+    public EventType: enums.EventType[];
 
     event:Event=new Event();
 
     constructor(){
         super();
-        this.EventType.push(EventType.AfterAttack);
+        this.EventType.push(enums.EventType.AfterAttack);
     }
 
     CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number {
@@ -38,7 +38,7 @@ export class SkillTrigger_AfterAtk_9 extends SkillTriggerBase
         try
         {
             for (let element of frameEvent) {
-                if(EventType.AfterAttack==element.type) {
+                if(enums.EventType.AfterAttack==element.type) {
                     return 1;
                 }
             }

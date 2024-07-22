@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, error, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import { Property, Camp, EventType, SkillType } from '../enum';
+import * as enums from '../../../other/enums';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -35,11 +35,11 @@ export class Skill_AttackAll extends SkillBase {
 
             effectiveRole = battle.GetEnemyTeam().GetRoles().slice();
             for(const r of effectiveRole){
-                r.BeHurted(this.effectiveValue,null,battle,EventType.AttackInjured);
+                r.BeHurted(this.effectiveValue,null,battle,enums.EventType.AttackInjured);
             }
             effectiveRole = battle.GetSelfTeam().GetRoles().slice();
             for(const r of effectiveRole){
-                r.BeHurted(this.effectiveValue,null,battle,EventType.AttackInjured);
+                r.BeHurted(this.effectiveValue,null,battle,enums.EventType.AttackInjured);
             }
         }
         catch(e)

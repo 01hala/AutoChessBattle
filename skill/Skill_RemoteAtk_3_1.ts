@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import { Camp, EventType, SkillType, Property } from '../enum';
+import * as enums from '../../../other/enums';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -15,7 +15,7 @@ export class Skill_RemoteAtk_3_1 extends SkillBase
 {
     
     public res:string="battle/skill/Skill_RemoteAtk_3_1";
-    public SkillType:SkillType=SkillType.Attack;
+    public SkillType:enums.SkillType=enums.SkillType.Attack;
 
     private numberOfRole : number;
     private attack : number;
@@ -44,7 +44,7 @@ export class Skill_RemoteAtk_3_1 extends SkillBase
             {
                 if (6 >= this.numberOfRole && !this.isAll)
                 {
-                    this.SkillEffect_1(selfInfo, battle, this.attack * (1 + selfInfo.properties.get(Property.Attack)), isParallel);
+                    this.SkillEffect_1(selfInfo, battle, this.attack * (1 + selfInfo.properties.get(enums.Property.Attack)), isParallel);
                 }
                 else
                 {
@@ -82,12 +82,12 @@ export class Skill_RemoteAtk_3_1 extends SkillBase
             }
             console.log("try to use remote Skill_RemoteAtk_3_1 attack:", attack);
 
-            if(Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetEnemyTeam().GetRoles().slice();
             }
-            if(Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetSelfTeam().GetRoles().slice();
@@ -98,7 +98,7 @@ export class Skill_RemoteAtk_3_1 extends SkillBase
                 enemyRoles.splice(index, 1);
             }
             recipientRoles.forEach((role)=>{
-                role.BeHurted(attack, self, battle,EventType.RemoteInjured,isPar);
+                role.BeHurted(attack, self, battle,enums.EventType.RemoteInjured,isPar);
                 console.log("Skill_RemoteAtk_3_1 远程攻击角色受伤 :",attack);
             });
         }

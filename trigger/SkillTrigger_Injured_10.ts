@@ -6,12 +6,12 @@
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../../../other/enums';
 
 export class SkillTrigger_Injured_10 extends SkillTriggerBase
 {    
     public res:string="battle/skill/SkillTrigger_Injured_10";
-    public EventType:EventType=EventType.AttackInjured;
+    public EventType:enums.EventType=enums.EventType.AttackInjured;
 
     event:Event=new Event();
 
@@ -33,7 +33,7 @@ export class SkillTrigger_Injured_10 extends SkillTriggerBase
         try
         {
             for (let element of frameEvent) {
-                if(EventType.AttackInjured==element.type || EventType.RemoteInjured==element.type){
+                if(enums.EventType.AttackInjured==element.type || enums.EventType.RemoteInjured==element.type){
                     for (let _recipient of element.recipient) {
                         if(_recipient.camp == selfInfo.camp && _recipient.index == selfInfo.index) {
                             console.log("受伤技能触发器已触发");

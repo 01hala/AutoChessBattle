@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../../../other/enums';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -14,7 +14,7 @@ import { random } from '../util';
 export class Skill_RemoteAtk_3 extends SkillBase  
 {
     public res:string="battle/skill/Skill_RemoteAtk_3";
-    public SkillType:SkillType=SkillType.Attack;
+    public SkillType:enums.SkillType=enums.SkillType.Attack;
 
     private numberOfRole : number;
     private attack : number;
@@ -70,12 +70,12 @@ export class Skill_RemoteAtk_3 extends SkillBase
             this.event.isParallel=isPar
             this.event.eventSound=this.eventSound;
 
-            if(Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetEnemyTeam().GetRoles().slice();
             }
-            if(Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetSelfTeam().GetRoles().slice();
@@ -86,7 +86,7 @@ export class Skill_RemoteAtk_3 extends SkillBase
                 enemyRoles.splice(index, 1);
             }
             recipientRoles.forEach((role)=>{
-                role.BeHurted(this.attack, self, battle,EventType.RemoteInjured,isPar);
+                role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,isPar);
                 console.log("Skill_RemoteAtk_3 远程攻击角色受伤 :",this.attack);
             });
         }
@@ -103,11 +103,11 @@ export class Skill_RemoteAtk_3 extends SkillBase
         //this.event.isParallel=isPar;
         this.event.eventSound=this.eventSound;
 
-        if(Camp.Self==selfInfo.camp)
+        if(enums.Camp.Self==selfInfo.camp)
         {
             self=battle.GetSelfTeam().GetRole(selfInfo.index);
         }
-        if(Camp.Enemy==selfInfo.camp)
+        if(enums.Camp.Enemy==selfInfo.camp)
         {
             self=battle.GetEnemyTeam().GetRole(selfInfo.index);
         }
@@ -128,7 +128,7 @@ export class Skill_RemoteAtk_3 extends SkillBase
         //同时发射子弹,同时受伤
         for(let role of recipientRoles)
         {
-            role.BeHurted(this.attack, self, battle,EventType.RemoteInjured,true)
+            role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,true)
         }
     }
 }

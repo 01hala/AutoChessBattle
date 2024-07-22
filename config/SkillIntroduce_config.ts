@@ -4,7 +4,7 @@
  * 2024/3/11
  */
 import { JsonAsset, resources, error } from 'cc';
-import { ChangePositionType, SwapPropertiesType } from '../enum';
+import * as enums from '../../../other/enums';
 import { Direction, Priority } from '../common';
 
 export class SkillIntroduceConfig {
