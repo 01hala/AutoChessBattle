@@ -1,6 +1,6 @@
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import * as enums from '../../../other/enums';
+import * as enums from '../enum';
 
 export class SkillTrigger_EnemySummon extends SkillTriggerBase {
     public res:string="battle/skill/SkillTrigger_EnemySummon";

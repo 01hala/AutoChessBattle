@@ -4,7 +4,7 @@
  * 2023/10/2
  */
 import { JsonAsset, resources, error } from 'cc';
-import * as enums from '../../../other/enums';
+import * as enums from '../enum';
 import { Direction, Priority } from '../common';
 
 export class SkillConfig {

@@ -4,7 +4,6 @@
  * 2023/10/2
  */
 import { JsonAsset, resources, error } from 'cc';
-import * as enums from '../../../other/enums';
 import { Direction, Priority, Role } from '../common';
 
 export class FettersConfig {

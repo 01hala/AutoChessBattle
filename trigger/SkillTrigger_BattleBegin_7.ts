@@ -5,7 +5,7 @@
  * 触发器——战斗开始
  */
 import { Event, RoleInfo, SkillTriggerBase } from "../skill/skill_base";
-import * as enums from '../../../other/enums';
+import * as enums from '../enum';
 
 export class SkillTrigger_BattleBegin_7 extends SkillTriggerBase
 {

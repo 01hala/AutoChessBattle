@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import * as enums from '../../../other/enums';
+import * as enums from '../enum';
 import { Battle } from '../battle';
 import { Fetters } from '../common';
 import { Role } from '../role';
