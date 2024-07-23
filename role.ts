@@ -63,6 +63,8 @@ export class Role {
     public level:number;
     public exp:number;
 
+    public foeRoleIndex:number;
+
     public skill : SkillInfo[] = []; // 一般情况只有一个技能，使用特殊食物时添加一个技能
     public fetter:common.Fetters;
     public buffer : buffer.Buffer[] = [];
@@ -173,6 +175,7 @@ export class Role {
         battle.AddBattleEvent(ev);
         
         if (this.CheckDead()) {
+            this.foeRoleIndex=enemy.index;
             let ev = new skill.Event();
             ev.type = enums.EventType.Syncope;
             ev.spellcaster = new skill.RoleInfo();
