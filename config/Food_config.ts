@@ -4,7 +4,6 @@
  * 2023/10/2
  */
 import { JsonAsset, resources, error } from 'cc';
-import { ChangePositionType, SwapPropertiesType } from '../enum';
 
 
 export class FoodConfig {

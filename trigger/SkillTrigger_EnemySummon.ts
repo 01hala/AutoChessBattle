@@ -1,6 +1,6 @@
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../enum';
 
 export class SkillTrigger_EnemySummon extends SkillTriggerBase {
     public res:string="battle/skill/SkillTrigger_EnemySummon";
@@ -24,7 +24,7 @@ export class SkillTrigger_EnemySummon extends SkillTriggerBase {
         try
         {
             for (let element of frameEvent) {
-                if(EventType.Summon == element.type){
+                if(enums.EventType.Summon == element.type){
                     if(element.spellcaster.camp!=selfInfo.camp){
                         console.log("Check EnemySummon!");
                         return 1;

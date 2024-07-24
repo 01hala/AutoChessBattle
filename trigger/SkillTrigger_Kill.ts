@@ -1,12 +1,12 @@
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../enum';
 const { ccclass, property } = _decorator;
 
 @ccclass('SkillTrigger_Kill')
 export class SkillTrigger_Kill extends SkillTriggerBase {
     public res:string="battle/skill/SkillTrigger_Kill";
-    public EventType:EventType=EventType.Kill;
+    public EventType:enums.EventType=enums.EventType.Kill;
 
     CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number 
     {
@@ -27,7 +27,7 @@ export class SkillTrigger_Kill extends SkillTriggerBase {
         try
         {
             for (let element of frameEvent) {
-                if(EventType.Syncope == element.type){
+                if(enums.EventType.Syncope == element.type){
                     console.log("CheckSkill element:", element, " selfInfo:", selfInfo);
                     if(element.spellcaster==selfInfo){
                         for(let _r of element.recipient){

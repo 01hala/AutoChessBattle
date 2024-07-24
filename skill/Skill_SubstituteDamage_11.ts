@@ -9,7 +9,7 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role} from '../role';
-import { BufferType, Camp,  SkillType } from '../enum';
+import * as enums from '../enum';
 import { random } from '../util';
 import { Buffer } from '../buffer/buffer';
 import { Direction } from '../common';
@@ -17,7 +17,7 @@ import { Direction } from '../common';
 export class Skill_SubstituteDamage_11 extends SkillBase 
 {
     public res:string="battle/skill/Skill_SubstituteDamage_11";
-    public SkillType:SkillType=SkillType.Support;
+    public SkillType:enums.SkillType=enums.SkillType.Support;
 
     private value:number;
     private round:number;
@@ -54,11 +54,11 @@ export class Skill_SubstituteDamage_11 extends SkillBase
             let recipientRole:Role=null;
             this.event.isParallel=isPar;
 
-            if(Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
             teamTemp=battle.GetSelfTeam().GetRoles();
             }
-            if(Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 teamTemp=battle.GetEnemyTeam().GetRoles();
             }
@@ -109,7 +109,7 @@ export class Skill_SubstituteDamage_11 extends SkillBase
             if(null!=recipientRole)
             {
                 let buff:Buffer=new Buffer();
-                buff.BufferType=BufferType.SubstituteDamageFront;
+                buff.BufferType=enums.BufferType.SubstituteDamageFront;
                 buff.Value=this.value;
                 buff.Round=this.round;
                 recipientRole.buffer.push(buff);

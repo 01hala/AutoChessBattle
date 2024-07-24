@@ -6,13 +6,13 @@
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../enum';
 import { Direction } from '../common';
 
 export class SkillTrigger_FrontAtk extends SkillTriggerBase
 {    
     public res:string="battle/skill/SkillTrigger_FrontAtk";
-    public EventType:EventType=EventType.FrontAtk;
+    public EventType:enums.EventType=enums.EventType.FrontAtk;
     private dir:Direction;
 
     event:Event=new Event();
@@ -40,7 +40,7 @@ export class SkillTrigger_FrontAtk extends SkillTriggerBase
         try
         {
             for (let element of frameEvent) {
-                if(EventType.AfterAttack==element.type){
+                if(enums.EventType.AfterAttack==element.type){
                     if(element.spellcaster.camp==selfInfo.camp&&element.spellcaster.index+3==selfInfo.index){
                         console.log("Check FrontATK!");
                         return 1;

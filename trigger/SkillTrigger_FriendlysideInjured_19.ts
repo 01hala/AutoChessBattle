@@ -6,13 +6,13 @@
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../enum';
 import { Direction } from '../common';
 
 export class SkillTrigger_FriendlysideInjured_19 extends SkillTriggerBase
 {    
     public res:string="battle/skill/SkillTrigger_FriendlysideInjured_19";
-    public EventType:EventType=EventType.FriendlysideInjured;
+    public EventType:enums.EventType=enums.EventType.FriendlysideInjured;
     private dir:Direction;
 
     event:Event=new Event();
@@ -40,7 +40,7 @@ export class SkillTrigger_FriendlysideInjured_19 extends SkillTriggerBase
         try
         {
             for (let element of frameEvent) {
-                if(EventType.AttackInjured==element.type || EventType.RemoteInjured==element.type){
+                if(enums.EventType.AttackInjured==element.type || enums.EventType.RemoteInjured==element.type){
                     for (let _recipient of element.recipient) {
                         if(_recipient.camp == selfInfo.camp && _recipient.index != selfInfo.index) {
                             switch(this.dir){

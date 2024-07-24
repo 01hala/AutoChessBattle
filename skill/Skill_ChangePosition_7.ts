@@ -1,6 +1,6 @@
 import { _decorator, Component, error, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import { Property, Camp, EventType, ChangePositionType } from '../enum';
+import * as enums from '../enum';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -12,9 +12,9 @@ export class Skill_ChangePosition_7 extends SkillBase {
 
     private index1:number;
     private index2:number;
-    private changeType : ChangePositionType;
+    private changeType : enums.ChangePositionType;
 
-    constructor(priority:number, changeType : ChangePositionType, change1:number, change2:number)
+    constructor(priority:number, changeType : enums.ChangePositionType, change1:number, change2:number)
     {
         super(priority);
 
@@ -29,23 +29,23 @@ export class Skill_ChangePosition_7 extends SkillBase {
         try
         {
             let battleEvent : Event = new Event();
-            battleEvent.type = EventType.ChangeLocation;
+            battleEvent.type = enums.EventType.ChangeLocation;
             battleEvent.spellcaster = selfInfo;
             battleEvent.recipient = [];
             battleEvent.value = [];
             battleEvent.isParallel=isParallel;
 
             let originalRoleList:Role[] = null;
-            if(Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
                 originalRoleList=battle.GetEnemyTeam().GetRoles().slice();
             }
-            if(Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 originalRoleList=battle.GetSelfTeam().GetRoles().slice();
             }
 
-            if(ChangePositionType.AssignChange == this.changeType)
+            if(enums.ChangePositionType.AssignChange == this.changeType)
             {
                 let begin = originalRoleList[this.index1];
                 let end = originalRoleList[this.index2];
@@ -67,7 +67,7 @@ export class Skill_ChangePosition_7 extends SkillBase {
                 battleEvent.value.push(this.index1);
                 battleEvent.value.push(this.index2);
             }
-            else if(ChangePositionType.RandomChange == this.changeType)
+            else if(enums.ChangePositionType.RandomChange == this.changeType)
             {
                 let recipientRoles:number[] = [];
                 while(recipientRoles.length < 2 && recipientRoles.length < originalRoleList.length) {

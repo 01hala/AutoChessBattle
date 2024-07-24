@@ -5,7 +5,7 @@
  * 触发器——回合开始
  */
 import { Event, RoleInfo, SkillTriggerBase } from "../skill/skill_base";
-import { Camp, EventType, SkillType } from '../enum';
+import * as enums from '../enum';
 
 export class SkillTrigger_RoundStarts_5 extends SkillTriggerBase
 {
@@ -31,7 +31,7 @@ export class SkillTrigger_RoundStarts_5 extends SkillTriggerBase
         {
             for(let b of frameEvent)
             {
-                if(EventType.RoundStarts==b.type)
+                if(enums.EventType.RoundStarts==b.type)
                 {
                     console.log(`SkillTrigger_RoundStarts_5 selfInfo${selfInfo}`)
                     return 1;

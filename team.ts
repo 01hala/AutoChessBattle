@@ -6,7 +6,7 @@
 import * as common from "./common"
 import * as role from './role'
 import * as battle from './battle'
-import * as enums from './enum'
+import * as enums from './enum';
 
 export class RoleBattleInfo {
     public roundAtkCount:number;

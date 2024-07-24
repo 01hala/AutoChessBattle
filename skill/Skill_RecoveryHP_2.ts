@@ -1,6 +1,6 @@
 import { _decorator, Component, error, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import { Property, Camp, EventType, SkillType } from '../enum';
+import * as enums from '../enum';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -27,10 +27,10 @@ export class Skill_RecoveryHP_2 extends SkillBase {
         try
         {
             let effectiveRole : Role[] = null;
-            if(Camp.Enemy == selfInfo.camp) {
+            if(enums.Camp.Enemy == selfInfo.camp) {
                 effectiveRole = battle.GetEnemyTeam().GetRoles().slice();
             }
-            else if(Camp.Self == selfInfo.camp) {
+            else if(enums.Camp.Self == selfInfo.camp) {
                 effectiveRole = battle.GetSelfTeam().GetRoles().slice();
             }
 
@@ -42,13 +42,13 @@ export class Skill_RecoveryHP_2 extends SkillBase {
             }
 
             for(const r of recipientRoles) {
-                let totalHP = r.GetProperty(Property.TotalHP);
-                let HP = r.GetProperty(Property.HP) + this.effectiveValue;
+                let totalHP = r.GetProperty(enums.Property.TotalHP);
+                let HP = r.GetProperty(enums.Property.HP) + this.effectiveValue;
                 if (HP > totalHP) {
                     HP = totalHP;
                 }
                 battle.onPlaySound.call(null, this.eventSound);
-                r.ChangeProperties(Property.HP, HP);
+                r.ChangeProperties(enums.Property.HP, HP);
             }
         }
         catch(e)

@@ -5,7 +5,7 @@
  * 触发器——释放技能(羁绊)
  */
 import { Event, RoleInfo, SkillTriggerBase } from "../skill/skill_base";
-import { Camp,  EventType, SkillType } from '../enum';
+import * as enums from '../enum';
 
 export class SkillTrigger_UsedSKill_14 extends SkillTriggerBase
 {
@@ -31,7 +31,7 @@ export class SkillTrigger_UsedSKill_14 extends SkillTriggerBase
         {
             for(let b of frameEvent)
             {
-                if(EventType.UsedSkill==b.type && 4==selfInfo.Fetters)
+                if(enums.EventType.UsedSkill==b.type && 4==selfInfo.Fetters)
                 {
                     return 1;
                 }

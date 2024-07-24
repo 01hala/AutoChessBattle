@@ -3,7 +3,7 @@
  * author: qianqians
  * 2023/9/24
  */
-import * as enums from '../enum'
+import * as enums from '../enum';
 import * as battle from '../battle'
 import { Role } from '../role';
 

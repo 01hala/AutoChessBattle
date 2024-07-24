@@ -9,20 +9,20 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role } from '../role';
-import { Camp, SkillType, SwapPropertiesType, Property, EventType } from '../enum';
+import * as enums from '../enum';
 import { random } from '../util';
 
 export class Skill_SwapProperties_5 extends SkillBase 
 {
     public res:string="battle/skill/Skill_SwapProperties_5";
-    public SkillType:SkillType=SkillType.SwapProperties;
+    public SkillType:enums.SkillType=enums.SkillType.SwapProperties;
 
     event:Event=new Event();
 
-    private type:SwapPropertiesType;
+    private type:enums.SwapPropertiesType;
     private index1:number;
     private index2:number;
-    public constructor(priority:number, type:SwapPropertiesType, swapper1:number,swapper2:number) {
+    public constructor(priority:number, type:enums.SwapPropertiesType, swapper1:number,swapper2:number) {
         super(priority);
 
         this.type = type;
@@ -48,37 +48,37 @@ export class Skill_SwapProperties_5 extends SkillBase
         try
         {
             let event = new Event();
-            event.type = EventType.ChangeLocation;
+            event.type = enums.EventType.ChangeLocation;
             event.spellcaster = selfInfo;
             event.recipient = [];
             event.isParallel=isPar;
 
-            if (SwapPropertiesType.SelfSwap == this.type) {
+            if (enums.SwapPropertiesType.SelfSwap == this.type) {
                 let swapRole:Role = null;
-                if(Camp.Self==selfInfo.camp){
+                if(enums.Camp.Self==selfInfo.camp){
                     swapRole = battle.GetSelfTeam().GetRole(selfInfo.index);
                 }
-                if(Camp.Enemy==selfInfo.camp){
+                if(enums.Camp.Enemy==selfInfo.camp){
                     swapRole = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 }
                 if (!swapRole) {
                     return;
                 }
 
-                let hp = swapRole.GetProperty(Property.HP);
-                let attack = swapRole.GetProperty(Property.Attack);
-                swapRole.ChangeProperties(Property.HP, attack);
-                swapRole.ChangeProperties(Property.Attack, hp);
+                let hp = swapRole.GetProperty(enums.Property.HP);
+                let attack = swapRole.GetProperty(enums.Property.Attack);
+                swapRole.ChangeProperties(enums.Property.HP, attack);
+                swapRole.ChangeProperties(enums.Property.Attack, hp);
 
-                event.value = [SwapPropertiesType.SelfSwap];
+                event.value = [enums.SwapPropertiesType.SelfSwap];
             }
-            else if (SwapPropertiesType.AssignSwap == this.type) {
+            else if (enums.SwapPropertiesType.AssignSwap == this.type) {
                 let swapRoles:Role[];
-                if(Camp.Self==selfInfo.camp){
+                if(enums.Camp.Self==selfInfo.camp){
                     swapRoles.push(battle.GetSelfTeam().GetRole(this.index1));
                     swapRoles.push(battle.GetSelfTeam().GetRole(this.index2));
                 }
-                if(Camp.Enemy==selfInfo.camp){
+                if(enums.Camp.Enemy==selfInfo.camp){
                     swapRoles.push(battle.GetEnemyTeam().GetRole(this.index1));
                     swapRoles.push(battle.GetEnemyTeam().GetRole(this.index2));
                 }
@@ -92,20 +92,20 @@ export class Skill_SwapProperties_5 extends SkillBase
                     swapRoles[1].ChangeProperties(key,value);
                 });
 
-                event.value = [SwapPropertiesType.AssignSwap, this.index1, this.index2];
+                event.value = [enums.SwapPropertiesType.AssignSwap, this.index1, this.index2];
             }
-            else if (SwapPropertiesType.RandomSwap == this.type) {
+            else if (enums.SwapPropertiesType.RandomSwap == this.type) {
                 let swapRoles:Role[];
                 let rolesTemp:Role[]=null;
 
-                event.value = [SwapPropertiesType.AssignSwap];
+                event.value = [enums.SwapPropertiesType.AssignSwap];
 
                 let original:Role[] = null;
-                if(Camp.Self==selfInfo.camp) {
+                if(enums.Camp.Self==selfInfo.camp) {
                     rolesTemp=battle.GetSelfTeam().GetRoles().slice();
                     original = battle.GetSelfTeam().GetRoles();
                 }
-                else if(Camp.Enemy==selfInfo.camp) {
+                else if(enums.Camp.Enemy==selfInfo.camp) {
                     rolesTemp=battle.GetEnemyTeam().GetRoles().slice();
                     original = battle.GetSelfTeam().GetRoles();
                 }
