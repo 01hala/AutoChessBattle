@@ -2,7 +2,7 @@
  * SkillTrigger_AfterAtk_9.ts
  * author: Guanliu
  * 2023/10/1
- * 触发条件：攻击前
+ * 触发条件：攻击后
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
@@ -38,8 +38,12 @@ export class SkillTrigger_AfterAtk_9 extends SkillTriggerBase
         try
         {
             for (let element of frameEvent) {
-                if(EventType.AfterAttack==element.type) {
-                    return 1;
+                if(EventType.AfterAttack==element.type) 
+                {
+                    if(element.spellcaster.index == selfInfo.index && element.spellcaster.camp == selfInfo.camp)
+                    {
+                        return 1;
+                    }
                 }
             }
         }

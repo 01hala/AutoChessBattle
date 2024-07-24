@@ -1,3 +1,9 @@
+/*
+ * SkillTrigger_Syncope_11.ts
+ * author: 未知
+ * 2023/10/01
+ * 触发器——角色晕厥
+ */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
 import { Camp, EventType, SkillType } from '../enum';

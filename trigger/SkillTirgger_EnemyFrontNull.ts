@@ -4,45 +4,37 @@ import * as enums from '../enum';
 import { Direction } from '../common';
 import * as battle from '../battle'
 
+
 /**
- * 触发条件：前排为空
+ * 触发条件：敌方前排为空
  * author: Hotaru
  * 2024/07/19添加
  * SkillTrigger_FrontNull.ts
  */
-export class SkillTrigger_FrontNull extends SkillTriggerBase
+export class SkillTirgger_EnemyFrontNull extends SkillTriggerBase
 {
-    public res:string="battle/skill/SkillTrigger_FrontNull.ts ";
-    public EventType:enums.EventType=enums.EventType.SelfFrontNull;
+    public res:string="battle/skill/SkillTirgger_EnemyFrontNull.ts ";
+    public EventType:enums.EventType=enums.EventType.EnemyFrontNull;
 
     constructor(){
         super();
     }
 
-    CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo , battle?:battle.Battle): number
+    CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo, battle?: battle.Battle): number
     {
-        try
-        {
-            return this.CheckSkill(frameEvent,selfInfo,battle);          
-        }
-        catch (error) 
-        {
-            console.warn(this.res+"下的 CheckSkillTrigger 错误");            
-        }
-
-        return 0;
+        throw new Error('Method not implemented.');
     }
-    
+
     CheckSkill(frameEvent: Event[], selfInfo: RoleInfo , battle:battle.Battle) : number
     {
         try
         {
-            let selfTeam = battle.GetSelfTeam();
+            let enemyTeam= battle.GetEnemyTeam();
             for (let element of frameEvent) 
             {
-                if(enums.EventType.SelfFrontNull == element.type)
+                if(enums.EventType.EnemyFrontNull == element.type)
                 {
-                    if(selfTeam.CheckFront())
+                    if (enemyTeam.CheckFront())
                     {
                         return 1;
                     }
@@ -56,6 +48,7 @@ export class SkillTrigger_FrontNull extends SkillTriggerBase
 
         return 0;
     }
+    
 }
 
 
