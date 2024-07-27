@@ -102,6 +102,18 @@ export class Battle {
 
             let ev = new skill.Event();
             ev.type = enums.EventType.AfterAttack;
+            ev.spellcaster=new skill.RoleInfo();
+            ev.spellcaster.camp=self.selfCamp;
+            ev.spellcaster.index=self.index;
+            ev.recipient = [];
+            this.AddBattleEvent(ev);
+
+            ev = new skill.Event();
+            ev.type = enums.EventType.AfterAttack;
+            ev.spellcaster=new skill.RoleInfo();
+            ev.spellcaster.camp=enemy.selfCamp;
+            ev.spellcaster.index=enemy.index;
+            ev.recipient = [];
             this.AddBattleEvent(ev);
         }
 
@@ -360,14 +372,33 @@ export class Battle {
                 return false;
             }
         }
-
-        if (this.triggerBeforeAttack) {
-            let ev = new skill.Event();
-            ev.type = enums.EventType.BeforeAttack;
-            this.AddBattleEvent(ev);
-            this.triggerBeforeAttack = false;
-
-            return false;
+        
+        let self = this.selfTeam.GetLasterRole();
+        let enemy = this.enemyTeam.GetLasterRole();
+        if (this.triggerBeforeAttack) 
+        {
+            if(self && enemy)
+            {
+                let ev = new skill.Event();
+                ev.type = enums.EventType.BeforeAttack;
+                ev.spellcaster = new skill.RoleInfo();
+                ev.spellcaster.camp = self.selfCamp;
+                ev.spellcaster.index = self.index;
+                ev.recipient = [];
+                this.AddBattleEvent(ev);
+    
+                ev = new skill.Event();
+                ev.type = enums.EventType.BeforeAttack;
+                ev.spellcaster = new skill.RoleInfo();
+                ev.spellcaster.camp = enemy.selfCamp;
+                ev.spellcaster.index = enemy.index;
+                ev.recipient = [];
+                this.AddBattleEvent(ev);
+    
+                this.triggerBeforeAttack = false;
+    
+                return false;
+            }
         }
 
         this.battle();

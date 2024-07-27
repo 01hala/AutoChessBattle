@@ -64,7 +64,15 @@ export class Team {
     }
 
     public GetLasterRole() : role.Role {
-        return this.roleList[0];
+        if(this.roleList[0])
+        {
+            return this.roleList[0];
+        }
+       else
+       {
+            console.warn("GetLasterRole 获取首位角色为空");
+            return null; 
+       }
     }
 
     public GetRoleIndex(role: role.Role) : number {
