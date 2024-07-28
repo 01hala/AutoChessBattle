@@ -33,8 +33,9 @@ export class SkillTrigger_Syncope_11 extends SkillTriggerBase {
         try
         {
             for (let element of frameEvent) {
+                console.log("CheckSkill element:", element, " selfInfo:", selfInfo);
                 if(enums.EventType.Syncope == element.type){
-                    console.log("CheckSkill element:", element, " selfInfo:", selfInfo);
+                    console.log("CheckSkill Syncope element:", element, " selfInfo:", selfInfo);
                     if(element.spellcaster.camp == selfInfo.camp && element.spellcaster.index == selfInfo.index) {
                         console.log("CheckSkill Syncope!");
                         return 1;
