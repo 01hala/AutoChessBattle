@@ -36,7 +36,7 @@ export class Team {
                 properties.set(enums.Property.HP, r.HP + r.TempHP);
                 properties.set(enums.Property.TotalHP, r.HP + r.TempHP);
                 properties.set(enums.Property.Attack, r.Attack + r.TempAttack);
-                let _role = new role.Role(r,index, r.RoleID, r.Level, r.Number, selfCamp, properties, r.FettersSkillID, [...r.additionBuffer, ...r.TempAdditionBuffer]);
+                let _role = new role.Role(r,index, r.RoleID, r.Level, r.Number, selfCamp, properties, r.FettersSkillID,r.equipID,[...r.additionBuffer, ...r.TempAdditionBuffer]);
                 _role.onKillRole = (_r:common.Role) => {
                     if (this.onKillRole) {
                         this.onKillRole.call(null, _r);

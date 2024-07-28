@@ -220,7 +220,8 @@ export class Battle {
 
             let roleInfo = new skill.RoleInfo();
             roleInfo.properties=role.GetProperties();
-            console.log("战斗事件中角色攻击力:")
+            console.log("当前检查到的角色信息：");
+            console.log(role);
             
             roleInfo.index =  role.index;
             roleInfo.camp = enums.Camp.Self;

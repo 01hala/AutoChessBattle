@@ -21,6 +21,7 @@ export class SkillInfo {
 
 function createSkill(id:number, level:number) : SkillInfo {
     let skillConfig = config.config.SkillConfig.get(id);
+    console.log("为角色创建新技能！技能ID为"+id);
     if (skillConfig) {
         let skill = new SkillInfo();
         skill.trigger = create_trigger.CreateTrigger(skillConfig.EffectTime);
@@ -68,13 +69,13 @@ export class Role {
     public skill : SkillInfo[] = []; // 一般情况只有一个技能，使用特殊食物时添加一个技能
     public fetter:common.Fetters;
     public buffer : buffer.Buffer[] = [];
-    public equip:number[]=[];//装备id(一般只能装备一件装备)
+    public equip:number;//装备id(一般只能装备一件装备)
     private skill_is_lock : boolean = false;
 
     private properties : Map<enums.Property, number> = new Map<enums.Property, number>();
     public selfCamp: enums.Camp;
 
-    public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters, additionBuffer?:number[],additionSkill?:number[]) {
+    public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters,equipID?:number, additionBuffer?:number[],additionSkill?:number[]) {
         this.index = index;
         this.id=id;
         this.level=level;
@@ -99,9 +100,16 @@ export class Role {
             }
         }
 
+        this.equip=equipID;
+        if(this.equip>0){
+            let equipConfig=config.config.EquipConfig.get(this.equip);
+            for(let t of equipConfig.Vaule)
+            this.skill.push(createSkill(t,1));
+        }
+
         if(additionSkill)
         {
-            let additionSkills:SkillInfo[];
+            let additionSkills:SkillInfo[]=[];
             if(additionSkill&&additionSkill.length>0){            
                 for(let t of additionSkill){
                     additionSkills.push(createSkill(t,this.level));
@@ -175,6 +183,7 @@ export class Role {
         battle.AddBattleEvent(ev);
         
         if (this.CheckDead()) {
+            console.log("角色晕厥");
             this.foeRoleIndex=enemy.index;
             let ev = new skill.Event();
             ev.type = enums.EventType.Syncope;
