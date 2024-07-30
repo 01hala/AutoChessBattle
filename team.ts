@@ -63,7 +63,22 @@ export class Team {
         return null;
     }
 
+    private AttackRoleIndex:number = -1;
+    public SetAttackRole(index:number) {
+        this.AttackRoleIndex = index;
+    }
+    public ReSetAttackRole() {
+        this.AttackRoleIndex = -1;
+    }
+
     public GetLasterRole() : role.Role {
+        if (this.AttackRoleIndex > 0) {
+            let r = this.GetRole(this.AttackRoleIndex);
+            if (r) {
+                return r;
+            }
+        }
+
         if(this.roleList[0])
         {
             return this.roleList[0];
