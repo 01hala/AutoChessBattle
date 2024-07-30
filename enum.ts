@@ -10,32 +10,58 @@ export enum Property {
     Attack = 3,
 }
 
-export enum EventType {
-    Sold = 1,
+export enum EventType 
+{
+    /** 出售 */
+    Sold = 1,     
+    /** 购买 */                
     Purchase = 2,
-    Upgrade = 3,
-    EatFood = 4,
-    RoundStarts = 5,
-    RoundEnd = 6,
-    BattleBegin = 7,
-    BeforeAttack = 8,
-    AfterAttack = 9,
-    AttackInjured = 10,
-    RemoteInjured = 11,
-    Syncope = 12,
-    ChangeLocation = 13,
-    Summon = 14,
-    BattleFail=15,
-    UsedSkill=16,
+    /** 升级 */                         
+    Upgrade = 3,    
+    /** 使用道具 */                      
+    EatFood = 4,      
+    /** 回合开始 */                    
+    RoundStarts = 5,   
+    /** 回合结束 */                   
+    RoundEnd = 6,        
+    /** 战斗开始 */                 
+    BattleBegin = 7,      
+    /** 攻击前 */               
+    BeforeAttack = 8,     
+    /** 攻击后 */                
+    AfterAttack = 9,      
+    /** 攻击受伤 */                
+    AttackInjured = 10, 
+    /** 远程受伤 */                  
+    RemoteInjured = 11,   
+    /** 晕厥倒下 */                
+    Syncope = 12,       
+    /** 位置改变 */                  
+    ChangeLocation = 13,  
+    /** 召唤 */                
+    Summon = 14,         
+    /** 战斗失败 */                 
+    BattleFail=15,    
+    /** 使用技能*/                    
+    UsedSkill=16,    
+    /** 交换属性 */                     
     SwapProperties = 17,
+    /** 属性强化 */                  
     IntensifierProperties = 18,
-    Exit = 19,
-    FriendlysideInjured=20,
-    Kill=21,
-    FrontAtk=22,
-    IntensifierExp = 23,
-    SelfFrontNull = 24,
-    EnemyFrontNull=25
+    /** 退场 */           
+    Exit = 19,             
+    /** 队友受伤 */               
+    FriendlysideInjured=20,   
+    /** 击败 */            
+    Kill=21,         
+    /** 前方攻击 */                     
+    FrontAtk=22,     
+    /** 等级提升 */                     
+    IntensifierExp = 23, 
+    /** 我方前排为空 */                 
+    SelfFrontNull = 24,     
+    /** 敌方前排为空 */              
+    EnemyFrontNull=25,                  
 }
 
 export enum ChangePositionType {
