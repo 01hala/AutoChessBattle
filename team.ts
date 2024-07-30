@@ -94,21 +94,24 @@ export class Team {
             try {
                 if (r.CheckDead()) {
                     removeRoles.push(r);
-                    r.SendExitEvent(battle);
                 }
             }
             catch(error) {
                 console.log("CheckRemoveDeadRole CheckDead:", error);
-
                 removeRoles.push(r);
-                r.SendExitEvent(battle);
             }   
         }
 
         if (removeRoles.length > 0) {
             console.log("CheckRemoveDeadRole this.roleList:", JSON.stringify(this.roleList));
+            console.log("CheckRemoveDeadRole battle.evs:", JSON.stringify(battle.evs));
             for (let r of removeRoles) {
+                if (battle.CheckRoleTriggerSkill(r, battle.evs)) {
+                    console.log("CheckRemoveDeadRole not remove r:", JSON.stringify(r));
+                    continue;
+                }
                 this.removeRole(r);
+                r.SendExitEvent(battle);
             }
             return true;
         }

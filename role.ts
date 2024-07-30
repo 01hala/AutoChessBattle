@@ -101,7 +101,7 @@ export class Role {
 
         if(additionSkill)
         {
-            let additionSkills:SkillInfo[];
+            let additionSkills:SkillInfo[] = [];
             if(additionSkill&&additionSkill.length>0){            
                 for(let t of additionSkill){
                     additionSkills.push(createSkill(t,this.level));
@@ -185,6 +185,7 @@ export class Role {
             ev.value = [];
             ev.value.push(damage);
             battle.AddBattleEvent(ev);
+            console.log("CheckDead sendHurtedEvent:", JSON.stringify(battle.evs));
 
             if (this.onKillRole) {
                 this.onKillRole.call(null, enemy.c_role);

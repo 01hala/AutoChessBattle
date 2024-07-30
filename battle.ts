@@ -14,7 +14,7 @@ function splitEvs(evs:skill.Event[]) {
     let normalEvs:skill.Event[] = [];
 
     for (let ev of evs) {
-        if (enums.EventType.RemoteInjured == ev.type || enums.EventType.AttackInjured == ev.type || enums.EventType.Exit == ev.type) {
+        if (enums.EventType.RemoteInjured == ev.type || enums.EventType.AttackInjured == ev.type || enums.EventType.Syncope == ev.type || enums.EventType.Exit == ev.type) {
             injuredEvs.push(ev);
         }
         else {
@@ -29,7 +29,7 @@ export class Battle {
     private selfTeam : team.Team;
     private enemyTeam : team.Team;
 
-    private evs:skill.Event[] = [];
+    public evs:skill.Event[] = [];
 
     public victory = 0;
     public faild = 0;
@@ -222,32 +222,43 @@ export class Battle {
         await this.tickInjuredEventChain(normalEvs);
     }
 
+    public CheckRoleTriggerSkill(role:role.Role, evs:skill.Event[]) {
+        if (role.CheckSkillIsLock()) {
+            return false;
+        }
+
+        let roleInfo = new skill.RoleInfo();
+        roleInfo.properties=role.GetProperties();
+        console.log("战斗事件中角色攻击力:")
+        
+        roleInfo.index =  role.index;
+        roleInfo.camp = enums.Camp.Self;
+        let p = 0;
+        let skillImpl: skill.SkillBase = null;
+        for(let skill of role.skill) {
+            let flag=skill.trigger.CheckSkillTrigger(evs, roleInfo)
+            if (flag) {
+                if (skill.skill.Priority > p) {
+                    skillImpl = skill.skill;
+                    p = skill.skill.Priority;
+                }
+            }
+        }
+        if (skillImpl) {
+            return true;
+        }
+
+        return false;
+    }
+
     private checkTriggerSkill(evs:skill.Event[]) {
         let selfTeam = this.selfTeam.GetRoles();
         for(let index in selfTeam) {
             let role = selfTeam[index];
-            if (role.CheckSkillIsLock()) {
+            if (!this.CheckRoleTriggerSkill(role, evs)) {
                 continue;
             }
-
-            let roleInfo = new skill.RoleInfo();
-            roleInfo.properties=role.GetProperties();
-            console.log("战斗事件中角色攻击力:")
-            
-            roleInfo.index =  role.index;
-            roleInfo.camp = enums.Camp.Self;
-            let p = 0;
-            let skillImpl: skill.SkillBase = null;
-            for(let skill of role.skill) {
-                let flag=skill.trigger.CheckSkillTrigger(evs, roleInfo)
-                if (flag) {
-                    if (skill.skill.Priority > p) {
-                        skillImpl = skill.skill;
-                        p = skill.skill.Priority;
-                    }
-                }
-            }
-            if (skillImpl) {
+            else {
                 return true;
             }
         }
@@ -255,27 +266,10 @@ export class Battle {
         let enemyTeam = this.enemyTeam.GetRoles();
         for(let index in enemyTeam) {
             let role = enemyTeam[index];
-            if (role.CheckSkillIsLock()) {
+            if (!this.CheckRoleTriggerSkill(role, evs)) {
                 continue;
             }
-
-            let roleInfo = new skill.RoleInfo();
-            roleInfo.properties=role.GetProperties();
-            
-            roleInfo.index =  role.index;
-            roleInfo.camp = enums.Camp.Enemy;
-            let p = 0;
-            let skillImpl: skill.SkillBase = null;
-            for(let skill of role.skill) {
-                let flag=skill.trigger.CheckSkillTrigger(evs, roleInfo)
-                if (flag) {
-                    if (skill.skill.Priority > p) {
-                        skillImpl = skill.skill;
-                        p = skill.skill.Priority;
-                    }
-                }
-            }
-            if (skillImpl) {
+            else {
                 return true;
             }
         }
