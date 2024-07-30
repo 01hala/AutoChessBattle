@@ -1,3 +1,9 @@
+/*
+ * SkillTrigger_Kill.ts
+ * author: 未知
+ * 2023/10/01
+ * 触发器——击败敌人
+ */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
 import * as enums from '../enum';
@@ -5,7 +11,7 @@ const { ccclass, property } = _decorator;
 
 @ccclass('SkillTrigger_Kill')
 export class SkillTrigger_Kill extends SkillTriggerBase {
-    public res:string="battle/skill/SkillTrigger_Kill";
+    public res:string="battle/skill/SkillTrigger_Kill.ts";
     public EventType:enums.EventType=enums.EventType.Kill;
 
     CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number 

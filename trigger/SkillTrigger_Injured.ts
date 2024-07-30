@@ -8,9 +8,9 @@ import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
 import * as enums from '../enum';
 
-export class SkillTrigger_Injured_10 extends SkillTriggerBase
+export class SkillTrigger_Injured extends SkillTriggerBase
 {    
-    public res:string="battle/skill/SkillTrigger_Injured_10";
+    public res:string="battle/skill/SkillTrigger_Injured.ts";
     public EventType:enums.EventType=enums.EventType.AttackInjured;
 
     event:Event=new Event();

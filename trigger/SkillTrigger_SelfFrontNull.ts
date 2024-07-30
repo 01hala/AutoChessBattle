@@ -10,9 +10,9 @@ import * as battle from '../battle'
  * 2024/07/19添加
  * SkillTrigger_FrontNull.ts
  */
-export class SkillTrigger_FrontNull extends SkillTriggerBase
+export class SkillTrigger_SelfFrontNull extends SkillTriggerBase
 {
-    public res:string="battle/skill/SkillTrigger_FrontNull.ts ";
+    public res:string="battle/skill/SkillTrigger_SelfFrontNull.ts ";
     public EventType:enums.EventType=enums.EventType.SelfFrontNull;
 
     constructor(){

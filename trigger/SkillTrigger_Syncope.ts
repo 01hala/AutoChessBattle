@@ -10,8 +10,8 @@ import * as enums from '../enum';
 const { ccclass, property } = _decorator;
 
 @ccclass('SkillTrigger_Syncope_11')
-export class SkillTrigger_Syncope_11 extends SkillTriggerBase {
-    public res:string="battle/skill/SkillTrigger_Syncope_11";
+export class SkillTrigger_Syncope extends SkillTriggerBase {
+    public res:string="battle/skill/SkillTrigger_Syncope.ts";
     public EventType:enums.EventType=enums.EventType.Syncope;
 
     CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number 
@@ -34,9 +34,11 @@ export class SkillTrigger_Syncope_11 extends SkillTriggerBase {
         {
             for (let element of frameEvent) {
                 console.log("CheckSkill element:", element, " selfInfo:", selfInfo);
-                if(enums.EventType.Syncope == element.type){
+                if(enums.EventType.Syncope == element.type)
+                {
                     console.log("CheckSkill Syncope element:", element, " selfInfo:", selfInfo);
-                    if(element.spellcaster.camp == selfInfo.camp && element.spellcaster.index == selfInfo.index) {
+                    if(element.spellcaster.camp == selfInfo.camp && element.spellcaster.index == selfInfo.index) 
+                    {
                         console.log("CheckSkill Syncope!");
                         return 1;
                     }

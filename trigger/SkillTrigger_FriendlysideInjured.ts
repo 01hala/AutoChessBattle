@@ -9,9 +9,9 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base'
 import * as enums from '../enum';
 import { Direction } from '../common';
 
-export class SkillTrigger_FriendlysideInjured_19 extends SkillTriggerBase
+export class SkillTrigger_FriendlysideInjured extends SkillTriggerBase
 {    
-    public res:string="battle/skill/SkillTrigger_FriendlysideInjured_19";
+    public res:string="battle/skill/SkillTrigger_FriendlysideInjured.ts";
     public EventType:enums.EventType=enums.EventType.FriendlysideInjured;
     private dir:Direction;
 

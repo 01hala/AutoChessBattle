@@ -1,15 +1,15 @@
 /*
- * SkillTrigger_UsedSKill_14.ts
+ * SkillTrigger_RoundStarts_5.ts
  * author: Hotaru
  * 2023/10/01
- * 触发器——释放技能(羁绊)
+ * 触发器——回合开始
  */
 import { Event, RoleInfo, SkillTriggerBase } from "../skill/skill_base";
 import * as enums from '../enum';
 
-export class SkillTrigger_UsedSKill_14 extends SkillTriggerBase
+export class SkillTrigger_RoundStarts extends SkillTriggerBase
 {
-    public res:string="battle/skill/SkillTrigger_UsedSKill_14";
+    public res:string="battle/skill/SkillTrigger_RoundStarts.ts";
 
     CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number 
     {
@@ -31,8 +31,9 @@ export class SkillTrigger_UsedSKill_14 extends SkillTriggerBase
         {
             for(let b of frameEvent)
             {
-                if(enums.EventType.UsedSkill==b.type && 4==selfInfo.Fetters)
+                if(enums.EventType.RoundStarts==b.type)
                 {
+                    console.log(`SkillTrigger_RoundStarts_5 selfInfo${selfInfo}`)
                     return 1;
                 }
             }

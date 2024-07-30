@@ -2,8 +2,8 @@ import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
 import * as enums from '../enum';
 
-export class SkillTrigger_ChangeEnemyLocation_13 extends SkillTriggerBase {
-    public res:string="battle/skill/SkillTrigger_ChangeEnemyLocation_13";
+export class SkillTrigger_ChangeEnemyLocation extends SkillTriggerBase {
+    public res:string="battle/skill/SkillTrigger_ChangeEnemyLocation.ts";
 
     CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number 
     {

@@ -4,8 +4,8 @@ import * as enums from '../enum';
 const { ccclass, property } = _decorator;
 
 @ccclass('SkillTrigger_ChangeSelfLocation_12')
-export class SkillTrigger_ChangeSelfLocation_12 extends SkillTriggerBase {
-    public res:string="battle/skill/SkillTrigger_ChangeSelfLocation_12";
+export class SkillTrigger_ChangeSelfLocation extends SkillTriggerBase {
+    public res:string="battle/skill/SkillTrigger_ChangeSelfLocation.ts";
     
     CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number 
     {

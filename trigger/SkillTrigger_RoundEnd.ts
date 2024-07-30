@@ -1,17 +1,17 @@
 /*
- * SkillTrigger_BattleBegin_7.ts
+ * SkillTrigger_RoundEnd_6.ts
  * author: Hotaru
  * 2023/10/01
- * 触发器——战斗开始
+ * 触发器——回合结束(准备结束)
  */
 import { Event, RoleInfo, SkillTriggerBase } from "../skill/skill_base";
 import * as enums from '../enum';
 
-export class SkillTrigger_BattleBegin_7 extends SkillTriggerBase
+export class SkillTrigger_RoundEnd extends SkillTriggerBase
 {
-    public res:string="battle/skill/SkillTrigger_BattleBegin_7";
+    public res:string="battle/skill/SkillTrigger_RoundEnd.ts";
 
-    CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number
+    CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number 
     {
         try 
         {
@@ -29,17 +29,15 @@ export class SkillTrigger_BattleBegin_7 extends SkillTriggerBase
     {
         try 
         {
-            console.log("尝试触发战斗开始触发器事件");
             for(let b of frameEvent)
             {
-                if(enums.EventType.BattleBegin==b.type)
+                if(enums.EventType.RoundEnd==b.type)
                 {
-                    console.log("CheckSkillTrigger BattleBegin!");
-                    return 2;
+                    return 1;
                 }
             }
             return 0;
-        }                                                      
+        } 
         catch (error) 
         {
             console.warn(this.res+"下的 CheckSkill 错误");

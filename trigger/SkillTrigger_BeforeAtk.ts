@@ -8,9 +8,9 @@ import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
 import { Camp, EventType, SkillType } from '../enum';
 
-export class SkillTrigger_BeforeAtk_8 extends SkillTriggerBase
+export class SkillTrigger_BeforeAtk extends SkillTriggerBase
 {    
-    public res:string="battle/skill/SkillTrigger_BeforeAtk_8";
+    public res:string="battle/skill/SkillTrigger_BeforeAtk";
     public EventType:EventType=EventType.BeforeAttack;
 
     event:Event=new Event();

@@ -8,16 +8,19 @@ import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
 import { Camp, EventType, SkillType } from '../enum';
 
-export class SkillTrigger_AfterAtk_9 extends SkillTriggerBase
+export class SkillTrigger_AfterAtk extends SkillTriggerBase
 {    
-    public res:string="battle/skill/SkillTrigger_AfterAtk_9";
+    public res:string="battle/skill/SkillTrigger_AfterAtk.ts";
     public EventType: EventType[];
+
+    public count:number;
 
     event:Event=new Event();
 
     constructor(){
         super();
         this.EventType.push(EventType.AfterAttack);
+        this.count=0;
     }
 
     CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo): number {
@@ -43,6 +46,14 @@ export class SkillTrigger_AfterAtk_9 extends SkillTriggerBase
                     if(element.spellcaster.index == selfInfo.index && element.spellcaster.camp == selfInfo.camp)
                     {
                         return 1;
+                    }
+                    if(element.spellcaster.camp == selfInfo.camp && this.count==3)//友方攻击3次
+                    {
+                        return 2;
+                    }
+                    if(element.spellcaster.index != selfInfo.index && element.spellcaster.camp == selfInfo.camp)
+                    {
+                        this.count++;
                     }
                 }
             }
