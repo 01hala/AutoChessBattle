@@ -61,7 +61,9 @@ export enum EventType
     /** 我方前排为空 */                 
     SelfFrontNull = 24,     
     /** 敌方前排为空 */              
-    EnemyFrontNull=25,                  
+    EnemyFrontNull=25, 
+    /** 强制战斗 */
+    ForcedAttack=26        
 }
 
 export enum ChangePositionType {

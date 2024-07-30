@@ -64,6 +64,7 @@ export class Role {
     public exp:number;
 
     public foeRoleIndex:number;
+    public isForcedAttack=false;
 
     public skill : SkillInfo[] = []; // 一般情况只有一个技能，使用特殊食物时添加一个技能
     public fetter:common.Fetters;
@@ -174,7 +175,19 @@ export class Role {
         ev.roleParallel = enemy;
         battle.AddBattleEvent(ev);
         
-        if (this.CheckDead()) {
+        if (this.CheckDead()) 
+        {
+            if(this.isForcedAttack)
+            {
+                if(this.selfCamp == enums.Camp.Self)
+                {
+                    battle.GetSelfTeam().ReSetAttackRole();
+                }
+                if(this.selfCamp==enums.Camp.Enemy)
+                {
+                    battle.GetEnemyTeam().ReSetAttackRole();
+                }
+            }
             this.foeRoleIndex=enemy.index;
             let ev = new skill.Event();
             ev.type = enums.EventType.Syncope;
@@ -398,7 +411,8 @@ export class Role {
         return t;
     }
 
-    public CheckDead() {
+    public CheckDead() 
+    {
         let hp = this.properties.get(enums.Property.HP);
         console.log(`CheckDead selfCamp:${this.selfCamp} id:${this.id} hp:${hp}`);
         return hp <= 0;
