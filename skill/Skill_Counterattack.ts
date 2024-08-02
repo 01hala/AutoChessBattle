@@ -37,7 +37,7 @@ export class Skill_Counterattack extends SkillBase
     {
         try
         {
-
+            this.SkillEffect_1(selfInfo,battle,this.attack,isParallel);
         }
         catch(error)
         {
