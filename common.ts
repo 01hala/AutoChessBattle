@@ -1,4 +1,4 @@
-//import * as client_handle from "./client_handle";
+import * as client_handle from "./client_handle";
 /*this enum code is codegen by abelkhan codegen for ts*/
 
 export enum BattleVictory{
@@ -118,8 +118,7 @@ export enum EMSkillEvent{
     camp_summon = 21,
     front_be_hurt = 22,
     before_attack = 23,
-    all_mechanic_syncope = 24,
-    after_attack=25
+    all_mechanic_syncope = 24
 }
 
 export enum SkillEffectEM{
