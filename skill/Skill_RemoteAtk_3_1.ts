@@ -92,14 +92,16 @@ export class Skill_RemoteAtk_3_1 extends SkillBase
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetSelfTeam().GetRoles().slice();
             }
-            while(recipientRoles.length < this.numberOfRole && enemyRoles.length > 0) {
+            while (recipientRoles.length < this.numberOfRole && enemyRoles.length > 0)
+            {
                 let index = random(0, enemyRoles.length);
                 recipientRoles.push(enemyRoles[index]);
                 enemyRoles.splice(index, 1);
             }
-            recipientRoles.forEach((role)=>{
-                role.BeHurted(attack, self, battle,enums.EventType.RemoteInjured,isPar);
-                console.log("Skill_RemoteAtk_3_1 远程攻击角色受伤 :",attack);
+            recipientRoles.forEach((role) =>
+            {
+                role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, isPar);
+                console.log("Skill_RemoteAtk_3_1 远程攻击角色受伤 :", attack);
             });
         }
         catch (error) 
