@@ -149,6 +149,10 @@ export class Battle {
             return;
         }
 
+        if (this.CheckEndBattle()) {
+            return;
+        }
+
         await this.on_event.call(null, evs);
 
         this.tickSkill(evs);
@@ -169,6 +173,10 @@ export class Battle {
 
     private async tickInjuredEvent(evs:skill.Event[]) {
         if (evs == null || evs.length <= 0) {
+            return;
+        }
+
+        if (this.CheckEndBattle()) {
             return;
         }
 
@@ -402,8 +410,7 @@ export class Battle {
             let evs = this.evs.slice();
             this.evs = [];
             await this.on_event.call(null, evs);
-            let [injuredEvs, _] = splitEvs(evs);
-            await this.tickBattleInjuredEvent(injuredEvs);
+            await this.tickBattleInjuredEvent(evs);
             return false;
         }
 
