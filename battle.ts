@@ -149,11 +149,11 @@ export class Battle {
             return;
         }
 
+        await this.on_event.call(null, evs);
+
         if (this.CheckEndBattle()) {
             return;
         }
-
-        await this.on_event.call(null, evs);
 
         this.tickSkill(evs);
         let _evs = this.evs.slice();
@@ -176,10 +176,6 @@ export class Battle {
             return;
         }
 
-        if (this.CheckEndBattle()) {
-            return;
-        }
-
         let tmpPriorityEvs:skill.Event[] = [];
         for (let ev of evs) {
             if (this.checkTriggerSkill([ev]) && !tmpPriorityEvs.includes(ev)) {
@@ -195,6 +191,10 @@ export class Battle {
         if (tmpPriorityEvs.length > 0) {
             await this.on_event.call(null, tmpPriorityEvs);
 
+            if (this.CheckEndBattle()) {
+                return;
+            }
+    
             this.tickSkill(tmpPriorityEvs);
             let _evs = this.evs.slice();
             this.evs = [];
