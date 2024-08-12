@@ -25,7 +25,6 @@ export class Skill_Summon_4 extends SkillBase
 
     public constructor(priority:number, id : number,level:number=1,roleProperties : Map<enums.Property, number>=null,eventSound?:string) {
         super(priority);
-
         this.addedID=id;
         this.addedLevel=level;
         this.addedProperties=roleProperties;
@@ -87,6 +86,7 @@ export class Skill_Summon_4 extends SkillBase
             // roleInfo.attack=this.addedProperties[Property.Attack];
             battleEvent.recipient.push(roleInfo);
             battle.AddBattleEvent(battleEvent);
+            console.log("召唤技能使用！！");
         }
         catch (error) 
         {

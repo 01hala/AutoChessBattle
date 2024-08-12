@@ -32,6 +32,7 @@ export class SkillTrigger_Syncope extends SkillTriggerBase {
     {
         try
         {
+            console.log(frameEvent);
             for (let element of frameEvent) {
                 console.log("CheckSkill element:", element, " selfInfo:", selfInfo);
                 if(enums.EventType.Syncope == element.type)
