@@ -75,13 +75,14 @@ export class Role {
     private properties : Map<enums.Property, number> = new Map<enums.Property, number>();
     public selfCamp: enums.Camp;
 
-    public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters, additionBuffer?:number[],additionSkill?:number[]) {
+    public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters, equipID:number, additionBuffer?:number[],additionSkill?:number[]) {
         this.index = index;
         this.id=id;
         this.level=level;
         this.exp=exp;
         this.selfCamp = selfCamp;
         this.fetter=fetters;
+        this.equip.push(equipID);
         
         properties.forEach((v, k) => {
             this.properties.set(k, v);

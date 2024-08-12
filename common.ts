@@ -1,4 +1,3 @@
-import * as client_handle from "./client_handle";
 /*this enum code is codegen by abelkhan codegen for ts*/
 
 export enum BattleVictory{
