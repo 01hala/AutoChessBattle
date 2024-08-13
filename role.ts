@@ -142,7 +142,7 @@ export class Role {
     }
 
     public CheckSkillIsLock() {
-        return this.skill_is_lock;
+        return false;
     }
 
     public LockSkill() {
