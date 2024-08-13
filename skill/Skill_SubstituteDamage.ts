@@ -14,9 +14,9 @@ import { random } from '../util';
 import { Buffer } from '../buffer/buffer';
 import { Direction } from '../common';
 
-export class Skill_SubstituteDamage_11 extends SkillBase 
+export class Skill_SubstituteDamage extends SkillBase 
 {
-    public res:string="battle/skill/Skill_SubstituteDamage_11";
+    public res:string="battle/skill/Skill_SubstituteDamage.ts";
     public SkillType:enums.SkillType=enums.SkillType.Support;
 
     private value:number;

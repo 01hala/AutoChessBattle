@@ -1,5 +1,5 @@
 /*
- * Skill_AttGain_1_1.ts
+ * Skill_AttGain.ts
  * author: Hotaru
  * 2023/9/27
  * 获得+m生命值和+k攻击力（随机n人、前后左右或者自己）
@@ -13,9 +13,9 @@ import * as enums from '../enum'
 import { Direction } from '../common'
 import { random } from '../util';
 
-export class Skill_AttGain_1 extends SkillBase 
+export class Skill_AttGain extends SkillBase 
 {
-    public res:string="battle/skill/Skill_AttGain_1";
+    public res:string="battle/skill/Skill_AttGain.ts";
     public SkillType:enums.SkillType=enums.SkillType.Intensifier;
 
     private numberOfRole:number=null;
@@ -56,6 +56,14 @@ export class Skill_AttGain_1 extends SkillBase
             else if(!this.dir)
             {
                 this.SkillEffect_2(selfInfo,battle,isParallel);  
+            }
+            if(this.dir)
+            {
+                this.SkillEffect_3(selfInfo,battle,isParallel);
+            }
+            if(this.numberOfRole==6)
+            {
+                this.SkillEffect_4(selfInfo,battle,isParallel);
             }
                   
         }
@@ -223,13 +231,14 @@ export class Skill_AttGain_1 extends SkillBase
  * author: Hotaru
  * 2023/10/8
  */
-    SkillEffect_3(selfInfo: RoleInfo, battle: Battle):void
+    SkillEffect_3(selfInfo: RoleInfo, battle: Battle,isPar:boolean):void
     {
         try
         {
             let event = new Event();
             event.type = enums.EventType.IntensifierProperties;
             event.spellcaster = selfInfo;
+            event.isParallel=isPar;
             event.recipient = [];
 
             let indexs:number[]=[];
@@ -283,6 +292,49 @@ export class Skill_AttGain_1 extends SkillBase
             console.warn(this.res+"下的 SkillEffect_3 错误 ",error);
         }
         
+    }
+
+/*
+ * 添加全队角色（除自己）生效
+ * author: Hotaru
+ * 2024/8/13
+ */
+
+    SkillEffect_4(selfInfo: RoleInfo, battle: Battle,isPar:boolean)
+    {
+        let event = new Event();
+        event.type = enums.EventType.IntensifierProperties;
+        event.spellcaster = selfInfo;
+        event.isParallel=isPar;
+        event.recipient = [];
+
+        let indexs: number[] = [];
+
+        let rolesTemp: Role[] = [];
+
+        if (enums.Camp.Self == selfInfo.camp)
+        {
+            rolesTemp = battle.GetSelfTeam().GetRoles().slice();
+        }
+
+        if (enums.Camp.Enemy == selfInfo.camp)
+        {
+            rolesTemp = battle.GetEnemyTeam().GetRoles().slice();
+        }
+
+        for(let r of rolesTemp)
+        {
+            if(r!=null && r.index != selfInfo.index)
+            {
+                let roleInfo:RoleInfo=new RoleInfo();
+                roleInfo.camp=selfInfo.camp;
+                roleInfo.index=r.index;
+                event.recipient.push(roleInfo);
+            }
+        }
+
+        event.value = [this.health, this.attack];
+        battle.AddBattleEvent(event);
     }
 }
 

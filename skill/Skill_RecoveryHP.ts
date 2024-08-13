@@ -1,3 +1,10 @@
+/*
+ * Skill_RecoveryHP
+ * author: ?
+ * 2023/10/1
+ * 恢复生命
+ */
+
 import { _decorator, Component, error, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
 import * as enums from '../enum';
@@ -6,9 +13,9 @@ import { Role } from '../role';
 import { random } from '../util';
 const { ccclass, property } = _decorator;
 
-@ccclass('Skill_RecoveryHP_2')
-export class Skill_RecoveryHP_2 extends SkillBase {
-    public res:string="battle/skill/Skill_RecoveryHP_2";
+@ccclass('Skill_RecoveryHP')
+export class Skill_RecoveryHP extends SkillBase {
+    public res:string="battle/skill/Skill_RecoveryHP.ts";
     private numberOfRole:number;
     private effectiveValue : number;
     private eventSound:string;

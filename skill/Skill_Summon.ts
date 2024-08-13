@@ -11,9 +11,9 @@ import { Team } from '../team';
 import { Role } from '../role';
 import * as enums from '../enum';
 
-export class Skill_Summon_4 extends SkillBase 
+export class Skill_Summon extends SkillBase 
 {
-    public res:string="battle/skill/Skill_Summon_4";
+    public res:string="battle/skill/Skill_Summon.ts/Skill_Summon";
     public SkillType:enums.SkillType=enums.SkillType.Summon;
 
     event:Event=new Event();
@@ -103,7 +103,7 @@ export class Skill_Summon_4 extends SkillBase
  */
 export class Skill_SummonMecha extends SkillBase 
 {
-    public res:string="battle/skill/Skill_SummonMecha";
+    public res:string="battle/skill/Skill_Summon.ts/Skill_SummonMecha";
     public SkillType:enums.SkillType=enums.SkillType.Summon;
 
     event:Event=new Event();

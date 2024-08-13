@@ -7,8 +7,8 @@ import { random } from '../util';
 const { ccclass, property } = _decorator;
 
 @ccclass('Skill_ChangePosition_7')
-export class Skill_ChangePosition_7 extends SkillBase {
-    public res:string="battle/skill/Skill_ChangePosition_7";
+export class Skill_ChangePosition extends SkillBase {
+    public res:string="battle/skill/Skill_ChangePosition.ts";
 
     private index1:number;
     private index2:number;

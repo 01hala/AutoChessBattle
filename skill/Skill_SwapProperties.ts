@@ -12,9 +12,9 @@ import { Role } from '../role';
 import * as enums from '../enum';
 import { random } from '../util';
 
-export class Skill_SwapProperties_5 extends SkillBase 
+export class Skill_SwapProperties extends SkillBase 
 {
-    public res:string="battle/skill/Skill_SwapProperties_5";
+    public res:string="battle/skill/Skill_SwapProperties.ts";
     public SkillType:enums.SkillType=enums.SkillType.SwapProperties;
 
     event:Event=new Event();

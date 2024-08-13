@@ -1,5 +1,5 @@
 /*
- * Skell_ForcedAttack
+ * Skill_ForcedAttack
  * author: Hotaru
  * 2024/07/30
  * 强制战斗
@@ -10,7 +10,7 @@ import { SkillBase, Event, RoleInfo, SkillTriggerBase, } from './skill_base';
 import * as enums from '../enum'
 import { random } from '../util';
 
-export class Skell_ForcedAttack extends SkillBase  
+export class Skill_ForcedAttack extends SkillBase  
 {
     public res:string="battle/skill/Skell_ForcedAttack.ts";
 
