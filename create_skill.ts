@@ -7,14 +7,19 @@ import * as config from './config/config'
 import * as enums from './enum'
 import * as common from './common'
 import * as skill from './skill/skill_base'
+import * as Skill_AddTmpExp from './skill/Skill_AddTmpExp'
+import * as Skill_AttackAll from './skill/Skill_AttackAll'
 import * as Skill_AttGain from './skill/Skill_AttGain'
+import * as Skill_ChangePosition from './skill/Skill_ChangePosition'
+import * as Skill_Counterattack from './skill/Skill_Counterattack'
+import * as Skill_DeAttGain from './skill/Skill_DeAttGain'
+import * as Skill_ForcedAttack from './skill/Skill_ForcedAttack'
 import * as Skill_RecoveryHP from './skill/Skill_RecoveryHP'
 import * as Skill_RemoteAtk from './skill/Skill_RemoteAtk'
+import * as Skill_Shields from './skill/Skill_Shields'
+import * as Skill_SubstituteDamage from './skill/Skill_SubstituteDamage'
 import * as Skill_Summon from './skill/Skill_Summon'
 import * as Skill_SwapProperties from './skill/Skill_SwapProperties'
-import * as Skill_Shields from './skill/Skill_Shields'
-import * as Skill_ChangePosition from './skill/Skill_ChangePosition'
-import * as Skill_SubstituteDamage from './skill/Skill_SubstituteDamage'
 
 export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
     let skillConfig = config.config.SkillConfig.get(skillID);
@@ -37,6 +42,31 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
 
     let skillObj:skill.SkillBase = null;
     switch(skillConfig.Effect) {
+        case common.SkillEffectEM.AddTmpExp:
+        {
+            skillObj = new Skill_AddTmpExp.Skill_AddTmpExp(skillConfig.Priority, value0, value1, skillConfig.ObjectDirection, skillConfig.ObjCount);
+        }
+        break;
+        case common.SkillEffectEM.AttackAll:
+        {
+            skillObj = new Skill_AttackAll.Skill_AttackAll(skillConfig.Priority, value0, skillConfig.SkillAudio);
+        }
+        break;
+        case common.SkillEffectEM.CounterAttack:
+        {
+            skillObj = new Skill_Counterattack.Skill_Counterattack(skillConfig.Priority, skillConfig.ObjCount, value0, skillConfig.ObjCount == 6, skillConfig.SkillAudio);
+        }
+        break;
+        case common.SkillEffectEM.DeAttGain:
+        {
+            skillObj = new Skill_DeAttGain.Skill_DeAttGain(skillConfig.Priority, value0, value1, skillConfig.ObjCount == 6, skillConfig.ObjCount, skillConfig.SkillAudio);
+        }
+        break;
+        case common.SkillEffectEM.ForcedAttack:
+        {
+            skillObj = new Skill_ForcedAttack.Skill_ForcedAttack(skillConfig.Priority, skillConfig.SkillAudio);
+        }
+        break;
         case common.SkillEffectEM.AddProperty:
         {
             console.log("Skill_AttGain_1 skillConfig:", skillConfig);

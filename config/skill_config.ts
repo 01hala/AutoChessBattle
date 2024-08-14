@@ -27,6 +27,7 @@ export class SkillConfig {
     public ChangePositionType : enums.ChangePositionType;
     public SwapPropertiesType : enums.SwapPropertiesType;
     public AddBufferID: number;
+    public SkillAudio: string;
 }
 
 export async function LoadSkillConfig() : Promise<Map<number, SkillConfig>> {
@@ -64,6 +65,7 @@ export async function LoadSkillConfig() : Promise<Map<number, SkillConfig>> {
                 skillc.ChangePositionType = v["ChangePositionType"];
                 skillc.SwapPropertiesType = v["SwapPropertiesType"];
                 skillc.AddBufferID =  v["AddBufferID"];
+                skillc.SkillAudio = v["SkillAudio"];
 
                 map.set(parseInt(k), skillc);
             });
