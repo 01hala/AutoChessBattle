@@ -174,7 +174,7 @@ export class Skill_RemoteAtk extends SkillBase
         {
             for(let r of enemyRoles)
             {
-                if(t.index == r.index)
+                if(t.index == r.index && t.camp == r.selfCamp)
                 {
                     recipientRoles.push(r);
                 }
