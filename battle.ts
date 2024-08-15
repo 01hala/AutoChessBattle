@@ -320,7 +320,7 @@ export class Battle {
             if (skillImpl) {
                 role.LockSkill();
                 console.log("Are skills parallel:"+isPar);
-                skillImpl.UseSkill(roleInfo, this,isPar);
+                skillImpl.UseSkill(roleInfo, this,isPar , evs);
             }
         }
 
