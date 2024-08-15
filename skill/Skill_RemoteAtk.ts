@@ -36,7 +36,7 @@ export class Skill_RemoteAtk extends SkillBase
         console.log("create Skill_RemoteAtk_3 attack:", this.attack);
     }
 
-    UseSkill(selfInfo: RoleInfo, battle: Battle,isParallel:boolean): void 
+    UseSkill(selfInfo: RoleInfo, battle: Battle,isParallel:boolean , evs?:Event[]): void 
     {
         try 
         {
@@ -56,6 +56,19 @@ export class Skill_RemoteAtk extends SkillBase
             else
             {
                 this.SkillEffect_2(selfInfo,battle,isParallel);
+            }
+            if(evs)
+            {
+                let ev:Event;
+                for(let e of evs)
+                {
+                    if(enums.EventType.ChangeLocation == e.type || enums.EventType.Summon)
+                    {
+                        ev=e;
+                        break;
+                    }
+                }
+                this.SkillEffect_3(selfInfo,battle,isParallel,ev);
             }
             
             
@@ -133,9 +146,46 @@ export class Skill_RemoteAtk extends SkillBase
         //同时发射子弹,同时受伤
         for(let role of recipientRoles)
         {
-            role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,true)
+            role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,isPar);
         }
 
+    }
+
+    private SkillEffect_3(selfInfo: RoleInfo, battle: Battle,isPar:boolean , ev:Event)        //指定对象
+    {
+        let self:Role = null;
+        let enemyRoles:Role[] = battle.GetEnemyTeam().GetRoles();
+        
+        if (enums.Camp.Self == selfInfo.camp)
+        {
+            self = battle.GetSelfTeam().GetRole(selfInfo.index);
+            enemyRoles=battle.GetEnemyTeam().GetRoles().slice();
+        }
+        if (enums.Camp.Enemy == selfInfo.camp)
+        {
+            self = battle.GetEnemyTeam().GetRole(selfInfo.index);
+            enemyRoles=battle.GetSelfTeam().GetRoles().slice();
+        }
+
+        let recipientRoles:Role[] = [];
+        
+
+        for(let t of ev.recipient)
+        {
+            for(let r of enemyRoles)
+            {
+                if(t.index == r.index)
+                {
+                    recipientRoles.push(r);
+                }
+            }
+        }
+
+        for(let role of recipientRoles)
+        {
+            role.BeHurted(this.attack, self, battle , enums.EventType.RemoteInjured , isPar);
+        }
+        
     }
 }
 

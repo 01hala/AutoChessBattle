@@ -44,5 +44,5 @@ export abstract class SkillBase {
         this.Priority = priority
     }
 
-    abstract UseSkill(selfInfo: RoleInfo, battle: battle.Battle,isParallel:boolean): void;
+    abstract UseSkill(selfInfo: RoleInfo, battle: battle.Battle,isParallel:boolean , evs?:Event[]): void;
 }

@@ -20,6 +20,7 @@ import { SkillTrigger_Kill } from './trigger/SkillTrigger_Kill'
 import { SkillTrigger_CampSyncope } from './trigger/SkillTrigger_CampSyncope'
 import { SkillTrigger_FrontAtk } from './trigger/SkillTrigger_FrontAtk'
 import * as  SkillTrigger_AfterAtk from './trigger/SkillTrigger_AfterAtk'
+import * as SkillTrigger_EnemySummon from './trigger/SkillTrigger_EnemySummon'
 
 export function CreateTrigger(triggerID:number) : skill.SkillTriggerBase {
     let triggerObj: skill.SkillTriggerBase = null;
@@ -61,12 +62,22 @@ export function CreateTrigger(triggerID:number) : skill.SkillTriggerBase {
         break;
         case common.EMSkillEvent.camp_summon:
         {
-            triggerObj = new SkillTrigger_ChangeSelfLocation.SkillTrigger_ChangeSelfLocation();//召唤
+            
         }
         break;
         case common.EMSkillEvent.enemy_summon:
         {
-            triggerObj = new SkillTrigger_ChangeEnemyLocation.SkillTrigger_ChangeEnemyLocation();//召唤
+            triggerObj = new SkillTrigger_EnemySummon.SkillTrigger_EnemySummon();//敌方召唤
+        }
+        break;
+        case common.EMSkillEvent.ChangeSelfLocation:
+        {
+            triggerObj = new SkillTrigger_ChangeSelfLocation.SkillTrigger_ChangeSelfLocation();//我方被推动
+        }
+        break;
+        case common.EMSkillEvent.ChangeEnemyLocation:
+        {
+            triggerObj = new SkillTrigger_ChangeEnemyLocation.SkillTrigger_ChangeEnemyLocation();//敌方被推动
         }
         break;
         case common.EMSkillEvent.use_skill:
