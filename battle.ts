@@ -351,7 +351,7 @@ export class Battle {
             }
             if (skillImpl) {
                 role.LockSkill();
-                skillImpl.UseSkill(roleInfo, this,isPar);
+                skillImpl.UseSkill(roleInfo, this,isPar , evs);
             }
         }
     }
