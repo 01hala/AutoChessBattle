@@ -70,12 +70,12 @@ export function CreateTrigger(triggerID:number) : skill.SkillTriggerBase {
             triggerObj = new SkillTrigger_EnemySummon.SkillTrigger_EnemySummon();//敌方召唤
         }
         break;
-        case common.EMSkillEvent.ChangeSelfLocation:
+        case common.EMSkillEvent.change_self_location:
         {
             triggerObj = new SkillTrigger_ChangeSelfLocation.SkillTrigger_ChangeSelfLocation();//我方被推动
         }
         break;
-        case common.EMSkillEvent.ChangeEnemyLocation:
+        case common.EMSkillEvent.change_enemy_location:
         {
             triggerObj = new SkillTrigger_ChangeEnemyLocation.SkillTrigger_ChangeEnemyLocation();//敌方被推动
         }
@@ -108,6 +108,16 @@ export function CreateTrigger(triggerID:number) : skill.SkillTriggerBase {
         {
             //还需要传入一个battle
             triggerObj=new SkillTrigger_AllMechaniSyncope();
+        }
+        break;
+        case common.EMSkillEvent.self_front_null:
+        {
+
+        }
+        break;
+        case common.EMSkillEvent.enemy_front_null:
+        {
+
         }
         break;
     }

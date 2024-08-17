@@ -120,8 +120,10 @@ export enum EMSkillEvent{
     before_attack = 23,
     all_mechanic_syncope = 24,
     after_attack=25,
-    ChangeSelfLocation=26,
-    ChangeEnemyLocation=27,
+    change_self_location=26,
+    change_enemy_location=27,
+    self_front_null=28,		
+	enemy_front_null=29,
 }
 
 export enum SkillEffectEM{
