@@ -21,6 +21,8 @@ import { SkillTrigger_CampSyncope } from './trigger/SkillTrigger_CampSyncope'
 import { SkillTrigger_FrontAtk } from './trigger/SkillTrigger_FrontAtk'
 import * as  SkillTrigger_AfterAtk from './trigger/SkillTrigger_AfterAtk'
 import * as SkillTrigger_EnemySummon from './trigger/SkillTrigger_EnemySummon'
+import * as SkillTrigger_SelfFrontNull from './trigger/SkillTrigger_SelfFrontNull';
+import * as SkillTirgger_EnemyFrontNulll from './trigger/SkillTirgger_EnemyFrontNull';
 
 export function CreateTrigger(triggerID:number) : skill.SkillTriggerBase {
     let triggerObj: skill.SkillTriggerBase = null;
@@ -112,12 +114,12 @@ export function CreateTrigger(triggerID:number) : skill.SkillTriggerBase {
         break;
         case common.EMSkillEvent.self_front_null:
         {
-
+            triggerObj=new SkillTrigger_SelfFrontNull.SkillTrigger_SelfFrontNull();
         }
         break;
         case common.EMSkillEvent.enemy_front_null:
         {
-
+            triggerObj=new SkillTirgger_EnemyFrontNulll.SkillTirgger_EnemyFrontNull();
         }
         break;
     }
