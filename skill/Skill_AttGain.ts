@@ -302,39 +302,46 @@ export class Skill_AttGain extends SkillBase
 
     SkillEffect_4(selfInfo: RoleInfo, battle: Battle,isPar:boolean)
     {
-        let event = new Event();
-        event.type = enums.EventType.IntensifierProperties;
-        event.spellcaster = selfInfo;
-        event.isParallel=isPar;
-        event.recipient = [];
-
-        let indexs: number[] = [];
-
-        let rolesTemp: Role[] = [];
-
-        if (enums.Camp.Self == selfInfo.camp)
+        try
         {
-            rolesTemp = battle.GetSelfTeam().GetRoles().slice();
-        }
-
-        if (enums.Camp.Enemy == selfInfo.camp)
-        {
-            rolesTemp = battle.GetEnemyTeam().GetRoles().slice();
-        }
-
-        for(let r of rolesTemp)
-        {
-            if(r!=null && r.index != selfInfo.index)
+            let event = new Event();
+            event.type = enums.EventType.IntensifierProperties;
+            event.spellcaster = selfInfo;
+            event.isParallel=isPar;
+            event.recipient = [];
+    
+            let indexs: number[] = [];
+    
+            let rolesTemp: Role[] = [];
+    
+            if (enums.Camp.Self == selfInfo.camp)
             {
-                let roleInfo:RoleInfo=new RoleInfo();
-                roleInfo.camp=selfInfo.camp;
-                roleInfo.index=r.index;
-                event.recipient.push(roleInfo);
+                rolesTemp = battle.GetSelfTeam().GetRoles().slice();
             }
+    
+            if (enums.Camp.Enemy == selfInfo.camp)
+            {
+                rolesTemp = battle.GetEnemyTeam().GetRoles().slice();
+            }
+    
+            for(let r of rolesTemp)
+            {
+                if(r!=null && r.index != selfInfo.index)
+                {
+                    let roleInfo:RoleInfo=new RoleInfo();
+                    roleInfo.camp=selfInfo.camp;
+                    roleInfo.index=r.index;
+                    event.recipient.push(roleInfo);
+                }
+            }
+    
+            event.value = [this.health, this.attack];
+            battle.AddBattleEvent(event);
         }
-
-        event.value = [this.health, this.attack];
-        battle.AddBattleEvent(event);
+        catch(error)
+        {
+            console.warn(this.res+"下的 SkillEffect_4 错误 ",error);
+        }
     }
 }
 

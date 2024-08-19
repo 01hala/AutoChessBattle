@@ -188,10 +188,39 @@ export class Team {
     public CheckFront() : boolean
     {
         let flag = true;
-        if(this.battleData.RoleList[0] && this.battleData.RoleList[1] && this.battleData.RoleList[2])
+        if(this.battleData.RoleList[0] || this.battleData.RoleList[1] || this.battleData.RoleList[2])
         {
             flag=false;
         }
         return flag;
+    }
+
+    /**
+     * 换位
+     * @param _originalIndex_1 初始角色位置1
+     * @param _index_1 要交换的位置1
+     * @param _originalIndex_2 初始角色位置2
+     * @param _index_2 要交换的位置2
+     * Editor:Hotaru
+     * 2024/08/19添加
+     */
+    public SwitchRole(_originalIndex_1:number,_index_1:number,_originalIndex_2:number, _index_2:number)
+    {
+        let k=0;
+        let j=0;
+        for(let i=0;i<this.roleList.length;i++)
+        {
+            if(this.roleList[i].index == _originalIndex_1)
+            {
+                k=i;
+            }
+            if(this.roleList[i].index == _originalIndex_2)
+            {
+                j=i;
+            }
+        }
+
+        this.roleList[k].index = _index_1;
+        this.roleList[j].index = _index_2;
     }
 }
