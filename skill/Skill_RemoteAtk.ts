@@ -102,6 +102,10 @@ export class Skill_RemoteAtk extends SkillBase
             while(recipientRoles.length < this.numberOfRole && enemyRoles.length > 0) 
             {
                 let index = random(0, enemyRoles.length);
+                if(enemyRoles[index].CheckDead())
+                {
+                    continue;
+                }
                 recipientRoles.push(enemyRoles[index]);
                 enemyRoles.splice(index, 1);
             }
@@ -147,7 +151,7 @@ export class Skill_RemoteAtk extends SkillBase
         //同时发射子弹,同时受伤
         for(let role of recipientRoles)
         {
-            role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,isPar);
+            role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,true);       //强制并发
         }
 
     }
@@ -285,6 +289,10 @@ export class Skill_RemoteAtkPre extends SkillBase
             while (recipientRoles.length < this.numberOfRole && enemyRoles.length > 0)
             {
                 let index = random(0, enemyRoles.length);
+                if (enemyRoles[index].CheckDead())
+                {
+                    continue;
+                }
                 recipientRoles.push(enemyRoles[index]);
                 enemyRoles.splice(index, 1);
             }
@@ -302,7 +310,7 @@ export class Skill_RemoteAtkPre extends SkillBase
         }
     }
 
-    SkillEffect_2(selfInfo: RoleInfo, battle: Battle,attack:number,isPar:boolean)
+    SkillEffect_2(selfInfo: RoleInfo, battle: Battle,attack:number,isPar:boolean)       //场上全部生效
     {
         let self: Role = null;
 

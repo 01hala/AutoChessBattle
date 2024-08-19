@@ -1,5 +1,5 @@
 /*
- * Skill_SwapProperties_5.ts
+ * Skill_SwapProperties.ts
  * author: Guanliu
  * 2023/9/30
  * 交换队伍中指定两个位置上的角色的属性，若有交换方不存在则不交换
@@ -14,7 +14,7 @@ import { random } from '../util';
 
 export class Skill_SwapProperties extends SkillBase 
 {
-    public res:string="battle/skill/Skill_SwapProperties.ts";
+    public res:string="battle/skill/Skill_SwapProperties.ts/Skill_SwapProperties";
     public SkillType:enums.SkillType=enums.SkillType.SwapProperties;
 
     event:Event=new Event();
@@ -48,7 +48,7 @@ export class Skill_SwapProperties extends SkillBase
         try
         {
             let event = new Event();
-            event.type = enums.EventType.ChangeLocation;
+            event.type = enums.EventType.SwapProperties;
             event.spellcaster = selfInfo;
             event.recipient = [];
             event.isParallel=isPar;
@@ -138,4 +138,110 @@ export class Skill_SwapProperties extends SkillBase
     }
 }
 
+/**
+ * 单方面替换属性
+ */
+export class Skill_SwapPropertiesSingle extends SkillBase 
+{
+    public res:string="battle/skill/Skill_SwapProperties.ts/Skill_SwapPropertiesSingle";
+    public SkillType:enums.SkillType=enums.SkillType.SwapProperties;
+
+    private type:enums.SwapPropertiesType;
+    private value:number;
+
+    public constructor(priority:number, type:enums.SwapPropertiesType, value) {
+        super(priority);
+
+        this.type = type;
+        this.value=value;
+    }
+
+    UseSkill(selfInfo: RoleInfo, battle: Battle, isParallel: boolean): void
+    {
+        let event = new Event();
+        event.type = enums.EventType.UsedSkill;
+        event.spellcaster = selfInfo;
+        event.recipient = [];
+        event.isParallel = isParallel;
+
+        battle.AddBattleEvent(event);
+
+        if(enums.SwapPropertiesType.HpSwap == this.type)
+        {
+            this.SkillEffect_1(selfInfo,battle,isParallel);
+        }
+        if(enums.SwapPropertiesType.AttackSwap == this.type)
+        {
+            this.SkillEffect_2(selfInfo,battle,isParallel);
+        }
+    }
+
+    SkillEffect_1(_selfInfo: RoleInfo, _battle: Battle, _isPar: boolean)        //生命交换到攻击
+    {
+        try
+        {
+            let event = new Event();
+            event.type = enums.EventType.SwapProperties;
+            event.spellcaster = _selfInfo;
+            event.recipient = [];
+            event.isParallel=_isPar;
+
+            let swapRole:Role = null;
+            if(enums.Camp.Self==_selfInfo.camp){
+                swapRole = _battle.GetSelfTeam().GetRole(_selfInfo.index);
+            }
+            if(enums.Camp.Enemy==_selfInfo.camp){
+                swapRole = _battle.GetEnemyTeam().GetRole(_selfInfo.index);
+            }
+            if (!swapRole) 
+            {
+                return;
+            }
+
+            let hp = swapRole.GetProperty(enums.Property.HP) + this.value;
+            swapRole.ChangeProperties(enums.Property.Attack, hp);
+
+            event.value = [enums.SwapPropertiesType.HpSwap];
+        }
+        catch(error)
+        {
+            console.warn(this.res+"下的 SkillEffect_1 错误", error);
+        }
+    }
+
+    SkillEffect_2(_selfInfo: RoleInfo, _battle: Battle, _isPar: boolean)        //攻击交换到生命值
+    {
+        try
+        {
+            let event = new Event();
+            event.type = enums.EventType.SwapProperties;
+            event.spellcaster = _selfInfo;
+            event.recipient = [];
+            event.isParallel=_isPar;
+
+            let swapRole:Role = null;
+            if(enums.Camp.Self==_selfInfo.camp){
+                swapRole = _battle.GetSelfTeam().GetRole(_selfInfo.index);
+            }
+            if(enums.Camp.Enemy==_selfInfo.camp){
+                swapRole = _battle.GetEnemyTeam().GetRole(_selfInfo.index);
+            }
+            if (!swapRole) 
+            {
+                return;
+            }
+
+            let Attack = swapRole.GetProperty(enums.Property.Attack) + this.value;
+            swapRole.ChangeProperties(enums.Property.HP, Attack);
+
+            event.value = [enums.SwapPropertiesType.AttackSwap];
+        }
+        catch(error)
+        {
+            console.warn(this.res+"下的 SkillEffect_2 错误", error);
+        }
+    }
+
+    
+}
 

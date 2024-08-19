@@ -1,5 +1,5 @@
 /*
- * Skill_AttGain_1_1.ts
+ * Skill_DeAttGain.ts
  * author: Hotaru
  * 2024/07/19
  * 对敌方造成减益，减少n生命m攻击

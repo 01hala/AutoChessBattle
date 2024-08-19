@@ -53,7 +53,7 @@ export class Skill_AttGain extends SkillBase
             {
                 this.SkillEffect_1(selfInfo,battle,isParallel);    
             }
-            else if(!this.dir)
+            else if(!this.dir && this.numberOfRole < 6)
             {
                 this.SkillEffect_2(selfInfo,battle,isParallel);  
             }
@@ -61,7 +61,7 @@ export class Skill_AttGain extends SkillBase
             {
                 this.SkillEffect_3(selfInfo,battle,isParallel);
             }
-            if(this.numberOfRole==6)
+            if(6 == this.numberOfRole)
             {
                 this.SkillEffect_4(selfInfo,battle,isParallel);
             }
@@ -74,7 +74,7 @@ export class Skill_AttGain extends SkillBase
         
     }
 
-    SkillEffect_1(selfInfo: RoleInfo, battle: Battle,isPar:boolean):void          //指定某一对象生效
+    SkillEffect_1(selfInfo: RoleInfo, battle: Battle,isPar:boolean):void          //指定某一对象生效,前后左右或自己
     {
         console.log("Skill_AttGain_1 SkillEffect_1! selfInfo:", selfInfo, " dir:", this.dir);
         try
@@ -103,7 +103,7 @@ export class Skill_AttGain extends SkillBase
             }
             switch(this.dir)
                 {
-                    case Direction.None:
+                    case Direction.None: case Direction.Self:
                         recipientRole=teamTemp.GetRole(selfInfo.index);
                         roleInfo.index = selfInfo.index;
                         break;
@@ -243,16 +243,16 @@ export class Skill_AttGain extends SkillBase
 
             let indexs:number[]=[];
 
-            let rolesTemp:Role[]=[];
+            let team:Team;
 
             if(enums.Camp.Self==selfInfo.camp)
             {
-                rolesTemp=battle.GetSelfTeam().GetRoles().slice();
+                team=battle.GetSelfTeam();
             }
 
             if(enums.Camp.Enemy==selfInfo.camp)
             {
-                rolesTemp=battle.GetEnemyTeam().GetRoles().slice();
+                team=battle.GetEnemyTeam();
             }
 
             if(Direction.Cross==this.dir)
@@ -273,12 +273,31 @@ export class Skill_AttGain extends SkillBase
                         indexs.push(2,3);break;
                 }
             }
+
+            let recipientRoles:Role[]=new Array();
+            for(let i=0;i<indexs.length;i++)
+            {
+                if(null!=team.GetRole(indexs[i]))
+                {
+                    recipientRoles.push(team.GetRole(indexs[i]));
+                }
+                
+            }
+
+            recipientRoles.forEach((role) => 
+            {
+                console.log("recipientRoles role:", role, " ChangeProperties!");
+                role.ChangeProperties(enums.Property.HP, role.GetProperty(enums.Property.HP) + this.health);
+                role.ChangeProperties(enums.Property.TotalHP, role.GetProperty(enums.Property.TotalHP) + this.health);
+                role.ChangeProperties(enums.Property.Attack, role.GetProperty(enums.Property.Attack) + this.attack);
+            });
+
             for(let i of indexs)
             {
                 let roleInfo:RoleInfo=new RoleInfo();
                 roleInfo.camp=selfInfo.camp;
 
-                if(null!=rolesTemp[i])
+                if(null!=team.GetRole(i))
                 {
                     roleInfo.index=i;
                     event.recipient.push(roleInfo);
@@ -323,6 +342,23 @@ export class Skill_AttGain extends SkillBase
             {
                 rolesTemp = battle.GetEnemyTeam().GetRoles().slice();
             }
+
+            let recipientRoles:Role[]=new Array();
+            for(let r of rolesTemp)
+            {
+                if(r!=null && r.index != selfInfo.index)
+                {
+                    recipientRoles.push(r);
+                }
+            }
+
+            recipientRoles.forEach((role) => 
+            {
+                console.log("recipientRoles role:", role, " ChangeProperties!");
+                role.ChangeProperties(enums.Property.HP, role.GetProperty(enums.Property.HP) + this.health);
+                role.ChangeProperties(enums.Property.TotalHP, role.GetProperty(enums.Property.TotalHP) + this.health);
+                role.ChangeProperties(enums.Property.Attack, role.GetProperty(enums.Property.Attack) + this.attack);
+            });
     
             for(let r of rolesTemp)
             {
