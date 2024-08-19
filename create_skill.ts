@@ -72,7 +72,7 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
             console.log("Skill_AttGain_1 skillConfig:", skillConfig);
             if (skillConfig.ObjectDirection != common.Direction.None)
             {
-                skillObj = new Skill_AttGain.Skill_AttGain(skillConfig.Priority, value0, value1, skillConfig.ObjectDirection);
+                skillObj = new Skill_AttGain.Skill_AttGain(skillConfig.Priority, value0, value1, skillConfig.ObjectDirection,skillConfig.ObjCount,skillConfig.EffectScope);
             }
             else
             {
@@ -93,7 +93,7 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
             }
             else
             {
-                skillObj=new Skill_RemoteAtk.Skill_RemoteAtkPre(skillConfig.Priority, skillConfig.ObjCount,skillConfig.ObjectDirection, value0, false);
+                skillObj=new Skill_RemoteAtk.Skill_RemoteAtkPre(skillConfig.Priority, skillConfig.ObjCount, value0, false,skillConfig.ObjectDirection);
             }
         }
         break;
