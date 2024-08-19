@@ -39,6 +39,14 @@ export class Skill_Shields extends SkillBase
 
     public UseSkill(selfInfo: RoleInfo, battle: Battle,isParallel:boolean): void 
     {
+        let event: Event = new Event();
+        event.isParallel = isParallel;
+        event.eventSound = this.eventSound;
+        event.spellcaster = selfInfo;
+        event.type = enums.EventType.UsedSkill;
+
+        battle.AddBattleEvent(event);
+
         try
         {
             this.SkillEffect_1(selfInfo,battle,isParallel);          
@@ -50,7 +58,7 @@ export class Skill_Shields extends SkillBase
         
     }
 
-    SkillEffect_1(selfInfo: RoleInfo, battle: Battle,isPar:boolean):void
+    SkillEffect_1(selfInfo: RoleInfo, battle: Battle,isPar:boolean):void        //前后左右或自己
     {
         try 
         {

@@ -4,10 +4,8 @@
  * 2023/9/25
  * 对N敌方随机单位造成M点远程伤害
  */
-import { _decorator, Component, DirectionalLight, Node } from 'cc';
-
+import { _decorator, Component, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import { Direction, Priority } from '../common';
 import * as enums from '../enum';
 import { Battle } from '../battle';
 import { Role } from '../role';
@@ -101,8 +99,13 @@ export class Skill_RemoteAtk extends SkillBase
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetSelfTeam().GetRoles().slice();
             }
-            while(recipientRoles.length < this.numberOfRole && enemyRoles.length > 0) {
+            while(recipientRoles.length < this.numberOfRole && enemyRoles.length > 0) 
+            {
                 let index = random(0, enemyRoles.length);
+                if(enemyRoles[index].CheckDead())
+                {
+                    continue;
+                }
                 recipientRoles.push(enemyRoles[index]);
                 enemyRoles.splice(index, 1);
             }
@@ -148,7 +151,7 @@ export class Skill_RemoteAtk extends SkillBase
         //同时发射子弹,同时受伤
         for(let role of recipientRoles)
         {
-            role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,isPar);
+            role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,true);       //强制并发
         }
 
     }
@@ -209,9 +212,8 @@ export class Skill_RemoteAtkPre extends SkillBase
     private attack : number;
     private isAll:boolean;
     private eventSound;
-    private dir;
 
-    public constructor(priority:number, numberOfRole:number, attack:number,isAll:boolean,dir?:Direction,eventSound?:string) {
+    public constructor(priority:number, numberOfRole:number, attack:number,isAll:boolean,eventSound?:string) {
         super(priority);
 
         this.numberOfRole = numberOfRole;
@@ -219,9 +221,6 @@ export class Skill_RemoteAtkPre extends SkillBase
         this.isAll=isAll;
         if(null!=eventSound){
             this.eventSound=eventSound;
-        }
-        if(null!=dir){
-            this.dir=dir;
         }
 
         //this.event.type=EventType.RemoteInjured;
@@ -289,31 +288,18 @@ export class Skill_RemoteAtkPre extends SkillBase
             }
             while (recipientRoles.length < this.numberOfRole && enemyRoles.length > 0)
             {
-                let targetRole:Role;
-                let index:number;
-                switch(this.dir){
-                    case Direction.Back:
-                        if(enums.Camp.Self==selfInfo.camp){
-                            targetRole = battle.GetSelfTeam().GetRole(selfInfo.index+3);
-                        }
-                        else{
-                            targetRole=battle.GetEnemyTeam().GetRole(selfInfo.index+3);
-                        }
-                    break;
-                    case Direction.None:
-                        index=random(0, enemyRoles.length);
-                        targetRole=enemyRoles[index];
-                    break;
+                let index = random(0, enemyRoles.length);
+                if (enemyRoles[index].CheckDead())
+                {
+                    continue;
                 }
-                recipientRoles.push(targetRole);
+                recipientRoles.push(enemyRoles[index]);
                 enemyRoles.splice(index, 1);
             }
             recipientRoles.forEach((role) =>
             {
-                if(null!=role){
-                    role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, isPar);
-                    console.log("Skill_RemoteAtk_3_1 远程攻击角色受伤 :", attack);
-                }          
+                role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, isPar);
+                console.log("Skill_RemoteAtk_3_1 远程攻击角色受伤 :", attack);
             });
 
         }
@@ -324,7 +310,7 @@ export class Skill_RemoteAtkPre extends SkillBase
         }
     }
 
-    SkillEffect_2(selfInfo: RoleInfo, battle: Battle,attack:number,isPar:boolean)
+    SkillEffect_2(selfInfo: RoleInfo, battle: Battle,attack:number,isPar:boolean)       //场上全部生效
     {
         let self: Role = null;
 

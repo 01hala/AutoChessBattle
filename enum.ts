@@ -77,6 +77,10 @@ export enum SwapPropertiesType {
     SelfSwap = 1,
     AssignSwap = 2,
     RandomSwap = 3,
+    /** 把攻击交换到生命值 */
+    AttackSwap=4,   
+    /** 把生命值交换到攻击 */
+    HpSwap=5,
 }
 
 export enum SkillType
