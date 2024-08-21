@@ -65,7 +65,9 @@ export enum EventType
     /** 强制战斗 */
     ForcedAttack=26,
     /** 护盾 */
-    GiveShields=27
+    GiveShields=27,
+    /** 添加buff */
+    AddBuff=28,
 }
 
 export enum ChangePositionType {

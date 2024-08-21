@@ -450,4 +450,13 @@ export class Role {
             }
         }
     }
+
+    public AddBuff(_id:number) 
+    {
+        let buffer = createBuffer(_id);
+        if (buffer)
+        {
+            this.buffer.push(buffer);
+        }
+    }
 }
