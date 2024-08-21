@@ -122,6 +122,11 @@ export function CreateTrigger(triggerID:number) : skill.SkillTriggerBase {
             triggerObj=new SkillTirgger_EnemyFrontNulll.SkillTirgger_EnemyFrontNull();
         }
         break;
+        case common.EMSkillEvent.camp_attack3:
+        {
+            triggerObj = new SkillTrigger_AfterAtk.SkillTrigger_AfterAtk(3);
+        }
+        break;
     }
     
     return triggerObj;
