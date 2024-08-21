@@ -20,6 +20,7 @@ import * as Skill_Shields from './skill/Skill_Shields'
 import * as Skill_SubstituteDamage from './skill/Skill_SubstituteDamage'
 import * as Skill_Summon from './skill/Skill_Summon'
 import * as Skill_SwapProperties from './skill/Skill_SwapProperties'
+import * as Skill_AddBuff from './skill/Skill_AddBuff'
 
 export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
     let skillConfig = config.config.SkillConfig.get(skillID);
@@ -161,6 +162,10 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
                 if (1 == skillConfig.AddBufferID)
                 {
                     skillObj = new Skill_Shields.Skill_Shields(skillConfig.Priority, value0, 0, skillConfig.ObjectDirection);
+                }
+                else
+                {
+                    skillObj = new Skill_AddBuff.Skill_AddBuff(skillConfig.Priority , skillConfig.AddBufferID,skillConfig.ObjCount);
                 }
             }
             break;
