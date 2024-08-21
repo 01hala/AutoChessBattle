@@ -220,7 +220,14 @@ export class Team {
             }
         }
 
-        this.roleList[k].index = _index_1;
-        this.roleList[j].index = _index_2;
+        if(k!=0)
+        {
+            this.roleList[k].index = _index_1;
+        }
+        if(j!=0)
+        {
+            this.roleList[j].index = _index_2;
+        }
+        
     }
 }

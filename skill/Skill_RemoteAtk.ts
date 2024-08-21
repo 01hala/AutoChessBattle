@@ -52,7 +52,6 @@ export class Skill_RemoteAtk extends SkillBase
             {
                 this.SkillEffect_1(selfInfo,battle,isParallel);
             }
-
             else
             {
                 this.SkillEffect_2(selfInfo,battle,isParallel);
@@ -70,7 +69,10 @@ export class Skill_RemoteAtk extends SkillBase
                 }
                 this.SkillEffect_3(selfInfo,battle,isParallel,ev);
             }
-            
+            if(this.numberOfRole == 6)
+            {
+                this.SkillEffect_4(selfInfo,battle,isParallel);
+            }
             
         } 
         catch (error) 
@@ -190,7 +192,29 @@ export class Skill_RemoteAtk extends SkillBase
         {
             role.BeHurted(this.attack, self, battle , enums.EventType.RemoteInjured , isPar);
         }
-        
+    }
+
+    SkillEffect_4(selfInfo: RoleInfo, battle: Battle,isPar:boolean)     //敌方全部
+    {
+        let self:Role=null;
+        let enemyRoles:Role[] = null;
+
+        if (enums.Camp.Self == selfInfo.camp)
+        {
+            self = battle.GetSelfTeam().GetRole(selfInfo.index);
+            enemyRoles = battle.GetEnemyTeam().GetRoles().slice();
+        }
+        if (enums.Camp.Enemy == selfInfo.camp)
+        {
+            self = battle.GetEnemyTeam().GetRole(selfInfo.index);
+            enemyRoles = battle.GetSelfTeam().GetRoles().slice();
+        }
+
+        for (let role of enemyRoles)
+        {
+            role.BeHurted(this.attack, self, battle, enums.EventType.RemoteInjured, true);       //强制并发
+        }
+
     }
 }
 

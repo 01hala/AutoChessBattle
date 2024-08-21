@@ -71,6 +71,7 @@ export enum EventType
 export enum ChangePositionType {
     AssignChange = 1,
     RandomChange = 2,
+    BackChange = 3,
 } 
 
 export enum SwapPropertiesType {

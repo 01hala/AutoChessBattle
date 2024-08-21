@@ -10,6 +10,7 @@ import * as enums from '../enum';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
+import { Team } from '../team';
 const { ccclass, property } = _decorator;
 
 @ccclass('Skill_ChangePosition')
@@ -19,6 +20,8 @@ export class Skill_ChangePosition extends SkillBase {
     private index1:number;
     private index2:number;
     private changeType : enums.ChangePositionType;
+
+    private count=0;
 
     constructor(priority:number, changeType : enums.ChangePositionType, change1:number, change2:number)
     {
@@ -51,6 +54,11 @@ export class Skill_ChangePosition extends SkillBase {
             {
                 this.SkillEffect_2(selfInfo,battle,isParallel);
             }
+            if(enums.ChangePositionType.BackChange == this.changeType && this.count<1)
+            {
+                this.SkillEffect_3(selfInfo,battle,isParallel);
+                this.count++;
+            }
         }
         catch(e)
         {
@@ -69,29 +77,37 @@ export class Skill_ChangePosition extends SkillBase {
             battleEvent.value = [];
             battleEvent.isParallel=_isPar;
     
-            let originalRoleList:Role[] = null;
+            let originalRoleList:Team = null;
             if(enums.Camp.Self==_selfInfo.camp)
             {
-                originalRoleList=_battle.GetEnemyTeam().GetRoles().slice();
+                originalRoleList=_battle.GetEnemyTeam();
             }
             if(enums.Camp.Enemy==_selfInfo.camp)
             {
-                originalRoleList=_battle.GetSelfTeam().GetRoles().slice();
+                originalRoleList=_battle.GetSelfTeam();
             }
     
             //获取要交换的两个角色
-            let begin = originalRoleList[this.index1];
-            let end = originalRoleList[this.index2];
-    
-            let recipient = new RoleInfo();
-            recipient.index = this.index1;
-            recipient.camp = begin.selfCamp;
-            battleEvent.recipient.push(recipient);
-    
-            recipient = new RoleInfo();
-            recipient.index = this.index2;
-            recipient.camp = end.selfCamp;
-            battleEvent.recipient.push(recipient);
+            let begin = originalRoleList.GetRole(this.index1);
+            let end = originalRoleList.GetRole(this.index2);
+            let recipient;
+
+            if(begin)
+            {
+                recipient = new RoleInfo();
+                recipient.index = this.index1;
+                recipient.camp = begin.selfCamp;
+                battleEvent.recipient.push(recipient);
+            }
+           
+            if(end)
+            {
+                recipient = new RoleInfo();
+                recipient.index = this.index2;
+                recipient.camp = end.selfCamp;
+                battleEvent.recipient.push(recipient);
+            }
+            
     
             //提交要交换的位置信息
             battleEvent.value.push(this.index2);
@@ -135,6 +151,11 @@ export class Skill_ChangePosition extends SkillBase {
                 originalRoleList = _battle.GetSelfTeam().GetRoles().slice();
             }
     
+            if(originalRoleList.length<1)
+            {
+                return;
+            }
+
             let recipientRoles: number[] = [];
             while (recipientRoles.length < 2 && recipientRoles.length < originalRoleList.length)
             {
@@ -177,6 +198,69 @@ export class Skill_ChangePosition extends SkillBase {
         {
             console.warn(this.res+"下的 SkillEffect_2 错误 ",error);
         }
+    }
+
+    SkillEffect_3(_selfInfo: RoleInfo, _battle: Battle,_isPar:boolean)      //随机后排推到前排
+    {
+        let battleEvent: Event = new Event();
+        battleEvent.type = enums.EventType.ChangeLocation;
+        battleEvent.spellcaster = _selfInfo;
+        battleEvent.recipient = [];
+        battleEvent.value = [];
+        battleEvent.isParallel = _isPar;
+
+        let originalRoleList: Team = null;
+        if (enums.Camp.Self == _selfInfo.camp)
+        {
+            originalRoleList = _battle.GetEnemyTeam();
+        }
+        if (enums.Camp.Enemy == _selfInfo.camp)
+        {
+            originalRoleList = _battle.GetSelfTeam();
+        }
+
+        if(originalRoleList.GetRoles().length<4)
+        {
+            return;
+        }
+
+        let _index1 = random(3, originalRoleList.GetRoles().length);
+        let _index2=_index1-3;
+
+        let begin = originalRoleList.GetRole(_index1);
+        let end = originalRoleList.GetRole(_index2);
+
+        let recipient;
+
+        if (begin)
+        {
+            recipient = new RoleInfo();
+            recipient.index = _index1;
+            recipient.camp = begin.selfCamp;
+            battleEvent.recipient.push(recipient);
+        }
+
+        if (end)
+        {
+            recipient = new RoleInfo();
+            recipient.index = _index2;
+            recipient.camp = end.selfCamp;
+            battleEvent.recipient.push(recipient);
+        }
+
+        battleEvent.value.push(_index2);
+        battleEvent.value.push(_index1);
+
+        if (enums.Camp.Self == _selfInfo.camp)
+        {
+            _battle.GetEnemyTeam().SwitchRole(begin.index, _index2, end.index, _index1);
+        }
+        if (enums.Camp.Enemy == _selfInfo.camp)
+        {
+            _battle.GetSelfTeam().SwitchRole(begin.index, _index2, end.index, _index1);
+        }
+
+        _battle.AddBattleEvent(battleEvent);
     }
 }
 
