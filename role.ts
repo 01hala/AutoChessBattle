@@ -76,6 +76,8 @@ export class Role {
     private tempProperties:Map<enums.Property, number> = new Map<enums.Property, number>();
     public selfCamp: enums.Camp;
 
+    private attackCnt;
+
     public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters, equipID:number, additionBuffer?:number[],additionSkill?:number[]) {
         this.index = index;
         this.id=id;
@@ -83,6 +85,7 @@ export class Role {
         this.exp=exp;
         this.selfCamp = selfCamp;
         this.fetter=fetters;
+        this.attackCnt=0;
         this.equip.push(equipID);
         
         properties.forEach((v, k) => {
@@ -465,6 +468,8 @@ export class Role {
                 r.BeHurted(damage-value, enemy, battle, enums.EventType.AttackInjured);
             }
         }
+
+        this.attackCnt++;
     }
 
     public AddBuff(_id:number) 
