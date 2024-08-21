@@ -4,8 +4,10 @@
  * 2023/9/25
  * 对N敌方随机单位造成M点远程伤害
  */
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, DirectionalLight, Node } from 'cc';
+
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
+import { Direction, Priority } from '../common';
 import * as enums from '../enum';
 import { Battle } from '../battle';
 import { Role } from '../role';
@@ -236,8 +238,9 @@ export class Skill_RemoteAtkPre extends SkillBase
     private attack : number;
     private isAll:boolean;
     private eventSound;
+    private dir;
 
-    public constructor(priority:number, numberOfRole:number, attack:number,isAll:boolean,eventSound?:string) {
+    public constructor(priority:number, numberOfRole:number, attack:number,isAll:boolean,dir?:Direction,eventSound?:string) {
         super(priority);
 
         this.numberOfRole = numberOfRole;
@@ -245,6 +248,9 @@ export class Skill_RemoteAtkPre extends SkillBase
         this.isAll=isAll;
         if(null!=eventSound){
             this.eventSound=eventSound;
+        }
+        if(null!=dir){
+            this.dir=dir;
         }
 
         //this.event.type=EventType.RemoteInjured;
@@ -312,18 +318,31 @@ export class Skill_RemoteAtkPre extends SkillBase
             }
             while (recipientRoles.length < this.numberOfRole && enemyRoles.length > 0)
             {
-                let index = random(0, enemyRoles.length);
-                if (enemyRoles[index].CheckDead())
-                {
-                    continue;
+                let targetRole:Role;
+                let index:number;
+                switch(this.dir){
+                    case Direction.Back:
+                        if(enums.Camp.Self==selfInfo.camp){
+                            targetRole = battle.GetSelfTeam().GetRole(selfInfo.index+3);
+                        }
+                        else{
+                            targetRole=battle.GetEnemyTeam().GetRole(selfInfo.index+3);
+                        }
+                    break;
+                    case Direction.None:
+                        index=random(0, enemyRoles.length);
+                        targetRole=enemyRoles[index];
+                    break;
                 }
-                recipientRoles.push(enemyRoles[index]);
+                recipientRoles.push(targetRole);
                 enemyRoles.splice(index, 1);
             }
             recipientRoles.forEach((role) =>
             {
-                role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, isPar);
-                console.log("Skill_RemoteAtk_3_1 远程攻击角色受伤 :", attack);
+                if(null!=role){
+                    role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, isPar);
+                    console.log("Skill_RemoteAtk_3_1 远程攻击角色受伤 :", attack);
+                }       
             });
 
         }

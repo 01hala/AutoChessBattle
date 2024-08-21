@@ -73,6 +73,7 @@ export class Role {
     private skill_is_lock : boolean = false;
 
     private properties : Map<enums.Property, number> = new Map<enums.Property, number>();
+    private tempProperties:Map<enums.Property, number> = new Map<enums.Property, number>();
     public selfCamp: enums.Camp;
 
     public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters, equipID:number, additionBuffer?:number[],additionSkill?:number[]) {
@@ -200,6 +201,12 @@ export class Role {
             ev.value.push(damage);
             battle.AddBattleEvent(ev);
             console.log("CheckDead sendHurtedEvent:", JSON.stringify(battle.evs));
+            //把单次对局加上的临时属性去掉
+            this.tempProperties.forEach((value,key)=>{
+                if(this.properties.has(key)){
+                    this.properties.set(key,this.properties.get(key)+value);
+                }
+            })
 
             if (this.onKillRole) {
                 this.onKillRole.call(null, enemy.c_role);
@@ -387,8 +394,17 @@ export class Role {
         this.sendHurtedEvent(enemy, damageSelf, battle, enums.EventType.AttackInjured);
     }
     
-    public ChangeProperties(type:enums.Property,value:number) {
+    public ChangeProperties(type:enums.Property,value:number,isTemp?:boolean) {
         value = value > 50 ? 50 : value;
+        if(isTemp){
+            if(this.tempProperties.has(type)){
+                this.tempProperties.set(type, 
+                    this.tempProperties.get(type)+(this.properties.get(type)-value));
+            }
+            else{
+                this.tempProperties.set(type, this.properties.get(type)-value);
+            }
+        }
         this.properties.set(type, value);
     }
 

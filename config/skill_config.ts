@@ -15,6 +15,7 @@ export class SkillConfig {
     public EffectTime: number;
     public Effect: number;
     public ObjCount: number;
+    public EffectScope:number;
     public ObjectDirection: Direction;
     public Level1Value_1: number;
     public Level1Value_2: number;
@@ -53,6 +54,7 @@ export async function LoadSkillConfig() : Promise<Map<number, SkillConfig>> {
                 skillc.EffectTime = v["EffectTime"];
                 skillc.Effect = v["Effect"];
                 skillc.ObjCount = v["ObjCount"];
+                skillc.EffectScope=v["EffectScope"];
                 skillc.ObjectDirection = v["ObjDirection"];
                 skillc.Level1Value_1 = v["Level1Value_1"];
                 skillc.Level1Value_2 = v["Level1Value_2"];

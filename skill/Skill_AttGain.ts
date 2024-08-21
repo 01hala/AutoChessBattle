@@ -22,12 +22,13 @@ export class Skill_AttGain extends SkillBase
     private dir:Direction=null;
     private health:number;
     private attack:number;
+    private effectScope:number=0;
 
     private eventSound:string;
 
     event:Event=new Event();
 
-    public constructor(priority:number,health:number, attack:number,dir:Direction,numberOfRole?:number,eventSound?:string) {
+    public constructor(priority:number,health:number, attack:number,dir:Direction,numberOfRole?:number,effectScope?:number,eventSound?:string) {
         super(priority);
 
         this.attack = attack;
@@ -39,6 +40,9 @@ export class Skill_AttGain extends SkillBase
         if(null!=numberOfRole)
         {
             this.numberOfRole=numberOfRole;
+        }
+        if(null!=effectScope){
+            this.effectScope=effectScope;
         }
         if(null!=eventSound){
             this.eventSound=eventSound;
@@ -159,9 +163,9 @@ export class Skill_AttGain extends SkillBase
             if(null!=recipientRole)
             {
                 console.log("recipientRole:", recipientRole, " ChangeProperties!");
-                recipientRole.ChangeProperties(enums.Property.HP, recipientRole.GetProperty(enums.Property.HP) + this.health);
-                recipientRole.ChangeProperties(enums.Property.TotalHP, recipientRole.GetProperty(enums.Property.TotalHP) + this.health);
-                recipientRole.ChangeProperties(enums.Property.Attack,recipientRole.GetProperty(enums.Property.Attack) + this.attack);
+                recipientRole.ChangeProperties(enums.Property.HP, recipientRole.GetProperty(enums.Property.HP) + this.health,this.effectScope==1);
+                recipientRole.ChangeProperties(enums.Property.TotalHP, recipientRole.GetProperty(enums.Property.TotalHP) + this.health,this.effectScope==1);
+                recipientRole.ChangeProperties(enums.Property.Attack,recipientRole.GetProperty(enums.Property.Attack) + this.attack,this.effectScope==1);
 
                 event.recipient.push(roleInfo);
                 event.value = [this.health, this.attack];
@@ -213,9 +217,9 @@ export class Skill_AttGain extends SkillBase
             recipientRoles.forEach((role) => 
             {
                 console.log("recipientRoles role:", role, " ChangeProperties!");
-                role.ChangeProperties(enums.Property.HP, role.GetProperty(enums.Property.HP) + this.health);
-                role.ChangeProperties(enums.Property.TotalHP, role.GetProperty(enums.Property.TotalHP) + this.health);
-                role.ChangeProperties(enums.Property.Attack,role.GetProperty(enums.Property.Attack) + this.attack);
+                role.ChangeProperties(enums.Property.HP, role.GetProperty(enums.Property.HP) + this.health,this.effectScope==1);
+                role.ChangeProperties(enums.Property.TotalHP, role.GetProperty(enums.Property.TotalHP) + this.health,this.effectScope==1);
+                role.ChangeProperties(enums.Property.Attack,role.GetProperty(enums.Property.Attack) + this.attack,this.effectScope==1);
             });
             event.value = [this.health,this.attack];
             battle.AddBattleEvent(event);
