@@ -154,9 +154,11 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
                 skillObj = new Skill_ChangePosition.Skill_ChangePosition(skillConfig.Priority, skillConfig.ChangePositionType, value0, value1);
             }
             break;
-        case common.SkillEffectEM.ReductionHurt: {
-            skillObj = new Skill_SubstituteDamage.Skill_SubstituteDamage(skillConfig.Priority, skillConfig.ChangePositionType, value0, value1);
-        }
+        case common.SkillEffectEM.ReductionHurt: 
+            {
+                skillObj = new Skill_SubstituteDamage.Skill_SubstituteDamage(skillConfig.Priority, skillConfig.ChangePositionType, value0, value1);
+            }
+            break;
         case common.SkillEffectEM.AddBuffer:
             {
                 if (1 == skillConfig.AddBufferID)
