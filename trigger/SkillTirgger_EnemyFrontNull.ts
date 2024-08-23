@@ -22,7 +22,16 @@ export class SkillTirgger_EnemyFrontNull extends SkillTriggerBase
 
     CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo, battle?: battle.Battle): number
     {
-        throw new Error('Method not implemented.');
+        try
+        {
+            return this.CheckSkill(frameEvent,selfInfo, battle);          
+        }
+        catch (error) 
+        {
+            console.warn(this.res+"下的 CheckSkillTrigger 错误");            
+        }
+
+        return 0;
     }
 
     CheckSkill(frameEvent: Event[], selfInfo: RoleInfo , battle:battle.Battle) : number
