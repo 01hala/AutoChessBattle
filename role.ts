@@ -352,7 +352,7 @@ export class Role {
         return 0;
     }
 
-    private getShields(){
+    public getShields(){
         for(let b of this.buffer)
         {
             if(enums.BufferType.Shields==b.BufferType&& this.checkShields())
