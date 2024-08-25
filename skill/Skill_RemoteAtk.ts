@@ -103,13 +103,16 @@ export class Skill_RemoteAtk extends SkillBase
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetSelfTeam().GetRoles().slice();
             }
+            let i=0;
             while(recipientRoles.length < this.numberOfRole && enemyRoles.length > 0) 
             {
                 let index = random(0, enemyRoles.length);
-                if(enemyRoles[index].CheckDead())
+                if (enemyRoles[index].CheckDead() && i <= enemyRoles.length)
                 {
+                    i++;
                     continue;
                 }
+                if(i>enemyRoles.length) break;
                 recipientRoles.push(enemyRoles[index]);
                 enemyRoles.splice(index, 1);
             }
@@ -320,6 +323,8 @@ export class Skill_RemoteAtkPre extends SkillBase
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetSelfTeam().GetRoles().slice();
             }
+
+            let i=0
             while (recipientRoles.length < this.numberOfRole && enemyRoles.length > 0)
             {
                 //let targetRole:Role;
@@ -341,10 +346,12 @@ export class Skill_RemoteAtkPre extends SkillBase
                 //         break;
                 // }
                 let index = random(0, enemyRoles.length);
-                if(enemyRoles[index].CheckDead())
+                if(enemyRoles[index].CheckDead() && i<=enemyRoles.length)
                 {
+                    i++;
                     continue;
                 }
+                if(i>enemyRoles.length) break;
                 recipientRoles.push(enemyRoles[index]);
                 enemyRoles.splice(index, 1);
             }
