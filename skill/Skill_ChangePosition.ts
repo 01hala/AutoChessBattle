@@ -37,6 +37,7 @@ export class Skill_ChangePosition extends SkillBase {
     {
         try
         {
+            console.log("使用技能：换位");
             let battleEvent : Event = new Event();
             battleEvent.type = enums.EventType.UsedSkill;
             battleEvent.spellcaster = selfInfo;
