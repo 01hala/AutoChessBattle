@@ -50,7 +50,7 @@ function createFettersSkill(id:number, level:number) : SkillInfo {
 function createBuffer(id:number , value?:number , round?:number , frequency?:number) : buffer.Buffer {
     let bufferConfig = config.config.BufferConfig.get(id);
     if (bufferConfig) {
-        return create_buffer.CreateSkill(id,value,round,frequency);
+        return create_buffer.CreateBuff(id,value,round,frequency);
     }
     return null;
 }

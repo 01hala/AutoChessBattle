@@ -7,7 +7,7 @@ import * as config from './config/config'
 import * as enums from './enum'
 import * as buffer from './buffer/buffer'
 
-export function CreateSkill(bufferID:number, value?:number , round?:number ,frequency?:number) : buffer.Buffer 
+export function CreateBuff(bufferID:number, value?:number , round?:number ,frequency?:number) : buffer.Buffer 
 {
     let bufferConfig = config.config.BufferConfig.get(bufferID);
 
