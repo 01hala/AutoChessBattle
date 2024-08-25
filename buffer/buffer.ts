@@ -9,4 +9,5 @@ export class Buffer {
     public BufferType : enums.BufferType;
     public Value : number;
     public Round : number;
+    public Frequency:number;
 }

@@ -10,6 +10,7 @@ import * as enums from '../enum';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
+import * as config from '../config/config';
 
 export class Skill_AddBuff extends SkillBase 
 {
@@ -23,7 +24,7 @@ export class Skill_AddBuff extends SkillBase
     private isAll:boolean;
     private eventSound:string;
 
-    private count:number=0;
+    private frequency:number=0;
 
     /**
      * 
@@ -86,6 +87,12 @@ export class Skill_AddBuff extends SkillBase
             enemyRoles = _battle.GetSelfTeam().GetRoles();
         }
 
+        let bufferConfig = config.config.BufferConfig.get(this.buffID);
+        if(enums.BufferType.OffsetDamage==bufferConfig.Type || enums.BufferType.InevitableKill == bufferConfig.Type)
+        {
+            this.frequency=this.value;
+        }
+
         while (recipientRoles.length < this.numberOfRole && enemyRoles.length > 0) 
         {
             let index = random(0, enemyRoles.length);
@@ -99,7 +106,7 @@ export class Skill_AddBuff extends SkillBase
 
         for (let r of recipientRoles)
         {
-            r.AddBuff(this.buffID , this.value,this.round);
+            r.AddBuff(this.buffID , this.value , this.round ,this.frequency);
 
             let roleInfo: RoleInfo = new RoleInfo();
             roleInfo.camp = _selfInfo.camp;

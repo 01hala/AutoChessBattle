@@ -47,10 +47,10 @@ function createFettersSkill(id:number, level:number) : SkillInfo {
     return null;
 }
 
-function createBuffer(id:number , value?:number , round?:number) : buffer.Buffer {
+function createBuffer(id:number , value?:number , round?:number , frequency?:number) : buffer.Buffer {
     let bufferConfig = config.config.BufferConfig.get(id);
     if (bufferConfig) {
-        return create_buffer.CreateSkill(id);
+        return create_buffer.CreateSkill(id,value,round,frequency);
     }
     return null;
 }
@@ -472,9 +472,9 @@ export class Role {
         this.attackCnt++;
     }
 
-    public AddBuff(_id:number , _value:number , _round:number=1) 
+    public AddBuff(_id:number , _value:number=0 , _round:number=1 , _frequency:number=0) 
     {
-        let buffer = createBuffer(_id , _value , _round);
+        let buffer = createBuffer(_id , _value , _round , _frequency);
         if (buffer)
         {
             this.buffer.push(buffer);

@@ -11,6 +11,7 @@ export class BufferConfig {
     public Type : number;
     public Value : number;
     public Round : number;
+    public Frequency:number;
 }
 
 export async function LoadBufferConfig() : Promise<Map<number, BufferConfig>> {
@@ -34,6 +35,7 @@ export async function LoadBufferConfig() : Promise<Map<number, BufferConfig>> {
                 bufferc.Type = v["Type"];
                 bufferc.Value = v["Value"];
                 bufferc.Round = v["Round"];
+                bufferc.Frequency = v["Frequency"];
 
                 map.set(parseInt(k), bufferc);
             });
