@@ -20,18 +20,21 @@ export class Skill_Shields extends SkillBase
     public SkillType:enums.SkillType=enums.SkillType.Support;
 
     private value:number;
-    private round:number;
     private dir:Direction;
+    private numberOfRole : number;
     private eventSound:string;
 
     event:Event=new Event();
 
-    public constructor(priority:number, value:number,round:number,dir:Direction,eventSound?:string) {
+    public constructor(priority:number , num:number, value:number,dir?:Direction,eventSound?:string) 
+    {
         super(priority);
-
+        this.numberOfRole=num;
         this.value=value;
-        this.round=round;
-        this.dir=dir;
+        if(dir)
+        {
+            this.dir=dir;
+        }
         if(null!=eventSound){
             this.eventSound=eventSound;
         }
@@ -49,7 +52,15 @@ export class Skill_Shields extends SkillBase
 
         try
         {
-            this.SkillEffect_1(selfInfo,battle,isParallel);          
+            if(this.dir!=null && this.dir != Direction.None)
+            {
+                this.SkillEffect_1(selfInfo,battle,isParallel);
+            }
+            else
+            {
+                this.SkillEffect_2(selfInfo,battle,isParallel);
+            }
+            
         }
         catch (error) 
         {
@@ -68,6 +79,7 @@ export class Skill_Shields extends SkillBase
             event.isParallel=isPar;
             event.eventSound=this.eventSound;
             event.spellcaster=selfInfo;
+            event.type=enums.EventType.GiveShields;
 
             if(enums.Camp.Self==selfInfo.camp)
             {
@@ -122,17 +134,12 @@ export class Skill_Shields extends SkillBase
             }
             if(null!=recipientRole)
             {
-                let buff:Buffer=new Buffer();
-                buff.BufferType=enums.BufferType.Shields;
-                buff.Value=this.value;
-                buff.Round=1;
-                recipientRole.buffer.push(buff);
+                recipientRole.AddBuff(1,this.value);
 
                 let roleInfo:RoleInfo=new RoleInfo();
                 roleInfo.camp=selfInfo.camp;
                 roleInfo.index=recipientRole.index;
-
-                event.type=enums.EventType.GiveShields;
+   
                 event.recipient.push(roleInfo);
 
                 event.value = [this.value];
@@ -145,5 +152,50 @@ export class Skill_Shields extends SkillBase
         }
         
     }
+    
+    SkillEffect_2(selfInfo: RoleInfo, battle: Battle,isPar:boolean):void    //随机对象生效
+    {
+        let teamTemp: Role[] = null;
+        let recipientRoles: Role[] = null;
+        let event = new Event();
+        event.isParallel = isPar;
+        event.eventSound = this.eventSound;
+        event.spellcaster = selfInfo;
+        event.type = enums.EventType.GiveShields;
+
+        if (enums.Camp.Self == selfInfo.camp)
+        {
+            teamTemp = battle.GetSelfTeam().GetRoles();
+        }
+        if (enums.Camp.Enemy == selfInfo.camp)
+        {
+            teamTemp = battle.GetEnemyTeam().GetRoles();
+        }
+
+        while (recipientRoles.length < this.numberOfRole && teamTemp.length > 0) 
+        {
+            let index = random(0, teamTemp.length);
+            if (teamTemp[index].CheckDead() && !teamTemp[index].getShields())
+            {
+                continue;
+            }
+            recipientRoles.push(teamTemp[index]);
+            teamTemp.splice(index, 1);
+        }
+
+        for(let r of recipientRoles)
+        {
+            r.AddBuff(1,this.value);
+
+            let roleInfo: RoleInfo = new RoleInfo();
+            roleInfo.camp = selfInfo.camp;
+            roleInfo.index = r.index;
+
+            event.recipient.push(roleInfo);
+        }
+        event.value = [this.value];
+        battle.AddBattleEvent(event);
+    }
+
 }
 

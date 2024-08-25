@@ -7,13 +7,29 @@ import * as config from './config/config'
 import * as enums from './enum'
 import * as buffer from './buffer/buffer'
 
-export function CreateSkill(bufferID:number) : buffer.Buffer {
+export function CreateSkill(bufferID:number, value?:number , round?:number) : buffer.Buffer 
+{
     let bufferConfig = config.config.BufferConfig.get(bufferID);
 
     let bufferObj:buffer.Buffer = new buffer.Buffer();
-    bufferObj.BufferType = bufferConfig.Type;
-    bufferObj.Value = bufferConfig.Value;
-    bufferObj.Round = bufferConfig.Round;
+    if(value)
+    {
+        bufferObj.Value = value;
+    }
+    else
+    {
+        bufferObj.Value = bufferConfig.Value;
+    }
 
+    if(round)
+    {
+        bufferObj.Round=round;
+    }
+    else
+    {
+        bufferObj.Round = bufferConfig.Round;
+    }
+    bufferObj.BufferType = bufferConfig.Type;
+    
     return bufferObj;
 }

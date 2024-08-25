@@ -47,7 +47,7 @@ function createFettersSkill(id:number, level:number) : SkillInfo {
     return null;
 }
 
-function createBuffer(id:number) : buffer.Buffer {
+function createBuffer(id:number , value?:number , round?:number) : buffer.Buffer {
     let bufferConfig = config.config.BufferConfig.get(id);
     if (bufferConfig) {
         return create_buffer.CreateSkill(id);
@@ -249,9 +249,9 @@ export class Role {
         return false;
     }
 
-    private checkSubstituteDamageFront() : number {
+    private checkOffsetDamage() : number {
         for (let b of this.buffer) {
-            if (enums.BufferType.SubstituteDamageFront == b.BufferType && b.Round > 0) {
+            if (enums.BufferType.OffsetDamage == b.BufferType && b.Round > 0) {
                 --b.Round;
                 return b.Value;
             }
@@ -259,9 +259,9 @@ export class Role {
         return -1;
     }
 
-    private checkSubstituteDamageRandom() : number {
+    private checkReductionAtk() : number {
         for (let b of this.buffer) {
-            if (enums.BufferType.SubstituteDamageRandom == b.BufferType && b.Round > 0) {
+            if (enums.BufferType.ReductionAtk == b.BufferType && b.Round > 0) {
                 --b.Round;
                 return b.Value;
             }
@@ -316,12 +316,12 @@ export class Role {
             }
             
             let bufferNumber:number;
-            bufferNumber = r.checkSubstituteDamageFront();
+            bufferNumber = r.checkOffsetDamage();
             if ((i - selfIndex) == 1 && -1!=bufferNumber) {
                 return [r,bufferNumber];
             }
             
-            bufferNumber=r.checkSubstituteDamageRandom();
+            bufferNumber=r.checkReductionAtk();
             if (-1!=bufferNumber) {
                 return [r,bufferNumber];
             }
@@ -472,9 +472,9 @@ export class Role {
         this.attackCnt++;
     }
 
-    public AddBuff(_id:number) 
+    public AddBuff(_id:number , _value:number , _round:number=1) 
     {
-        let buffer = createBuffer(_id);
+        let buffer = createBuffer(_id , _value , _round);
         if (buffer)
         {
             this.buffer.push(buffer);

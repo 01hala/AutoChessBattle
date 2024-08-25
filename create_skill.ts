@@ -39,6 +39,12 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
         value0 = skillConfig.Level3Value_1;
         value1 = skillConfig.Level3Value_2;
     }
+
+    let ObjCount=skillConfig.ObjCount;
+    if(54==skillID)
+    {
+        ObjCount=level;
+    }
     console.log("skillID:", skillID, " level:", level, " value0:", value0, " value1", value1);
 
     let skillObj:skill.SkillBase = null;
@@ -146,7 +152,7 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
             break;
         case common.SkillEffectEM.GainShield:
             {
-                skillObj = new Skill_Shields.Skill_Shields(skillConfig.Priority, value0, value1, skillConfig.ObjectDirection);
+                skillObj = new Skill_Shields.Skill_Shields(skillConfig.Priority, skillConfig.ObjCount ,value0 , skillConfig.ObjectDirection);
             }
             break;
         case common.SkillEffectEM.ChangePosition:
@@ -161,14 +167,7 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
             break;
         case common.SkillEffectEM.AddBuffer:
             {
-                if (1 == skillConfig.AddBufferID)
-                {
-                    skillObj = new Skill_Shields.Skill_Shields(skillConfig.Priority, value0, 0, skillConfig.ObjectDirection);
-                }
-                else
-                {
-                    skillObj = new Skill_AddBuff.Skill_AddBuff(skillConfig.Priority , skillConfig.AddBufferID,skillConfig.ObjCount);
-                }
+                skillObj = new Skill_AddBuff.Skill_AddBuff(skillConfig.Priority , skillConfig.AddBufferID, value0 , value1 , ObjCount);
             }
             break;
     }

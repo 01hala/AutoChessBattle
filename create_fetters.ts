@@ -45,7 +45,7 @@ export function CreateFetters(level:number, fettersID:number) : skill.SkillBase 
             console.log("Skill_AttGain_1 fettersConfig:", fettersConfig);
             let count_index = fettersConfig.ObjCount.length < level ? fettersConfig.ObjCount.length  - 1 : level - 1;
             let count = fettersConfig.ObjCount[count_index];
-            skillObj = new Skill_AttGain_1.Skill_AttGain(fettersConfig.Priority, value0, value1,null,count,fettersConfig.FetterAudio);
+            skillObj = new Skill_AttGain_1.Skill_AttGain(fettersConfig.Priority, value0, value1,null,count,fettersConfig.EffectScope,fettersConfig.FetterAudio);
         }
         break;
         case common.SkillEffectEM.RecoverHP:
@@ -65,7 +65,7 @@ export function CreateFetters(level:number, fettersID:number) : skill.SkillBase 
             }
             else
             {
-                skillObj=new Skill_RemoteAtk.Skill_RemoteAtkPre(fettersConfig.Priority, count, value0, false,fettersConfig.FetterAudio);
+                skillObj=new Skill_RemoteAtk.Skill_RemoteAtkPre(fettersConfig.Priority, count, value0, false , null,fettersConfig.FetterAudio);
             }
         }
         break;

@@ -99,8 +99,8 @@ export enum SkillType
 export enum BufferType {
     InevitableKill = 1,
     ShareDamage = 2,
-    SubstituteDamageFront = 3,
-    SubstituteDamageRandom = 4,
+    OffsetDamage = 3,
+    ReductionAtk = 4,
     ReductionDamage = 5,
     intensifierAtk = 6,
     Shields = 7,
