@@ -240,12 +240,15 @@ export class Skill_RemoteAtkPre extends SkillBase
     private eventSound;
     private dir;
 
-    public constructor(priority:number, numberOfRole:number, attack:number,isAll:boolean,dir?:Direction,eventSound?:string) {
+    public constructor(priority:number, numberOfRole:number, attack:number,dir?:Direction,eventSound?:string) {
         super(priority);
 
         this.numberOfRole = numberOfRole;
         this.attack = attack;
-        this.isAll=isAll;
+        if(numberOfRole>=12)
+        {
+            this.isAll=true;
+        }
         if(null!=eventSound){
             this.eventSound=eventSound;
         }
@@ -270,6 +273,7 @@ export class Skill_RemoteAtkPre extends SkillBase
 
             if(this.attack>0 && this.attack <=1)
             {
+                console.log("useskill Skill_RemoteAtkPre");
                 if (6 >= this.numberOfRole && !this.isAll)
                 {
                     this.SkillEffect_1(selfInfo, battle, this.attack * (1 + selfInfo.properties.get(enums.Property.Attack)), isParallel);
@@ -318,23 +322,30 @@ export class Skill_RemoteAtkPre extends SkillBase
             }
             while (recipientRoles.length < this.numberOfRole && enemyRoles.length > 0)
             {
-                let targetRole:Role;
-                let index:number;
-                switch(this.dir){
-                    case Direction.Back:
-                        if(enums.Camp.Self==selfInfo.camp){
-                            targetRole = battle.GetSelfTeam().GetRole(selfInfo.index+3);
-                        }
-                        else{
-                            targetRole=battle.GetEnemyTeam().GetRole(selfInfo.index+3);
-                        }
-                    break;
-                    case Direction.None:
-                        index=random(0, enemyRoles.length);
-                        targetRole=enemyRoles[index];
-                    break;
+                //let targetRole:Role;
+                // switch (this.dir)
+                // {
+                //     case Direction.Back:
+                //         if (enums.Camp.Self == selfInfo.camp)
+                //         {
+                //             targetRole = battle.GetSelfTeam().GetRole(selfInfo.index + 3);
+                //         }
+                //         else
+                //         {
+                //             targetRole = battle.GetEnemyTeam().GetRole(selfInfo.index + 3);
+                //         }
+                //         break;
+                //     case Direction.None:
+                //         index = random(0, enemyRoles.length);
+                //         targetRole = enemyRoles[index];
+                //         break;
+                // }
+                let index = random(0, enemyRoles.length);
+                if(enemyRoles[index].CheckDead())
+                {
+                    continue;
                 }
-                recipientRoles.push(targetRole);
+                recipientRoles.push(enemyRoles[index]);
                 enemyRoles.splice(index, 1);
             }
             recipientRoles.forEach((role) =>
@@ -388,7 +399,7 @@ export class Skill_RemoteAtkPre extends SkillBase
         //同时发射子弹,同时受伤
         for (let role of recipientRoles)
         {
-            role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, true)
+            role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, true);
         }
 
     }
