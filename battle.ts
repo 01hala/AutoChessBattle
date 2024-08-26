@@ -32,14 +32,6 @@ function splitEvs(evs:skill.Event[]) {
                 }
             break;
         }
-        // if (enums.EventType.RemoteInjured == ev.type || enums.EventType.AttackInjured == ev.type || enums.EventType.Syncope == ev.type || enums.EventType.Exit == ev.type)
-        // {
-        //     injuredEvs.push(ev);
-        // }
-        // else
-        // {
-        //     normalEvs.push(ev);
-        // }
     }
     
     return [injuredEvs, normalEvs]
@@ -169,6 +161,7 @@ export class Battle {
             return;
         }
 
+        console.log("tickInjuredEventChain evs:", evs);
         await this.on_event.call(null, evs);
 
         if (this.CheckEndBattle()) {
@@ -196,6 +189,9 @@ export class Battle {
             return;
         }
 
+        console.log("tickInjuredEvent evs:", evs);
+        await this.on_event.call(null, evs);
+
         let tmpPriorityEvs:skill.Event[] = [];
         for (let ev of evs) {
             if (this.checkTriggerSkill([ev]) && !tmpPriorityEvs.includes(ev)) {
@@ -207,10 +203,10 @@ export class Battle {
                 }
             }
         }
-        let tmpEvs:skill.Event[] = evs.filter((element) => !tmpPriorityEvs.includes(element));;
+        let tmpEvs:skill.Event[] = evs.filter((element) => !tmpPriorityEvs.includes(element));
+        console.log("tickInjuredEvent tmpPriorityEvs:", tmpPriorityEvs);
+        console.log("tickInjuredEvent tmpEvs:", tmpEvs);
         if (tmpPriorityEvs.length > 0) {
-            await this.on_event.call(null, tmpPriorityEvs);
-
             if (this.CheckEndBattle()) {
                 return;
             }
@@ -231,15 +227,14 @@ export class Battle {
             await this.tickInjuredEvent(injuredEvs);
             await this.tickInjuredEventChain(normalEvs);
         }
-        if (tmpEvs.length > 0) {
-            await this.on_event.call(null, tmpEvs);
-        }
     }
 
     private async tickBattleInjuredEvent(evs:skill.Event[]) {
         if (evs == null || evs.length <= 0) {
             return;
         }
+
+        console.log("tickBattleInjuredEvent evs:", evs);
 
         await this.on_event.call(null, evs);
         this.tickSkill(evs);
@@ -385,10 +380,8 @@ export class Battle {
         await this.tickInjuredEvent(injuredEvs);
         await this.tickInjuredEventChain(normalEvs);
 
-        if (this.evs.length <= 0) {
-            if (this.CheckRemoveDeadRole()) {
-                return false;
-            }
+        if (this.CheckRemoveDeadRole()) {
+            return false;
         }
         
         let self = this.selfTeam.GetLasterRole();
