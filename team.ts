@@ -220,7 +220,7 @@ export class Team {
             }
         }
 
-        if (target_2)
+        if (null!=target_2)
         {
             tempIndex = this.roleList[target_1].index;
             this.roleList[target_1].index = this.roleList[target_2].index;
