@@ -34,7 +34,7 @@ export class SkillTrigger_CampSyncope extends SkillTriggerBase {
         {
             for (let element of frameEvent) {
                 if(enums.EventType.Syncope == element.type){
-                    console.log("CheckSkill element:", element, " selfInfo:", selfInfo);
+                    //console.log("CheckSkill element:", element, " selfInfo:", selfInfo);
                     if(element.spellcaster.camp == selfInfo.camp) {
                         console.log("CheckSkill CampSyncope!");
                         return 1;

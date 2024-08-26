@@ -37,7 +37,7 @@ export class Skill_ChangePosition extends SkillBase {
     {
         try
         {
-            console.log("使用技能：换位");
+            console.log("使用技能：换位" , selfInfo.camp);
             let battleEvent : Event = new Event();
             battleEvent.type = enums.EventType.UsedSkill;
             battleEvent.spellcaster = selfInfo;
@@ -116,11 +116,11 @@ export class Skill_ChangePosition extends SkillBase {
     
             if (enums.Camp.Self == _selfInfo.camp)
             {
-                _battle.GetEnemyTeam().SwitchRole(begin.index, this.index2, end.index, this.index1);
+                _battle.GetEnemyTeam().SwitchRole(begin.index, end.index);
             }
             if (enums.Camp.Enemy == _selfInfo.camp)
             {
-                _battle.GetSelfTeam().SwitchRole(begin.index, this.index2, end.index, this.index1);
+                _battle.GetSelfTeam().SwitchRole(begin.index, end.index);
             }
     
             _battle.AddBattleEvent(battleEvent);
@@ -142,7 +142,20 @@ export class Skill_ChangePosition extends SkillBase {
             battleEvent.value = [];
             battleEvent.isParallel = _isPar;
     
-            let originalRoleList: Role[] = _selfInfo.camp==enums.Camp.Self?_battle.GetEnemyTeam().GetRoles():_battle.GetSelfTeam().GetRoles();
+            let originalRoleList:Role[];
+            switch(_selfInfo.camp)
+            {
+                case enums.Camp.Self:
+                    {
+                        originalRoleList=_battle.GetEnemyTeam().GetRoles();
+                    }
+                    break;
+                case enums.Camp.Enemy:
+                    {
+                        originalRoleList=_battle.GetSelfTeam().GetRoles();
+                    }
+                    break;
+            }
     
             if(originalRoleList.length<1)
             {
@@ -154,7 +167,7 @@ export class Skill_ChangePosition extends SkillBase {
             while (recipientRoles.length < 2 && recipientRoles.length < originalRoleList.length)
             {
                 let index = random(0, originalRoleList.length);
-                if (index in recipientRoles)
+                if (recipientRoles.includes(index))
                 {
                     continue;
                 }
@@ -167,7 +180,20 @@ export class Skill_ChangePosition extends SkillBase {
             }
             console.log("尝试换位",recipientRoles);
 
-            originalRoleList = _selfInfo.camp==enums.Camp.Self?_battle.GetEnemyTeam().GetRoles():_battle.GetSelfTeam().GetRoles();
+            switch (_selfInfo.camp)
+            {
+                case enums.Camp.Self:
+                    {
+                        originalRoleList = _battle.GetEnemyTeam().GetRoles();
+                    }
+                    break;
+                case enums.Camp.Enemy:
+                    {
+                        originalRoleList = _battle.GetSelfTeam().GetRoles();
+                    }
+                    break;
+            }
+
             let begin = originalRoleList[recipientRoles[0]];
             let end = originalRoleList[recipientRoles[1]];
     
@@ -186,14 +212,15 @@ export class Skill_ChangePosition extends SkillBase {
     
             if (enums.Camp.Self == _selfInfo.camp)
             {
-                _battle.GetEnemyTeam().SwitchRole(begin.index, recipientRoles[1], end.index, recipientRoles[0]);
+                _battle.GetEnemyTeam().SwitchRole(begin.index, end.index);
             }
             if (enums.Camp.Enemy == _selfInfo.camp)
             {
-                _battle.GetSelfTeam().SwitchRole(begin.index, recipientRoles[1], end.index, recipientRoles[0]);
+                _battle.GetSelfTeam().SwitchRole(begin.index, end.index);
             }
     
             _battle.AddBattleEvent(battleEvent);
+            console.log("换位完成");
         }
         catch(error)
         {
@@ -220,15 +247,15 @@ export class Skill_ChangePosition extends SkillBase {
             originalRoleList = _battle.GetSelfTeam();
         }
 
-        if(originalRoleList.GetRoles().length<4)
-        {
-            return;
-        }
-
-        let _index1 = random(3, originalRoleList.GetRoles().length);
+        let _indexs=[3,4,5];
+        let _index1 = _indexs[random(0, 2)];
         let _index2=_index1-3;
 
         let begin = originalRoleList.GetRole(_index1);
+        if(null == begin)
+        {
+            return;
+        }
         let end = originalRoleList.GetRole(_index2);
 
         let recipient;
@@ -254,11 +281,11 @@ export class Skill_ChangePosition extends SkillBase {
 
         if (enums.Camp.Self == _selfInfo.camp)
         {
-            _battle.GetEnemyTeam().SwitchRole(begin.index, _index2, end.index, _index1);
+            _battle.GetEnemyTeam().SwitchRole(_index1, _index2);
         }
         if (enums.Camp.Enemy == _selfInfo.camp)
         {
-            _battle.GetSelfTeam().SwitchRole(begin.index, _index2, end.index, _index1);
+            _battle.GetSelfTeam().SwitchRole(_index1, _index2);
         }
 
         _battle.AddBattleEvent(battleEvent);

@@ -203,7 +203,7 @@ export class Role {
             ev.value = [];
             ev.value.push(damage);
             battle.AddBattleEvent(ev);
-            console.log("CheckDead sendHurtedEvent:", JSON.stringify(battle.evs));
+            //console.log("CheckDead sendHurtedEvent:", JSON.stringify(battle.evs));
             //把单次对局加上的临时属性去掉
             this.tempProperties.forEach((value,key)=>{
                 if(this.properties.has(key)){
@@ -434,7 +434,7 @@ export class Role {
     public CheckDead() 
     {
         let hp = this.properties.get(enums.Property.HP);
-        console.log(`CheckDead selfCamp:${this.selfCamp} id:${this.id} hp:${hp}`);
+        //console.log(`CheckDead selfCamp:${this.selfCamp} id:${this.id} hp:${hp}`);
         return hp <= 0;
     }
 

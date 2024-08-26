@@ -118,8 +118,8 @@ export class Team {
         }
 
         if (removeRoles.length > 0) {
-            console.log("CheckRemoveDeadRole this.roleList:", JSON.stringify(this.roleList));
-            console.log("CheckRemoveDeadRole battle.evs:", JSON.stringify(battle.evs));
+            //console.log("CheckRemoveDeadRole this.roleList:", JSON.stringify(this.roleList));
+            //console.log("CheckRemoveDeadRole battle.evs:", JSON.stringify(battle.evs));
             for (let r of removeRoles) {
                 if (battle.CheckRoleTriggerSkill(r, battle.evs)) {
                     console.log("CheckRemoveDeadRole not remove r:", JSON.stringify(r));
@@ -197,37 +197,54 @@ export class Team {
 
     /**
      * 换位
-     * @param _originalIndex_1 初始角色位置1
-     * @param _index_1 要交换的位置1
-     * @param _originalIndex_2 初始角色位置2
-     * @param _index_2 要交换的位置2
+     * @param _begin 位置1
+     * @param _end 位置2
      * Editor:Hotaru
      * 2024/08/19添加
      */
-    public SwitchRole(_originalIndex_1:number,_index_1:number,_originalIndex_2:number, _index_2:number)
+    public SwitchRole(_begin:number,_end:number)
     {
-        let k=0;
-        let j=0;
-        for(let i=0;i<this.roleList.length;i++)
+        console.log("switch role befor",this.roleList);
+        let target_1 = null;
+        let target_2 = null;
+        let tempIndex;
+        for (let i = 0; i < this.roleList.length; i++)
         {
-            if(this.roleList[i].index == _originalIndex_1)
+            if (this.roleList[i].index == _begin)
             {
-                k=i;
+                target_1 = i;
             }
-            if(this.roleList[i].index == _originalIndex_2)
+            if (this.roleList[i].index == _end)
             {
-                j=i;
+                target_2 = i;
             }
         }
 
-        if(k!=0)
+        if (target_2)
         {
-            this.roleList[k].index = _index_1;
+            tempIndex = this.roleList[target_1].index;
+            this.roleList[target_1].index = this.roleList[target_2].index;
+            this.roleList[target_2].index = tempIndex;
         }
-        if(j!=0)
+        else
         {
-            this.roleList[j].index = _index_2;
+            this.roleList[target_1].index = _end;
         }
+        //换位完重新排序
+        for (let i = 0; i < this.roleList.length; i++)
+        {
+            for (let j = i + 1; j < this.roleList.length; j++)
+            {
+                let t;
+                if (this.roleList[j].index < this.roleList[i].index)
+                {
+                    t = this.roleList[i];
+                    this.roleList[i] = this.roleList[j];
+                    this.roleList[j] = t;
+                }
+            }
+        }
+        console.log("switch role",this.roleList);
         
     }
 }
