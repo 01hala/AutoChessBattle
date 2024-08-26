@@ -198,17 +198,17 @@ export class Skill_ChangePosition extends SkillBase {
             let end = originalRoleList[recipientRoles[1]];
     
             let recipient = new RoleInfo();
-            recipient.index = recipientRoles[0];
+            recipient.index = begin.index;
             recipient.camp = begin.selfCamp;
             battleEvent.recipient.push(recipient);
     
             recipient = new RoleInfo();
-            recipient.index = recipientRoles[1];
+            recipient.index = end.index;
             recipient.camp = end.selfCamp;
             battleEvent.recipient.push(recipient);
     
-            battleEvent.value.push(recipientRoles[1]);
-            battleEvent.value.push(recipientRoles[0]);
+            battleEvent.value.push(end.index);
+            battleEvent.value.push(begin.index);
     
             if (enums.Camp.Self == _selfInfo.camp)
             {
