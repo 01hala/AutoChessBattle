@@ -221,6 +221,7 @@ export class Battle {
             return;
         }
 
+        await this.on_event.call(null, evs);
         this.tickSkill(evs);
         let _evs = this.evs.slice();
         this.evs = [];
@@ -358,16 +359,11 @@ export class Battle {
 
     private triggerBeforeAttack : boolean = true;
     public async TickBattle() : Promise<boolean> {
-        let evs = this.evs.slice();
+        let _evs = this.evs.slice();
         this.evs = [];
-        let [injuredEvs, normalEvs] = splitEvs(evs);
+        let [injuredEvs, normalEvs] = splitEvs(_evs);
         await this.tickInjuredEvent(injuredEvs);
-        await this.on_event.call(null, normalEvs);
-        
-        if (normalEvs.length > 0) {
-            this.tickSkill(normalEvs);
-            return false;
-        }
+        await this.tickInjuredEventChain(normalEvs);
 
         if (this.evs.length <= 0) {
             if (this.CheckRemoveDeadRole()) {
@@ -409,7 +405,6 @@ export class Battle {
         if (this.evs.length > 0) {
             let evs = this.evs.slice();
             this.evs = [];
-            await this.on_event.call(null, evs);
             await this.tickBattleInjuredEvent(evs);
             return false;
         }
