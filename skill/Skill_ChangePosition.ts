@@ -142,21 +142,14 @@ export class Skill_ChangePosition extends SkillBase {
             battleEvent.value = [];
             battleEvent.isParallel = _isPar;
     
-            let originalRoleList: Role[] = null;
-            if (enums.Camp.Self == _selfInfo.camp)
-            {
-                originalRoleList = _battle.GetEnemyTeam().GetRoles().slice();
-            }
-            if (enums.Camp.Enemy == _selfInfo.camp)
-            {
-                originalRoleList = _battle.GetSelfTeam().GetRoles().slice();
-            }
+            let originalRoleList: Role[] = _selfInfo.camp==enums.Camp.Self?_battle.GetEnemyTeam().GetRoles():_battle.GetSelfTeam().GetRoles();
     
             if(originalRoleList.length<1)
             {
                 return;
             }
 
+            
             let recipientRoles: number[] = [];
             while (recipientRoles.length < 2 && recipientRoles.length < originalRoleList.length)
             {
@@ -165,9 +158,16 @@ export class Skill_ChangePosition extends SkillBase {
                 {
                     continue;
                 }
+                if(originalRoleList[index].CheckDead())
+                {
+                    continue;
+                }
                 recipientRoles.push(index);
+                originalRoleList.splice(index, 1);
             }
-    
+            console.log("尝试换位",recipientRoles);
+
+            originalRoleList = _selfInfo.camp==enums.Camp.Self?_battle.GetEnemyTeam().GetRoles():_battle.GetSelfTeam().GetRoles();
             let begin = originalRoleList[recipientRoles[0]];
             let end = originalRoleList[recipientRoles[1]];
     

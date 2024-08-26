@@ -101,7 +101,7 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
                 }
                 else
                 {
-                    skillObj = new Skill_RemoteAtk.Skill_RemoteAtkPre(skillConfig.Priority, skillConfig.ObjCount, value0, false);
+                    skillObj = new Skill_RemoteAtk.Skill_RemoteAtkPre(skillConfig.Priority, skillConfig.ObjCount, value0);
                 }
             }
             break;

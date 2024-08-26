@@ -13,13 +13,33 @@ function splitEvs(evs:skill.Event[]) {
     let injuredEvs:skill.Event[] = [];
     let normalEvs:skill.Event[] = [];
 
-    for (let ev of evs) {
-        if (enums.EventType.RemoteInjured == ev.type || enums.EventType.AttackInjured == ev.type || enums.EventType.Syncope == ev.type || enums.EventType.Exit == ev.type) {
-            injuredEvs.push(ev);
+    for (let ev of evs) 
+    {
+        switch (ev.type)
+        {
+            case enums.EventType.RemoteInjured:
+            case enums.EventType.AttackInjured:
+            case enums.EventType.Syncope:
+            case enums.EventType.Exit:
+            case enums.EventType.ChangeLocation:
+                {
+                    injuredEvs.push(ev);
+                }
+            break;
+            default:
+                {
+                    normalEvs.push(ev);
+                }
+            break;
         }
-        else {
-            normalEvs.push(ev);
-        }
+        // if (enums.EventType.RemoteInjured == ev.type || enums.EventType.AttackInjured == ev.type || enums.EventType.Syncope == ev.type || enums.EventType.Exit == ev.type)
+        // {
+        //     injuredEvs.push(ev);
+        // }
+        // else
+        // {
+        //     normalEvs.push(ev);
+        // }
     }
     
     return [injuredEvs, normalEvs]
