@@ -162,10 +162,12 @@ export class Skill_AttGain extends SkillBase
             
             if(null!=recipientRole)
             {
+                console.log("Skill_AttGain skill:", this);
                 console.log("recipientRole:", recipientRole, " ChangeProperties!");
                 recipientRole.ChangeProperties(enums.Property.HP, recipientRole.GetProperty(enums.Property.HP) + this.health,this.effectScope==1);
                 recipientRole.ChangeProperties(enums.Property.TotalHP, recipientRole.GetProperty(enums.Property.TotalHP) + this.health,this.effectScope==1);
                 recipientRole.ChangeProperties(enums.Property.Attack,recipientRole.GetProperty(enums.Property.Attack) + this.attack,this.effectScope==1);
+                console.log("recipientRole:", recipientRole, " ChangeProperties done!");
 
                 event.recipient.push(roleInfo);
                 event.value = [this.health, this.attack];

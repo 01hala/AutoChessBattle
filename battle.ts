@@ -22,6 +22,7 @@ function splitEvs(evs:skill.Event[]) {
             case enums.EventType.Syncope:
             case enums.EventType.Exit:
             case enums.EventType.ChangeLocation:
+            case enums.EventType.IntensifierProperties:
                 {
                     injuredEvs.push(ev);
                 }
