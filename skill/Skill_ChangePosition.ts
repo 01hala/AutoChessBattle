@@ -164,17 +164,21 @@ export class Skill_ChangePosition extends SkillBase {
 
             
             let recipientRoles: number[] = [];
+            let i=0;
             while (recipientRoles.length < 2 && recipientRoles.length < originalRoleList.length)
             {
                 let index = random(0, originalRoleList.length);
-                if (recipientRoles.includes(index))
+                if (recipientRoles.includes(index) && i<originalRoleList.length)
                 {
+                    i++;
                     continue;
                 }
-                if(originalRoleList[index].CheckDead())
+                if(originalRoleList[index].CheckDead()&& i<originalRoleList.length)
                 {
+                    i++;
                     continue;
                 }
+                if(i>originalRoleList.length) break;
                 recipientRoles.push(index);
                 originalRoleList.splice(index, 1);
             }
