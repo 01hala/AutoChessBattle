@@ -171,14 +171,17 @@ export class Skill_ChangePosition extends SkillBase {
                 {
                     continue;
                 }
-                if(originalRoleList[index].CheckDead())
+                if(!originalRoleList[index].CheckDead())
                 {
-                    continue;
+                    recipientRoles.push(index);
                 }
-                recipientRoles.push(index);
                 originalRoleList.splice(index, 1);
             }
             console.log("尝试换位",recipientRoles);
+
+            if (recipientRoles.length < 2) {
+                return;
+            }
 
             switch (_selfInfo.camp)
             {
