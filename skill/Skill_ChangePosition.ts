@@ -164,10 +164,11 @@ export class Skill_ChangePosition extends SkillBase {
 
             
             let recipientRoles: number[] = [];
-            while (recipientRoles.length < 2 && recipientRoles.length < originalRoleList.length)
+            let randomRoles: number[] = [];
+            while (recipientRoles.length < 2 && recipientRoles.length < originalRoleList.length && randomRoles.length < originalRoleList.length)
             {
                 let index = random(0, originalRoleList.length);
-                if (recipientRoles.includes(index))
+                if (randomRoles.includes(index))
                 {
                     continue;
                 }
@@ -175,7 +176,7 @@ export class Skill_ChangePosition extends SkillBase {
                 {
                     recipientRoles.push(index);
                 }
-                originalRoleList.splice(index, 1);
+                randomRoles.push(index);
             }
             console.log("尝试换位",recipientRoles);
 
