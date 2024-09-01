@@ -22,6 +22,7 @@ function splitEvs(evs:skill.Event[]) {
             case enums.EventType.Syncope:
             case enums.EventType.Exit:
             case enums.EventType.ChangeLocation:
+            case enums.EventType.IntensifierProperties:
                 {
                     injuredEvs.push(ev);
                 }
@@ -164,10 +165,6 @@ export class Battle {
         console.log("tickInjuredEventChain evs:", evs);
         await this.on_event.call(null, evs);
 
-        if (this.CheckEndBattle()) {
-            return;
-        }
-
         this.tickSkill(evs);
         let _evs = this.evs.slice();
         this.evs = [];
@@ -176,6 +173,11 @@ export class Battle {
         await this.tickInjuredEventChain(normalEvs);
 
         this.CheckRemoveDeadRole();
+        
+        if (this.CheckEndBattle()) {
+            return;
+        }
+
         _evs = this.evs.slice();
         this.evs = [];
         [injuredEvs, normalEvs] = splitEvs(_evs);
@@ -207,11 +209,12 @@ export class Battle {
         console.log("tickInjuredEvent tmpPriorityEvs:", tmpPriorityEvs);
         console.log("tickInjuredEvent tmpEvs:", tmpEvs);
         if (tmpPriorityEvs.length > 0) {
+            this.tickSkill(tmpPriorityEvs);
+
             if (this.CheckEndBattle()) {
                 return;
             }
     
-            this.tickSkill(tmpPriorityEvs);
             let _evs = this.evs.slice();
             this.evs = [];
             let [injuredEvs, normalEvs] = splitEvs(_evs);

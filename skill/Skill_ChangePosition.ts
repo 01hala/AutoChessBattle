@@ -164,25 +164,25 @@ export class Skill_ChangePosition extends SkillBase {
 
             
             let recipientRoles: number[] = [];
-            let i=0;
-            while (recipientRoles.length < 2 && recipientRoles.length < originalRoleList.length)
+            let randomRoles: number[] = [];
+            while (recipientRoles.length < 2 && recipientRoles.length < originalRoleList.length && randomRoles.length < originalRoleList.length)
             {
                 let index = random(0, originalRoleList.length);
-                if (recipientRoles.includes(index) && i<originalRoleList.length)
+                if (randomRoles.includes(index))
                 {
-                    i++;
                     continue;
                 }
-                if(originalRoleList[index].CheckDead()&& i<originalRoleList.length)
+                if(!originalRoleList[index].CheckDead())
                 {
-                    i++;
-                    continue;
+                    recipientRoles.push(index);
                 }
-                if(i>originalRoleList.length) break;
-                recipientRoles.push(index);
-                originalRoleList.splice(index, 1);
+                randomRoles.push(index);
             }
             console.log("尝试换位",recipientRoles);
+
+            if (recipientRoles.length < 2) {
+                return;
+            }
 
             switch (_selfInfo.camp)
             {

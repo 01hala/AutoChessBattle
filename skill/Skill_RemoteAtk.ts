@@ -117,7 +117,9 @@ export class Skill_RemoteAtk extends SkillBase
                 enemyRoles.splice(index, 1);
             }
             recipientRoles.forEach((role)=>{
-                role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,isPar);
+                if (!role.CheckDead()) {
+                    role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,isPar);
+                }
                 console.log("Skill_RemoteAtk_3 远程攻击角色受伤 :",this.attack);
             });
 
@@ -158,7 +160,9 @@ export class Skill_RemoteAtk extends SkillBase
         //同时发射子弹,同时受伤
         for(let role of recipientRoles)
         {
-            role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,true);       //强制并发
+            if (!role.CheckDead()) {
+                role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,true);       //强制并发
+            }
         }
 
     }
@@ -195,7 +199,9 @@ export class Skill_RemoteAtk extends SkillBase
 
         for(let role of recipientRoles)
         {
-            role.BeHurted(this.attack, self, battle , enums.EventType.RemoteInjured , isPar);
+            if (!role.CheckDead()) {
+                role.BeHurted(this.attack, self, battle , enums.EventType.RemoteInjured , isPar);
+            }
         }
     }
 
@@ -217,9 +223,10 @@ export class Skill_RemoteAtk extends SkillBase
 
         for (let role of enemyRoles)
         {
-            role.BeHurted(this.attack, self, battle, enums.EventType.RemoteInjured, true);       //强制并发
+            if (!role.CheckDead()) {
+                role.BeHurted(this.attack, self, battle, enums.EventType.RemoteInjured, true);       //强制并发
+            }
         }
-
     }
 }
 
@@ -357,7 +364,7 @@ export class Skill_RemoteAtkPre extends SkillBase
             }
             recipientRoles.forEach((role) =>
             {
-                if(null!=role){
+                if(null!=role && !role.CheckDead()){
                     role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, isPar);
                     console.log("Skill_RemoteAtk_3_1 远程攻击角色受伤 :", attack);
                 }       
@@ -406,7 +413,9 @@ export class Skill_RemoteAtkPre extends SkillBase
         //同时发射子弹,同时受伤
         for (let role of recipientRoles)
         {
-            role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, true);
+            if (!role.CheckDead()) {
+                role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, true);
+            }
         }
 
     }
