@@ -10,7 +10,7 @@ import * as skill from './skill/skill_base'
 import * as Skill_AddTmpExp from './skill/Skill_AddTmpExp'
 import * as Skill_AttackAll from './skill/Skill_AttackAll'
 import * as Skill_AttGain from './skill/Skill_AttGain'
-import * as Skill_ChangePosition from './skill/Skill_ChangePosition'
+import * as Skill_ChangePosition from './skill/Skill_ChangeLocation'
 import * as Skill_Counterattack from './skill/Skill_Counterattack'
 import * as Skill_DeAttGain from './skill/Skill_DeAttGain'
 import * as Skill_ForcedAttack from './skill/Skill_ForcedAttack'
@@ -157,12 +157,12 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
             break;
         case common.SkillEffectEM.ChangePosition:
             {
-                skillObj = new Skill_ChangePosition.Skill_ChangePosition(skillConfig.Priority, skillConfig.ChangePositionType, value0, value1);
+                skillObj = new Skill_ChangePosition.Skill_ChangeLocation(skillConfig.Priority, skillConfig.ChangeLocationType, value0, value1);
             }
             break;
         case common.SkillEffectEM.ReductionHurt: 
             {
-                skillObj = new Skill_SubstituteDamage.Skill_SubstituteDamage(skillConfig.Priority, skillConfig.ChangePositionType, value0, value1);
+                skillObj = new Skill_SubstituteDamage.Skill_SubstituteDamage(skillConfig.Priority, skillConfig.ChangeLocationType, value0, value1);
             }
             break;
         case common.SkillEffectEM.AddBuffer:

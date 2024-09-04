@@ -202,6 +202,7 @@ export class Skill_SwapPropertiesSingle extends SkillBase
             swapRole.ChangeProperties(enums.Property.Attack, hp);
 
             event.value = [enums.SwapPropertiesType.HpSwap];
+            _battle.AddBattleEvent(event);
         }
         catch(error)
         {
@@ -235,6 +236,7 @@ export class Skill_SwapPropertiesSingle extends SkillBase
             swapRole.ChangeProperties(enums.Property.HP, Attack);
 
             event.value = [enums.SwapPropertiesType.AttackSwap];
+            _battle.AddBattleEvent(event);
         }
         catch(error)
         {

@@ -13,7 +13,7 @@ import * as Skill_RemoteAtk from './skill/Skill_RemoteAtk'
 import * as Skill_Summon from './skill/Skill_Summon'
 import * as Skill_SwapProperties_5 from './skill/Skill_SwapProperties'
 import * as Skill_Shields from './skill/Skill_Shields'
-import * as Skill_ChangePosition_7 from './skill/Skill_ChangePosition'
+import * as Skill_ChangePosition_7 from './skill/Skill_ChangeLocation'
 import { Skill_AttackAll } from './skill/Skill_AttackAll'
 
 export function CreateFetters(level:number, fettersID:number) : skill.SkillBase {

@@ -70,7 +70,7 @@ export enum EventType
     AddBuff=28,
 }
 
-export enum ChangePositionType {
+export enum ChangeLocationType {
     AssignChange = 1,
     RandomChange = 2,
     BackChange = 3,

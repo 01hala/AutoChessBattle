@@ -25,7 +25,7 @@ export class SkillConfig {
     public Level3Value_2: number;
     public SummonId: number[];
     public SummonLevel: number;
-    public ChangePositionType : enums.ChangePositionType;
+    public ChangeLocationType : enums.ChangeLocationType;
     public SwapPropertiesType : enums.SwapPropertiesType;
     public AddBufferID: number;
     public SkillAudio: string;
@@ -64,7 +64,7 @@ export async function LoadSkillConfig() : Promise<Map<number, SkillConfig>> {
                 skillc.Level3Value_2 = v["Level3Value_2"];
                 skillc.SummonId = v["SummonId"] == "" ? [] : JSON.parse(v["SummonId"]);
                 skillc.SummonLevel = v["SummonLevel"];
-                skillc.ChangePositionType = v["ChangePositionType"];
+                skillc.ChangeLocationType = v["ChangePositionType"];
                 skillc.SwapPropertiesType = v["SwapPropertiesType"];
                 skillc.AddBufferID =  v["AddBufferID"];
                 skillc.SkillAudio = v["SkillAudio"];

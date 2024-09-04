@@ -56,7 +56,7 @@ export class Skill_RemoteAtk extends SkillBase
             }
             else
             {
-                this.SkillEffect_2(selfInfo,battle,isParallel);
+                this.SkillEffect_2(selfInfo,battle);
             }
             if(evs)
             {
@@ -73,7 +73,7 @@ export class Skill_RemoteAtk extends SkillBase
             }
             if(this.numberOfRole == 6)
             {
-                this.SkillEffect_4(selfInfo,battle,isParallel);
+                this.SkillEffect_4(selfInfo,battle);
             }
             
         } 
@@ -96,12 +96,12 @@ export class Skill_RemoteAtk extends SkillBase
             if(enums.Camp.Self==selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
-                enemyRoles=battle.GetEnemyTeam().GetRoles().slice();
+                enemyRoles=battle.GetEnemyTeam().GetRoles();
             }
             if(enums.Camp.Enemy==selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
-                enemyRoles=battle.GetSelfTeam().GetRoles().slice();
+                enemyRoles=battle.GetSelfTeam().GetRoles();
             }
             let i=0;
             while(recipientRoles.length < this.numberOfRole && enemyRoles.length > 0) 
@@ -131,7 +131,7 @@ export class Skill_RemoteAtk extends SkillBase
         }
     }
 
-    private SkillEffect_2(selfInfo: RoleInfo, battle: Battle,isPar:boolean)         //场上全部生效
+    private SkillEffect_2(selfInfo: RoleInfo, battle: Battle)         //场上全部生效
     {
         let self:Role=null;
 
@@ -175,12 +175,12 @@ export class Skill_RemoteAtk extends SkillBase
         if (enums.Camp.Self == selfInfo.camp)
         {
             self = battle.GetSelfTeam().GetRole(selfInfo.index);
-            enemyRoles=battle.GetEnemyTeam().GetRoles().slice();
+            enemyRoles=battle.GetEnemyTeam().GetRoles();
         }
         if (enums.Camp.Enemy == selfInfo.camp)
         {
             self = battle.GetEnemyTeam().GetRole(selfInfo.index);
-            enemyRoles=battle.GetSelfTeam().GetRoles().slice();
+            enemyRoles=battle.GetSelfTeam().GetRoles();
         }
 
         let recipientRoles:Role[] = [];
@@ -205,7 +205,7 @@ export class Skill_RemoteAtk extends SkillBase
         }
     }
 
-    SkillEffect_4(selfInfo: RoleInfo, battle: Battle,isPar:boolean)     //敌方全部
+    SkillEffect_4(selfInfo: RoleInfo, battle: Battle)     //敌方全部
     {
         let self:Role=null;
         let enemyRoles:Role[] = null;
@@ -213,12 +213,12 @@ export class Skill_RemoteAtk extends SkillBase
         if (enums.Camp.Self == selfInfo.camp)
         {
             self = battle.GetSelfTeam().GetRole(selfInfo.index);
-            enemyRoles = battle.GetEnemyTeam().GetRoles().slice();
+            enemyRoles = battle.GetEnemyTeam().GetRoles();
         }
         if (enums.Camp.Enemy == selfInfo.camp)
         {
             self = battle.GetEnemyTeam().GetRole(selfInfo.index);
-            enemyRoles = battle.GetSelfTeam().GetRoles().slice();
+            enemyRoles = battle.GetSelfTeam().GetRoles();
         }
 
         for (let role of enemyRoles)
@@ -323,12 +323,12 @@ export class Skill_RemoteAtkPre extends SkillBase
             if(enums.Camp.Self==selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
-                enemyRoles=battle.GetEnemyTeam().GetRoles().slice();
+                enemyRoles=battle.GetEnemyTeam().GetRoles();
             }
             if(enums.Camp.Enemy==selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
-                enemyRoles=battle.GetSelfTeam().GetRoles().slice();
+                enemyRoles=battle.GetSelfTeam().GetRoles();
             }
 
             let i=0

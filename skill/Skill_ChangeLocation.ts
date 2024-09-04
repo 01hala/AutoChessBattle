@@ -13,17 +13,17 @@ import { random } from '../util';
 import { Team } from '../team';
 const { ccclass, property } = _decorator;
 
-@ccclass('Skill_ChangePosition')
-export class Skill_ChangePosition extends SkillBase {
-    public res:string="battle/skill/Skill_ChangePosition.ts";
+@ccclass('Skill_ChangeLocation')
+export class Skill_ChangeLocation extends SkillBase {
+    public res:string="battle/skill/Skill_ChangeLocation.ts";
 
     private index1:number;
     private index2:number;
-    private changeType : enums.ChangePositionType;
+    private changeType : enums.ChangeLocationType;
 
     private count=0;
 
-    constructor(priority:number, changeType : enums.ChangePositionType, change1:number, change2:number)
+    constructor(priority:number, changeType : enums.ChangeLocationType, change1:number, change2:number)
     {
         super(priority);
 
@@ -47,15 +47,15 @@ export class Skill_ChangePosition extends SkillBase {
 
             battle.AddBattleEvent(battleEvent);
 
-            if(enums.ChangePositionType.AssignChange == this.changeType)
+            if(enums.ChangeLocationType.AssignChange == this.changeType)
             {
                this.SkillEffect_1(selfInfo,battle,isParallel);
             }
-            if(enums.ChangePositionType.RandomChange == this.changeType)
+            if(enums.ChangeLocationType.RandomChange == this.changeType)
             {
                 this.SkillEffect_2(selfInfo,battle,isParallel);
             }
-            if(enums.ChangePositionType.BackChange == this.changeType && this.count<1)
+            if(enums.ChangeLocationType.BackChange == this.changeType && this.count<1)
             {
                 this.SkillEffect_3(selfInfo,battle,isParallel);
                 this.count++;
