@@ -33,6 +33,11 @@ export class Skill_RecoveryHP extends SkillBase {
     {
         try
         {
+            let event = new Event();
+            event.type = enums.EventType.IntensifierProperties;
+            event.spellcaster = selfInfo;
+            event.recipient = [];
+
             let effectiveRole : Role[] = null;
             if(enums.Camp.Enemy == selfInfo.camp) {
                 effectiveRole = battle.GetEnemyTeam().GetRoles().slice();
@@ -56,7 +61,18 @@ export class Skill_RecoveryHP extends SkillBase {
                 }
                 battle.onPlaySound.call(null, this.eventSound);
                 r.ChangeProperties(enums.Property.HP, HP);
+
+                let tRoleInfo=new RoleInfo();
+                tRoleInfo.id=r.id;
+                tRoleInfo.index=r.index;
+                tRoleInfo.properties=r.GetProperties();
+                tRoleInfo.battleCount=r.selfCamp;
+
+                event.recipient.push(tRoleInfo);
             }
+
+            battle.AddBattleEvent(event)
+
         }
         catch(e)
         {
