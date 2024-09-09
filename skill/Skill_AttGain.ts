@@ -171,6 +171,7 @@ export class Skill_AttGain extends SkillBase
 
                 event.recipient.push(roleInfo);
                 event.value = [this.health, this.attack];
+                event.effectScope=this.effectScope;
                 battle.AddBattleEvent(event);
             }
         }
@@ -224,6 +225,7 @@ export class Skill_AttGain extends SkillBase
                 role.ChangeProperties(enums.Property.Attack,role.GetProperty(enums.Property.Attack) + this.attack,this.effectScope==1);
             });
             event.value = [this.health,this.attack];
+            event.effectScope=this.effectScope;
             battle.AddBattleEvent(event);
         }
         catch (error) 
@@ -310,6 +312,7 @@ export class Skill_AttGain extends SkillBase
                 }
             }
             event.value = [this.health, this.attack];
+            event.effectScope=this.effectScope;
             battle.AddBattleEvent(event);
         }
         catch(error)
@@ -378,6 +381,7 @@ export class Skill_AttGain extends SkillBase
             }
     
             event.value = [this.health, this.attack];
+            event.effectScope=this.effectScope;
             battle.AddBattleEvent(event);
         }
         catch(error)

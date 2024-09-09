@@ -78,7 +78,12 @@ export class Role {
 
     private attackCnt;
 
-    public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters, equipID:number, additionBuffer?:number[],additionSkill?:number[]) {
+    public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters, equipID:number, additionBuffer?:number[],additionSkill?:number[]) 
+    {
+        if(c_role)
+        {
+            this.c_role=c_role;
+        }
         this.index = index;
         this.id=id;
         this.level=level;
