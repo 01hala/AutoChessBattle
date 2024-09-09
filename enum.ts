@@ -56,7 +56,7 @@ export enum EventType
     Kill=21,         
     /** 前方攻击 */                     
     FrontAtk=22,     
-    /** 等级提升 */                     
+    /** 经验提升 */                     
     IntensifierExp = 23, 
     /** 我方前排为空 */                 
     SelfFrontNull = 24,     
