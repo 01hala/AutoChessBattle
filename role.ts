@@ -422,6 +422,30 @@ export class Role {
         }
         return 0;
     }
+    /**
+     * 增加经验
+     * @param _num 数值
+     * 
+     * author:Hotaru
+     * 2024/09/09
+     */
+    public AddExp(_num:number)
+    {
+        this.exp+=_num;
+
+        this.ChangeProperties(enums.Property.HP , 1);
+        this.ChangeProperties(enums.Property.Attack , 1);
+
+        let _level=1+Math.floor(this.exp/3);
+        if(this.level < _level && _level <=3)
+        {
+            this.level=_level;
+        }
+        else
+        {
+            this.level=3;
+        }
+    }
     /*
      * 添加
      * 因为存在交换属性的技能，所以添加一个函数返回某个角色的所有属性Map的副本
