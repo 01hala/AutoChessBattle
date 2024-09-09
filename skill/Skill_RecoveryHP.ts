@@ -80,5 +80,3 @@ export class Skill_RecoveryHP extends SkillBase {
         }
     }
 }
-
-
