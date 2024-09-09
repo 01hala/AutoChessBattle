@@ -78,7 +78,12 @@ export class Role {
 
     private attackCnt;
 
-    public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters, equipID:number, additionBuffer?:number[],additionSkill?:number[]) {
+    public constructor(c_role:common.Role,index:number, id:number, level:number, exp:number, selfCamp: enums.Camp, properties: Map<enums.Property, number>, fetters:common.Fetters, equipID:number, additionBuffer?:number[],additionSkill?:number[]) 
+    {
+        if(c_role)
+        {
+            this.c_role=c_role;
+        }
         this.index = index;
         this.id=id;
         this.level=level;
@@ -416,6 +421,30 @@ export class Role {
             return this.properties.get(em);
         }
         return 0;
+    }
+    /**
+     * 增加经验
+     * @param _num 数值
+     * 
+     * author:Hotaru
+     * 2024/09/09
+     */
+    public AddExp(_num:number)
+    {
+        this.exp+=_num;
+
+        this.ChangeProperties(enums.Property.HP , 1);
+        this.ChangeProperties(enums.Property.Attack , 1);
+
+        let _level=1+Math.floor(this.exp/3);
+        if(this.level < _level && _level <=3)
+        {
+            this.level=_level;
+        }
+        else
+        {
+            this.level=3;
+        }
     }
     /*
      * 添加

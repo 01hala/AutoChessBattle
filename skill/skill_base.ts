@@ -24,6 +24,9 @@ export class Event {
     public spellcaster : RoleInfo;
     /** 受到效果的对象 */
     public recipient : RoleInfo[];
+    /** 生效范围 */
+    public effectScope:number;
+    /** 数值 */
     public value : number[];
     public is_trigger_floating : boolean = false;
     public priority:number=1;
