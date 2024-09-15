@@ -26,7 +26,7 @@ export class FettersConfig {
     public Stage4value_2: number;
     public SummonId: number;
     public SummonLevel: number;
-    public RefreshItemID: number;
+    public RefreshItemID: number[];
     public RefreshItemNum: number;
     public AddBufferID: number;
     public Res:string;
@@ -74,7 +74,7 @@ export async function LoadFettersConfig() : Promise<Map<number, FettersConfig>> 
                 fettersc.Stage4value_2 =  v["Stage4value_2"];
                 fettersc.SummonId =  v["SummonId"];
                 fettersc.SummonLevel =  v["SummonLevel"];
-                fettersc.RefreshItemID =  v["RefreshItemID"];
+                fettersc.RefreshItemID =  JSON.parse(v["RefreshItemID"]);
                 fettersc.RefreshItemNum =  v["RefreshItemNum"];
                 fettersc.AddBufferID =  v["AddBufferID"];
                 fettersc.Res=v["Res"];

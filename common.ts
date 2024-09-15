@@ -1,4 +1,3 @@
-
 /*this enum code is codegen by abelkhan codegen for ts*/
 
 export enum BattleVictory{
@@ -149,7 +148,8 @@ export enum SkillEffectEM{
     CoinsAddProperty = 19,
     CounterAttack = 20,
     DeAttGain = 21,
-    ForcedAttack = 22
+    ForcedAttack = 22,
+    RefreshEquipment = 23
 }
 
 export enum ShopIndex{
