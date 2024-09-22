@@ -9,7 +9,7 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role} from '../role';
-import * as battleEnums from '../enum';
+import * as enums from '../enum';
 import { random } from '../util';
 import { Buffer } from '../buffer/buffer';
 import { Direction } from '../common';
@@ -17,7 +17,7 @@ import { Direction } from '../common';
 export class Skill_SubstituteDamage extends SkillBase 
 {
     public res:string="battle/skill/Skill_SubstituteDamage.ts";
-    public SkillType:battleEnums.SkillType=battleEnums.SkillType.Support;
+    public SkillType:enums.SkillType=enums.SkillType.Support;
 
     private value:number;
     private round:number;
@@ -52,12 +52,13 @@ export class Skill_SubstituteDamage extends SkillBase
         {
             let teamTemp:Role[]=null;
             let recipientRole:Role=null;
+            this.event.isParallel=isPar;
 
-            if(battleEnums.Camp.Self==selfInfo.camp)
+            if(enums.Camp.Self==selfInfo.camp)
             {
             teamTemp=battle.GetSelfTeam().GetRoles();
             }
-            if(battleEnums.Camp.Enemy==selfInfo.camp)
+            if(enums.Camp.Enemy==selfInfo.camp)
             {
                 teamTemp=battle.GetEnemyTeam().GetRoles();
             }
@@ -106,21 +107,13 @@ export class Skill_SubstituteDamage extends SkillBase
             }
          
             if(null!=recipientRole)
-            { 
-                this.event.isParallel = isPar;
-                this.event.spellcaster = selfInfo;
-                this.event.type = battleEnums.EventType.SubstituteDamage;
-                this.event.value.push(this.value);
-                battle.AddBattleEvent(this.event);
+            {
+                let buff:Buffer=new Buffer();
+                buff.BufferType=enums.BufferType.SubstituteDamageFront;
+                buff.Value=this.value;
+                buff.Round=this.round;
+                recipientRole.buffer.push(buff);
             }
-
-            //let self=teamTemp[selfInfo.index];
-            // let buff: Buffer = new Buffer();
-            // buff.BufferType = enums.BufferType.OffsetDamage;
-            // buff.Value = this.value;
-            // buff.Round = this.round;
-            // self.buffer.push(buff);
-            
         } 
         catch (error) 
         {

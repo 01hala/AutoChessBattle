@@ -89,10 +89,9 @@ export function CreateTrigger(triggerID:number) : skill.SkillTriggerBase {
                 triggerObj = new SkillTrigger_UsedSKill.SkillTrigger_UsedSKill();//使用技能
             }
             break;
-        case common.EMSkillEvent.front_be_hurt:
-            {
-                triggerObj = new SkillTrigger_FriendlysideInjured(common.Direction.Forward);//前方受击
-            }
+        case common.EMSkillEvent.front_be_hurt: {
+            triggerObj = new SkillTrigger_FriendlysideInjured(common.Direction.Forward);//前方受击
+        }
             break;
         case common.EMSkillEvent.kill:
             {
