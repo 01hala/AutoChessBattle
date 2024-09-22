@@ -68,6 +68,10 @@ export enum EventType
     GiveShields=27,
     /** 添加buff */
     AddBuff=28,
+    /** 代替某角色承受伤害 */
+    SubstituteDamage=29,
+    /** 受伤前 */
+    BeforeHurt=30,
 }
 
 export enum ChangeLocationType {

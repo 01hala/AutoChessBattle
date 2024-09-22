@@ -164,7 +164,8 @@ export class Role {
 
     
     public onKillRole : (r:common.Role) => void;
-    private sendHurtedEvent(enemy: Role, damage: number, battle: battle.Battle, Injured: enums.EventType = enums.EventType.RemoteInjured,isParallel:boolean=false) {
+    private sendHurtedEvent(enemy: Role, damage: number, battle: battle.Battle, Injured: enums.EventType = enums.EventType.RemoteInjured,isParallel:boolean=false) 
+    {
         let selfIndex = this.index;
         let enemyIndex = enemy.index;
 
@@ -220,6 +221,29 @@ export class Role {
                 this.onKillRole.call(null, enemy.c_role);
             }
         } 
+    }
+
+    private SendBeforeHurtEvent(enemy: Role, battle: battle.Battle,isParallel:boolean=false)
+    {
+        let ev = new skill.Event();
+
+        let selfIndex = this.index;
+        let enemyIndex = enemy.index;
+
+        ev.type=enums.EventType.BeforeHurt;
+        ev.spellcaster = new skill.RoleInfo();
+        ev.spellcaster.camp = enemy.selfCamp;
+        ev.spellcaster.index = enemyIndex;
+        ev.recipient = [];
+        let recipient = new skill.RoleInfo();
+        recipient.camp = this.selfCamp;
+        recipient.index = selfIndex;
+        ev.recipient.push(recipient);
+        ev.value = [];
+        ev.priority=0;
+        ev.isParallel=isParallel;
+        ev.roleParallel = enemy;
+        battle.AddBattleEvent(ev);
     }
 
     public SendExitEvent(battle: battle.Battle) {
@@ -308,7 +332,8 @@ export class Role {
     // 代替当前被攻击角色受伤害
     // Role 代替受伤的角色
     // number 代替受伤的伤害上限
-    private getSubstituteDamage(battle: battle.Battle) : [Role,number] {
+    private getSubstituteDamage(battle: battle.Battle) : [Role,number] 
+    {
         let selfTeam = this.selfCamp == enums.Camp.Self ? battle.GetSelfTeam() : battle.GetEnemyTeam();
         let selfIndex = selfTeam.GetRoleIndex(this);
         
@@ -366,34 +391,6 @@ export class Role {
             }
         }
         return null;
-    }
-
-    public BeHurted(damage:number, enemy: Role, battle: battle.Battle, Injured: enums.EventType = enums.EventType.RemoteInjured,isParallel:boolean=false) {
-
-        let hp = this.GetProperty(enums.Property.HP);
-        let reduction = this.getReductionDamage();
-        let Shields=this.getShields();
-
-        damage -= reduction;
-        damage = damage < 0 ? 0 : damage;
-        
-
-        if(null != Shields)
-        {
-            if(Shields.Value >= damage)
-            {
-                Shields.Value -= damage;
-                damage = 0;
-            }
-            else
-            {
-                damage -= Shields.Value;
-                Shields.Value = 0;
-            }
-        }
-        hp -= damage;
-        this.ChangeProperties(enums.Property.HP, hp);
-        this.sendHurtedEvent(enemy, damage, battle, Injured,isParallel);
     }
 
     public BeInevitableKill(enemy: Role, battle: battle.Battle) {
@@ -467,6 +464,25 @@ export class Role {
         return hp <= 0;
     }
 
+    /**
+     * 查找受击替身
+     * @param _battle 战斗模块
+     * @returns 受击替身
+     */
+    private CheckScapegoat(_battle:battle.Battle):[Role , number]
+    {
+        for(let ev of _battle.evs)
+        {
+            if(enums.EventType.SubstituteDamage == ev.type)
+            {
+                let selfTeam = this.selfCamp == enums.Camp.Self ? _battle.GetSelfTeam() : _battle.GetEnemyTeam();
+                let role = selfTeam.GetRole(ev.spellcaster.index);
+                return [role , ev.value[0]];
+            }
+        }
+        return null;
+    }
+
     public Attack(enemy: Role, battle: battle.Battle) {
         if (enemy.checkInevitableKill()) {
             //console.log("role checkInevitableKill!");
@@ -499,6 +515,46 @@ export class Role {
         }
 
         this.attackCnt++;
+    }
+
+    public BeHurted(damage:number, enemy: Role, battle: battle.Battle, Injured: enums.EventType = enums.EventType.RemoteInjured,isParallel:boolean=false) 
+    {
+        this.SendBeforeHurtEvent(enemy,battle,isParallel);
+
+        let hp = this.GetProperty(enums.Property.HP);
+        let reduction = this.getReductionDamage();
+        let Shields=this.getShields();
+
+        damage -= reduction;
+        damage = damage < 0 ? 0 : damage;
+        
+
+        if(null != Shields)
+        {
+            if(Shields.Value >= damage)
+            {
+                Shields.Value -= damage;
+                damage = 0;
+            }
+            else
+            {
+                damage -= Shields.Value;
+                Shields.Value = 0;
+            }
+        }
+        hp -= damage;
+        let scapegoat= this.CheckScapegoat(battle);
+        if(scapegoat!=null)
+        {
+            scapegoat[0].ChangeProperties(enums.Property.HP,hp + scapegoat[1]);
+            scapegoat[0].sendHurtedEvent(enemy,damage,battle,Injured,isParallel);
+        }
+        else
+        {
+            this.ChangeProperties(enums.Property.HP, hp);
+            this.sendHurtedEvent(enemy, damage, battle, Injured,isParallel);
+        }
+        
     }
 
     public AddBuff(_id:number , _value:number=0 , _round:number=1 , _frequency:number=0) 
