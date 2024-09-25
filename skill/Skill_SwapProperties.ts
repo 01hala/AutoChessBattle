@@ -96,9 +96,7 @@ export class Skill_SwapProperties extends SkillBase
             }
             else if (enums.SwapPropertiesType.RandomSwap == this.type) {
                 let swapRoles:Role[];
-                let rolesTemp:Role[]=null;
-
-                event.value = [enums.SwapPropertiesType.AssignSwap];
+                let rolesTemp:Role[]=null;     
 
                 let original:Role[] = null;
                 if(enums.Camp.Self==selfInfo.camp) {
@@ -126,8 +124,7 @@ export class Skill_SwapProperties extends SkillBase
                     swapRoles[1].ChangeProperties(key,value);
                 });
 
-                event.value.push(swapRoles[0].index);
-                event.value.push(swapRoles[1].index);
+                event.value = [enums.SwapPropertiesType.RandomSwap , swapRoles[0].index , swapRoles[1].index];
             }
             battle.AddBattleEvent(event);
         }
