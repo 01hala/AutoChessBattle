@@ -39,30 +39,35 @@ export class SkillTrigger_FriendlysideInjured extends SkillTriggerBase
     {
         try
         {
-            for (let element of frameEvent) {
-                if(enums.EventType.AttackInjured==element.type || enums.EventType.RemoteInjured==element.type){
-                    for (let _recipient of element.recipient) {
-                        if(_recipient.camp == selfInfo.camp && _recipient.index != selfInfo.index) {
-                            switch(this.dir){
+            for (let element of frameEvent)
+            {
+                if (enums.EventType.BeforeHurt == element.type)
+                {
+                    for (let _recipient of element.recipient)
+                    {
+                        if (_recipient.camp == selfInfo.camp && _recipient.index != selfInfo.index)
+                        {
+                            switch (this.dir)
+                            {
                                 case Direction.Forward:
-                                    if(_recipient.index+3==selfInfo.index) return 1; 
+                                    if (_recipient.index + 3 == selfInfo.index) return 1;
                                     break;
                                 case Direction.Back:
-                                    if(_recipient.index-3==selfInfo.index) return 1;
+                                    if (_recipient.index - 3 == selfInfo.index) return 1;
                                     break;
                                 case Direction.Left:
-                                    if(((1==selfInfo.index||4==selfInfo.index)&&_recipient.index-1==selfInfo.index)
-                                    ||(3==selfInfo.index||6==selfInfo.index)&&_recipient.index+2==selfInfo.index) return 1;
+                                    if (((1 == selfInfo.index || 4 == selfInfo.index) && _recipient.index - 1 == selfInfo.index)
+                                        || (3 == selfInfo.index || 6 == selfInfo.index) && _recipient.index + 2 == selfInfo.index) return 1;
                                     break;
                                 case Direction.Rigiht:
-                                    if(((2==selfInfo.index||5==selfInfo.index)&&_recipient.index+1==selfInfo.index)
-                                    ||(1==selfInfo.index||4==selfInfo.index)&&_recipient.index-2==selfInfo.index) return 1;
+                                    if (((2 == selfInfo.index || 5 == selfInfo.index) && _recipient.index + 1 == selfInfo.index)
+                                        || (1 == selfInfo.index || 4 == selfInfo.index) && _recipient.index - 2 == selfInfo.index) return 1;
                                     break;
-                                default:return 1;
+                                default: return 1;
                             }
                         }
                     }
-                } 
+                }
             }
         }
         catch (error) 
