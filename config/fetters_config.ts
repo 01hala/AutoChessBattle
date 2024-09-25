@@ -58,29 +58,40 @@ export async function LoadFettersConfig() : Promise<Map<number, FettersConfig>> 
                 let t=fettersc.RoleNum.split("|");
                 fettersc.roleNum=t.map(Number);
 
-                var count:string = v["ObjCount"];
-                console.log("ObjCount:", count);
-                var objCount = count.split("|");
-                fettersc.ObjCount =  objCount.map(Number);
+                try
+                {
+                    var count: string = v["ObjCount"];
+                    console.log("ObjCount:", count);
+                    var objCount = count.split("|");
+                    fettersc.ObjCount = objCount.map(Number);
+                    fettersc.EffectScope = v["EffectScope"];
+                    fettersc.Stage1value_1 = v["Stage1value_1"];
+                    fettersc.Stage1value_2 = v["Stage1value_2"];
+                    fettersc.Stage2value_1 = v["Stage2value_1"];
+                    fettersc.Stage2value_2 = v["Stage2value_2"];
+                    fettersc.Stage3value_1 = v["Stage3value_1"];
+                    fettersc.Stage3value_2 = v["Stage3value_2"];
+                    fettersc.Stage4value_1 = v["Stage4value_1"];
+                    fettersc.Stage4value_2 = v["Stage4value_2"];
+                    fettersc.SummonId = v["SummonId"];
+                    fettersc.SummonLevel = v["SummonLevel"];
+                    //fettersc.RefreshItemID = JSON.parse(v["RefreshItemID"]);
+                    var items:string = v["RefreshItemID"]
+                    var refreshItem = items.split("|");
+                    fettersc.RefreshItemID=refreshItem.map(Number);
+                    fettersc.RefreshItemNum = v["RefreshItemNum"];
+                    fettersc.AddBufferID = v["AddBufferID"];
+                    fettersc.Res = v["Res"];
+                    fettersc.FetterAudio = v["FetterAudio"];
 
-                fettersc.EffectScope =  v["EffectScope"];
-                fettersc.Stage1value_1 =  v["Stage1value_1"];
-                fettersc.Stage1value_2 =  v["Stage1value_2"];
-                fettersc.Stage2value_1 =  v["Stage2value_1"];
-                fettersc.Stage2value_2 =  v["Stage2value_2"];
-                fettersc.Stage3value_1 =  v["Stage3value_1"];
-                fettersc.Stage3value_2 =  v["Stage3value_2"];
-                fettersc.Stage4value_1 =  v["Stage4value_1"];
-                fettersc.Stage4value_2 =  v["Stage4value_2"];
-                fettersc.SummonId =  v["SummonId"];
-                fettersc.SummonLevel =  v["SummonLevel"];
-                fettersc.RefreshItemID =  JSON.parse(v["RefreshItemID"]);
-                fettersc.RefreshItemNum =  v["RefreshItemNum"];
-                fettersc.AddBufferID =  v["AddBufferID"];
-                fettersc.Res=v["Res"];
-                fettersc.FetterAudio=v["FetterAudio"];
+                    map.set(parseInt(k), fettersc);
+                }
+                catch(error)
+                {
+                    console.error("配置表读取错误：",error);
+                }
 
-                map.set(parseInt(k), fettersc);
+                
             });
 
             console.log("Load Fetters Config end!");
