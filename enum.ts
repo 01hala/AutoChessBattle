@@ -72,6 +72,8 @@ export enum EventType
     SubstituteDamage=29,
     /** 受伤前 */
     BeforeHurt=30,
+    /** 重复使用一次技能 */
+    RepeatSkill=31,
 }
 
 export enum ChangeLocationType {

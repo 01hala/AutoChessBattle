@@ -324,7 +324,11 @@ export class Battle {
             let skillImpl: skill.SkillBase = null;
             let isPar=false;
             for(let skill of role.skill) {
-                let flag=skill.trigger.CheckSkillTrigger(evs, roleInfo)
+                let flag=skill.trigger.CheckSkillTrigger(evs, roleInfo);
+                if (0 == flag)
+                {
+                    flag = this.CheckRepeatSkill(evs, roleInfo);
+                }
                 if (flag) {
                     if(2==flag){
                         isPar=true;
@@ -359,7 +363,11 @@ export class Battle {
             let skillImpl: skill.SkillBase = null;
             let isPar=false;
             for(let skill of role.skill) {
-                let flag=skill.trigger.CheckSkillTrigger(evs, roleInfo)
+                let flag=skill.trigger.CheckSkillTrigger(evs, roleInfo);
+                if(0==flag)
+                {
+                    flag=this.CheckRepeatSkill(evs,roleInfo);
+                }
                 if (flag) {
                     if(2==flag) isPar=true;
                     if (skill.skill.Priority > p) {
@@ -373,6 +381,24 @@ export class Battle {
                 skillImpl.UseSkill(roleInfo, this,isPar , evs);
             }
         }
+    }
+
+    private CheckRepeatSkill(evs:skill.Event[] , selfInfo:skill.RoleInfo)
+    {
+        for(let ev of evs)
+        {
+            if(enums.EventType.RepeatSkill ==  ev.type)
+            {
+                for(let roleinfo of ev.recipient)
+                {
+                    if(roleinfo.index == selfInfo.index && roleinfo.camp == selfInfo.camp)
+                    {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
     }
 
     private triggerBeforeAttack : boolean = true;
