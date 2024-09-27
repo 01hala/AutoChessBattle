@@ -23,7 +23,7 @@ export class SkillTrigger_AfterAtk extends SkillTriggerBase
         super();
         this.EventType.push(EventType.AfterAttack);
         this.count=0;
-        if(0 != targetCnt || null!=targetCnt)
+        if(null!=targetCnt)
         {
             this.targetCnt=targetCnt;
         }
