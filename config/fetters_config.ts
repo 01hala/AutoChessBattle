@@ -75,10 +75,10 @@ export async function LoadFettersConfig() : Promise<Map<number, FettersConfig>> 
                     fettersc.Stage4value_2 = v["Stage4value_2"];
                     fettersc.SummonId = v["SummonId"];
                     fettersc.SummonLevel = v["SummonLevel"];
-                    //fettersc.RefreshItemID = JSON.parse(v["RefreshItemID"]);
                     var items:string = v["RefreshItemID"]
-                    var refreshItem = items.split("|");
-                    fettersc.RefreshItemID=refreshItem.map(Number);
+                    if (items && items != "") {
+                        fettersc.RefreshItemID = JSON.parse(v["RefreshItemID"]);
+                    }
                     fettersc.RefreshItemNum = v["RefreshItemNum"];
                     fettersc.AddBufferID = v["AddBufferID"];
                     fettersc.Res = v["Res"];
