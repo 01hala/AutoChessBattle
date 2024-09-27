@@ -23,8 +23,13 @@ export class SkillTrigger_AfterAtk extends SkillTriggerBase
         super();
         this.EventType.push(EventType.AfterAttack);
         this.count=0;
-        if(null != targetCnt){
+        if(0 != targetCnt || null!=targetCnt)
+        {
             this.targetCnt=targetCnt;
+        }
+        else
+        {
+            this.targetCnt=0;
         }
     }
 
@@ -52,11 +57,11 @@ export class SkillTrigger_AfterAtk extends SkillTriggerBase
                     {
                         return 1;
                     }
-                    if(element.spellcaster.camp == selfInfo.camp && this.count==this.targetCnt)//友方攻击多少次后
+                    if(element.spellcaster.camp == selfInfo.camp && this.count==this.targetCnt && 0!=this.targetCnt)//友方攻击多少次后
                     {
                         return 1;
                     }
-                    if(element.spellcaster.index != selfInfo.index && element.spellcaster.camp == selfInfo.camp)
+                    if(element.spellcaster.index != selfInfo.index && element.spellcaster.camp == selfInfo.camp && 0!=this.targetCnt)
                     {
                         this.count++;
                     }
