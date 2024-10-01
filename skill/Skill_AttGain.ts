@@ -340,7 +340,7 @@ export class Skill_AttGain extends SkillBase
             let event = new Event();
             event.type = enums.EventType.IntensifierProperties;
             event.spellcaster = selfInfo;
-            event.isParallel=isPar;
+            event.isParallel=true;
             event.recipient = [];
     
             let indexs: number[] = [];

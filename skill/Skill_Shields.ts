@@ -4,7 +4,7 @@
  * 2023/9/30
  * 获得护盾(前后左右或自己)
  */
-import { _decorator, Component, debug, log, Node } from 'cc';
+import { _decorator, Component, debug, error, log, Node } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
@@ -64,7 +64,7 @@ export class Skill_Shields extends SkillBase
         }
         catch (error) 
         {
-            console.warn(this.res+"下的 UseSkill 错误");
+            console.warn(this.res+"下的 UseSkill 错误",error);
         }
         
     }
@@ -148,53 +148,67 @@ export class Skill_Shields extends SkillBase
         } 
         catch (error) 
         {
-            console.warn(this.res+"下的 SkillEffect 错误");
+            console.warn(this.res+"下的 SkillEffect_1 错误",error);
         }
         
     }
     
     SkillEffect_2(selfInfo: RoleInfo, battle: Battle,isPar:boolean):void    //随机对象生效
     {
-        let teamTemp: Role[] = null;
-        let recipientRoles: Role[] = null;
-        let event = new Event();
-        event.isParallel = isPar;
-        event.eventSound = this.eventSound;
-        event.spellcaster = selfInfo;
-        event.type = enums.EventType.GiveShields;
-
-        if (enums.Camp.Self == selfInfo.camp)
+        try
         {
-            teamTemp = battle.GetSelfTeam().GetRoles();
-        }
-        if (enums.Camp.Enemy == selfInfo.camp)
-        {
-            teamTemp = battle.GetEnemyTeam().GetRoles();
-        }
-
-        while (recipientRoles.length < this.numberOfRole && teamTemp.length > 0) 
-        {
-            let index = random(0, teamTemp.length);
-            if (teamTemp[index].CheckDead() && !teamTemp[index].getShields())
+            console.log("给予护盾");
+            let teamTemp: Role[] = null;
+            let recipientRoles: Role[] = [];
+            let event = new Event();
+            event.isParallel = isPar;
+            event.eventSound = this.eventSound;
+            event.spellcaster = selfInfo;
+            event.type = enums.EventType.GiveShields;
+    
+            if (enums.Camp.Self == selfInfo.camp)
             {
-                continue;
+                teamTemp = battle.GetSelfTeam().GetRoles();
             }
-            recipientRoles.push(teamTemp[index]);
-            teamTemp.splice(index, 1);
+            if (enums.Camp.Enemy == selfInfo.camp)
+            {
+                teamTemp = battle.GetEnemyTeam().GetRoles();
+            }
+    
+            let i=0;
+            while (recipientRoles.length < this.numberOfRole && teamTemp.length > 0) 
+            {
+                let index = random(0, teamTemp.length);
+                if (teamTemp[index].CheckDead() && teamTemp[index].getShields() && i <= teamTemp.length)
+                {
+                    if(index == selfInfo.index)
+                    {
+                        i++;
+                        continue;
+                    }
+                }
+                if(i>teamTemp.length) break;
+                recipientRoles.push(teamTemp[index]);
+                teamTemp.splice(index, 1);
+            }
+    
+            for(let r of recipientRoles)
+            {
+                r.AddBuff(1,this.value);
+    
+                let roleInfo: RoleInfo = new RoleInfo();
+                roleInfo.camp = selfInfo.camp;
+                roleInfo.index = r.index;
+    
+                event.recipient.push(roleInfo);
+            }
+            event.value = [this.value];
+            battle.AddBattleEvent(event);
         }
-
-        for(let r of recipientRoles)
+        catch(error)
         {
-            r.AddBuff(1,this.value);
-
-            let roleInfo: RoleInfo = new RoleInfo();
-            roleInfo.camp = selfInfo.camp;
-            roleInfo.index = r.index;
-
-            event.recipient.push(roleInfo);
+            console.warn(this.res+"下的 SkillEffect_2 错误",error);
         }
-        event.value = [this.value];
-        battle.AddBattleEvent(event);
     }
 
 }
