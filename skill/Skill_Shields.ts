@@ -159,12 +159,13 @@ export class Skill_Shields extends SkillBase
         {
             console.log("给予护盾");
             let teamTemp: Role[] = null;
-            let recipientRoles: Role[] = [];
+            let recipientRoles = [];
             let event = new Event();
             event.isParallel = isPar;
             event.eventSound = this.eventSound;
             event.spellcaster = selfInfo;
             event.type = enums.EventType.GiveShields;
+            event.recipient=[];
     
             if (enums.Camp.Self == selfInfo.camp)
             {
