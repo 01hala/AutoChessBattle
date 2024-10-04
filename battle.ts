@@ -20,7 +20,6 @@ function splitEvs(evs:skill.Event[]) {
             case enums.EventType.RemoteInjured:
             case enums.EventType.AttackInjured:
             case enums.EventType.Syncope:
-            case enums.EventType.Exit:
             case enums.EventType.ChangeLocation:
             case enums.EventType.IntensifierProperties:
             case enums.EventType.SwapProperties:
