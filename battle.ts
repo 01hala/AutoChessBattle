@@ -165,7 +165,12 @@ export class Battle {
         console.log("tickInjuredEventChain evs:", evs);
         await this.on_event.call(null, evs);
 
-        this.tickSkill(evs);
+        this.tickSkill(evs);        
+        this.CheckRemoveDeadRole();
+        if (this.CheckEndBattle()) {
+            return;
+        }
+
         let _evs = this.evs.slice();
         this.evs = [];
         let [injuredEvs, normalEvs] = splitEvs(_evs);
@@ -173,7 +178,6 @@ export class Battle {
         await this.tickInjuredEventChain(normalEvs);
 
         this.CheckRemoveDeadRole();
-        
         if (this.CheckEndBattle()) {
             return;
         }
@@ -223,6 +227,10 @@ export class Battle {
             await this.tickInjuredEventChain(normalEvs);
 
             this.CheckRemoveDeadRole();
+            if (this.CheckEndBattle()) {
+                return;
+            }
+    
             _evs = this.evs.slice();
             this.evs = [];
             [injuredEvs, normalEvs] = splitEvs(_evs);
@@ -241,6 +249,12 @@ export class Battle {
 
         await this.on_event.call(null, evs);
         this.tickSkill(evs);
+        
+        this.CheckRemoveDeadRole();
+        if (this.CheckEndBattle()) {
+            return;
+        }
+
         let _evs = this.evs.slice();
         this.evs = [];
         let [injuredEvs, normalEvs] = splitEvs(_evs);
