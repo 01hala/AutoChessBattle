@@ -164,8 +164,8 @@ export class Battle {
 
         console.log("tickInjuredEventChain evs:", evs);
         await this.on_event.call(null, evs);
+        this.tickSkill(evs);  
 
-        this.tickSkill(evs);        
         this.CheckRemoveDeadRole();
         if (this.CheckEndBattle()) {
             return;
@@ -185,7 +185,6 @@ export class Battle {
         _evs = this.evs.slice();
         this.evs = [];
         [injuredEvs, normalEvs] = splitEvs(_evs);
-
         await this.tickInjuredEvent(injuredEvs);
         await this.tickInjuredEventChain(normalEvs);
     }
@@ -215,6 +214,7 @@ export class Battle {
         if (tmpPriorityEvs.length > 0) {
             this.tickSkill(tmpPriorityEvs);
 
+            this.CheckRemoveDeadRole();
             if (this.CheckEndBattle()) {
                 return;
             }
@@ -222,7 +222,6 @@ export class Battle {
             let _evs = this.evs.slice();
             this.evs = [];
             let [injuredEvs, normalEvs] = splitEvs(_evs);
-
             await this.tickInjuredEvent(injuredEvs);
             await this.tickInjuredEventChain(normalEvs);
 
@@ -234,7 +233,6 @@ export class Battle {
             _evs = this.evs.slice();
             this.evs = [];
             [injuredEvs, normalEvs] = splitEvs(_evs);
-
             await this.tickInjuredEvent(injuredEvs);
             await this.tickInjuredEventChain(normalEvs);
         }
@@ -258,7 +256,6 @@ export class Battle {
         let _evs = this.evs.slice();
         this.evs = [];
         let [injuredEvs, normalEvs] = splitEvs(_evs);
-
         await this.tickInjuredEvent(injuredEvs);
         await this.tickInjuredEventChain(normalEvs);
     }
@@ -423,7 +420,8 @@ export class Battle {
         await this.tickInjuredEvent(injuredEvs);
         await this.tickInjuredEventChain(normalEvs);
 
-        if (this.CheckRemoveDeadRole()) {
+        this.CheckRemoveDeadRole();
+        if (this.CheckEndBattle()) {
             return false;
         }
         
