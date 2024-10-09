@@ -74,6 +74,8 @@ export enum EventType
     BeforeHurt=30,
     /** 重复使用一次技能 */
     RepeatSkill=31,
+    /** 转移的伤害 */
+    TransferInjured=31,
 }
 
 export enum ChangeLocationType {

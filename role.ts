@@ -547,14 +547,14 @@ export class Role {
         if(scapegoat!=null)
         {
             scapegoat[0].ChangeProperties(enums.Property.HP,hp + scapegoat[1]);
-            scapegoat[0].sendHurtedEvent(enemy,damage,battle,Injured,isParallel);
+            scapegoat[0].sendHurtedEvent(enemy , damage , battle , enums.EventType.TransferInjured , isParallel);
+            damage=0;
         }
         else
         {
             this.ChangeProperties(enums.Property.HP, hp);
-            this.sendHurtedEvent(enemy, damage, battle, Injured,isParallel);
         }
-        
+        this.sendHurtedEvent(enemy, damage, battle, Injured,isParallel);
     }
 
     public AddBuff(_id:number , _value:number=0 , _round:number=1 , _frequency:number=0) 

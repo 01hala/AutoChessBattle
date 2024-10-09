@@ -109,6 +109,12 @@ export class Skill_SubstituteDamage extends SkillBase
             { 
                 this.event.isParallel = isPar;
                 this.event.spellcaster = selfInfo;
+                
+                let role=new RoleInfo();
+                role.index=recipientRole.index;
+                role.camp=recipientRole.selfCamp;
+
+                this.event.recipient.push(role);
                 this.event.type = battleEnums.EventType.SubstituteDamage;
                 this.event.value.push(this.value);
                 battle.AddBattleEvent(this.event);
