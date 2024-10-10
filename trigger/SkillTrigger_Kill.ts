@@ -37,16 +37,21 @@ export class SkillTrigger_Kill extends SkillTriggerBase {
                 if (enums.EventType.Syncope == element.type)
                 {
                     //console.log("CheckSkill element:", element, " selfInfo:", selfInfo);
-                    if (element.spellcaster == selfInfo)
+                    // if (element.spellcaster == selfInfo)
+                    // {
+                    //     for (let _r of element.recipient)
+                    //     {
+                    //         if (_r.camp != selfInfo.camp)
+                    //         {
+                    //             console.log("CheckSkill Kill!");
+                    //             return 1;
+                    //         }
+                    //     }
+                    // }
+                    if(element.recipient[0].index == selfInfo.index)
                     {
-                        for (let _r of element.recipient)
-                        {
-                            if (_r.camp != selfInfo.camp)
-                            {
-                                console.log("CheckSkill Kill!");
-                                return 1;
-                            }
-                        }
+                        console.log("CheckSkill Kill!");
+                        return 1;
                     }
                 } 
             }
