@@ -7,7 +7,8 @@ import * as common from "./common"
 import * as skill from './skill/skill_base'
 import * as role from './role'
 import * as team from './team'
-import * as enums from './enum'
+import * as battleEnums from './enum'
+import * as enums from '../../other/enums';
 
 function splitEvs(evs:skill.Event[]) {
     let injuredEvs:skill.Event[] = [];
@@ -17,12 +18,12 @@ function splitEvs(evs:skill.Event[]) {
     {
         switch (ev.type)
         {
-            case enums.EventType.RemoteInjured:
-            case enums.EventType.AttackInjured:
-            case enums.EventType.Syncope:
-            case enums.EventType.ChangeLocation:
-            case enums.EventType.IntensifierProperties:
-            case enums.EventType.SwapProperties:
+            case battleEnums.EventType.RemoteInjured:
+            case battleEnums.EventType.AttackInjured:
+            case battleEnums.EventType.Syncope:
+            case battleEnums.EventType.ChangeLocation:
+            case battleEnums.EventType.IntensifierProperties:
+            case battleEnums.EventType.SwapProperties:
                 {
                     injuredEvs.push(ev);
                 }
@@ -48,14 +49,17 @@ export class Battle {
     public faild = 0;
     public round = 0;
 
+    public gamemode:enums.GameMode;
+
     public on_event : ((evs:skill.Event[]) => Promise<void>) = null;
     public onPlaySound : (eventSound:string) => void;
     public onPlayerOnShot : (eventSound:string) => void;
     public onKillRole : (r:common.Role) => void;
 
-    public constructor(self:common.UserBattleData, target:common.UserBattleData) {
-        this.selfTeam = new team.Team(enums.Camp.Self, self, self.RoleList);
-        this.enemyTeam = new team.Team(enums.Camp.Enemy, target, target.RoleList);
+    public constructor(self:common.UserBattleData, target:common.UserBattleData , gamemode:enums.GameMode) 
+    {
+        this.selfTeam = new team.Team(battleEnums.Camp.Self, self, self.RoleList);
+        this.enemyTeam = new team.Team(battleEnums.Camp.Enemy, target, target.RoleList);
 
         this.selfTeam.onKillRole = (_r:common.Role) => {
             if (this.onKillRole) {
@@ -71,6 +75,7 @@ export class Battle {
         this.victory = self.victory;
         this.faild = self.faild;
         this.round = self.round;
+        this.gamemode=gamemode;
     }
 
     public GetSelfTeam() : team.Team {
@@ -87,7 +92,7 @@ export class Battle {
 
     public StartBattle() {
         let ev = new skill.Event();
-        ev.type = enums.EventType.BattleBegin;
+        ev.type = battleEnums.EventType.BattleBegin;
         console.log("推送战斗开始事件");
         this.AddBattleEvent(ev);
     }
@@ -114,7 +119,7 @@ export class Battle {
             enemy.Attack(self, this);
 
             let ev = new skill.Event();
-            ev.type = enums.EventType.AfterAttack;
+            ev.type = battleEnums.EventType.AfterAttack;
             ev.spellcaster=new skill.RoleInfo();
             ev.spellcaster.camp=self.selfCamp;
             ev.spellcaster.index=self.index;
@@ -122,7 +127,7 @@ export class Battle {
             this.AddBattleEvent(ev);
 
             ev = new skill.Event();
-            ev.type = enums.EventType.AfterAttack;
+            ev.type = battleEnums.EventType.AfterAttack;
             ev.spellcaster=new skill.RoleInfo();
             ev.spellcaster.camp=enemy.selfCamp;
             ev.spellcaster.index=enemy.index;
@@ -133,20 +138,20 @@ export class Battle {
         console.log("battle end!");
     }
 
-    public GetWinCamp() : enums.Camp {
+    public GetWinCamp() : battleEnums.Camp {
         if (!this.CheckEndBattle()){
-            return enums.Camp.None;
+            return battleEnums.Camp.None;
         }
 
         if (this.selfTeam.CheckDefeated() && this.enemyTeam.CheckDefeated()) {
-            return enums.Camp.Tie;
+            return battleEnums.Camp.Tie;
         }
 
         if (this.selfTeam.CheckDefeated()) {
-            return enums.Camp.Enemy;
+            return battleEnums.Camp.Enemy;
         }
 
-        return enums.Camp.Self;
+        return battleEnums.Camp.Self;
     }
 
     public CheckEndBattle() : boolean {
@@ -270,7 +275,7 @@ export class Battle {
         console.log("战斗事件中角色攻击力:")
         
         roleInfo.index =  role.index;
-        roleInfo.camp = enums.Camp.Self;
+        roleInfo.camp = battleEnums.Camp.Self;
         let p = 0;
         let skillImpl: skill.SkillBase = null;
         for(let skill of role.skill) {
@@ -330,7 +335,7 @@ export class Battle {
             console.log("战斗事件中角色攻击力:")
             
             roleInfo.index =  role.index;
-            roleInfo.camp = enums.Camp.Self;
+            roleInfo.camp = battleEnums.Camp.Self;
             let p = 0;
             let skillImpl: skill.SkillBase = null;
             let isPar=false;
@@ -369,7 +374,7 @@ export class Battle {
             roleInfo.properties=role.GetProperties();
             
             roleInfo.index =  role.index;
-            roleInfo.camp = enums.Camp.Enemy;
+            roleInfo.camp = battleEnums.Camp.Enemy;
             let p = 0;
             let skillImpl: skill.SkillBase = null;
             let isPar=false;
@@ -398,7 +403,7 @@ export class Battle {
     {
         for(let ev of evs)
         {
-            if(enums.EventType.RepeatSkill ==  ev.type)
+            if(battleEnums.EventType.RepeatSkill ==  ev.type)
             {
                 for(let roleinfo of ev.recipient)
                 {
@@ -432,7 +437,7 @@ export class Battle {
             if(self && enemy)
             {
                 let ev = new skill.Event();
-                ev.type = enums.EventType.BeforeAttack;
+                ev.type = battleEnums.EventType.BeforeAttack;
                 ev.spellcaster = new skill.RoleInfo();
                 ev.spellcaster.camp = self.selfCamp;
                 ev.spellcaster.index = self.index;
@@ -440,7 +445,7 @@ export class Battle {
                 this.AddBattleEvent(ev);
     
                 ev = new skill.Event();
-                ev.type = enums.EventType.BeforeAttack;
+                ev.type = battleEnums.EventType.BeforeAttack;
                 ev.spellcaster = new skill.RoleInfo();
                 ev.spellcaster.camp = enemy.selfCamp;
                 ev.spellcaster.index = enemy.index;
