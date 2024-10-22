@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, Node } from 'cc';
 const { ccclass, property } = _decorator;
-import * as enums from '../enum';
+import * as enums from '../BattleEnums';
 import { Event, RoleInfo, SkillTriggerBase } from '../skill/skill_base';
 import { Battle } from '../battle';
 

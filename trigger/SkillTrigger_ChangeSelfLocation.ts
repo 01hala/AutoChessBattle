@@ -1,6 +1,6 @@
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import * as enums from '../enum';
+import * as enums from '../BattleEnums';
 const { ccclass, property } = _decorator;
 
 @ccclass('SkillTrigger_ChangeSelfLocation_12')

@@ -9,7 +9,7 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role} from '../role';
-import * as enums from '../enum';
+import * as enums from '../BattleEnums';
 import { random } from '../util';
 import { Buffer } from '../buffer/buffer';
 import { Direction } from '../common';

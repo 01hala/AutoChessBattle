@@ -14,6 +14,7 @@ import * as task_config from './task_config';
 import * as SkillIntroduce_config from './SkillIntroduce_config'
 import * as  FetterIntroduceConfig from './FetterIntroduce_config';
 import * as PlotConfig from "./Plot_config";
+import * as pvevent_config from './pvevent_config';
 
 export class config {
     public static MechanicFetters = 6;
@@ -29,6 +30,7 @@ export class config {
     public static SkillIntroduceConfig:Map<number,SkillIntroduce_config.SkillIntroduceConfig>;
     public static FetterIntroduceConfig:Map<number,FetterIntroduceConfig.FetterIntroduceConfig>;
     public static PlotConfig:Map<number,PlotConfig.PlotConfig>;
+    public static PVEventConfig:Map<number,pvevent_config.PVEventConfig>;
 
     public static async load()
     {
@@ -42,6 +44,7 @@ export class config {
         config.TaskConfig = await task_config.LoadTaskConfig();
         config.SkillIntroduceConfig = await SkillIntroduce_config.LoadSkillIntroduceConfig();
         config.FetterIntroduceConfig = await FetterIntroduceConfig.LoadFetterIntroduceConfig();
+        config.PVEventConfig=await pvevent_config.LoadPVEventConfig();
         //config.PlotConfig = await PlotConfig.LoadPlotConfig();
     }
 }

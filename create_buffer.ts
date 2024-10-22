@@ -4,7 +4,7 @@
  * 2023/10/3
  */
 import * as config from './config/config'
-import * as enums from './enum'
+import * as enums from './BattleEnums'
 import * as buffer from './buffer/buffer'
 
 export function CreateBuff(bufferID:number, value?:number , round?:number ,frequency?:number) : buffer.Buffer 

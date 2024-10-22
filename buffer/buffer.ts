@@ -3,7 +3,7 @@
  * author: qianqians
  * 2023/9/30
  */
-import * as enums from '../enum';
+import * as enums from '../BattleEnums';
 
 export class Buffer {
     public BufferType : enums.BufferType;

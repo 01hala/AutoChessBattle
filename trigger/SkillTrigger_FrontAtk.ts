@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import * as enums from '../enum';
+import * as enums from '../BattleEnums';
 import { Direction } from '../common';
 
 export class SkillTrigger_FrontAtk extends SkillTriggerBase

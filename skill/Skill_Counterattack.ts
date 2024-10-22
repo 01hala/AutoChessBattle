@@ -9,7 +9,7 @@ import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
-import * as enums from '../enum'
+import * as enums from '../BattleEnums'
 
 export class Skill_Counterattack extends SkillBase 
 {

@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, debug, log, Node, random } from 'cc';
 import { SkillBase,Event, RoleInfo,SkillTriggerBase } from '../skill/skill_base';
-import { Camp, EventType, SkillType } from '../enum';
+import { Camp, EventType, SkillType } from '../BattleEnums';
 
 export class SkillTrigger_AfterAtk extends SkillTriggerBase
 {    

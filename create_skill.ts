@@ -4,7 +4,7 @@
  * 2023/10/3
  */
 import * as config from './config/config'
-import * as enums from './enum'
+import * as enums from './BattleEnums'
 import * as common from './common'
 import * as skill from './skill/skill_base'
 import * as Skill_AddTmpExp from './skill/Skill_AddTmpExp'
