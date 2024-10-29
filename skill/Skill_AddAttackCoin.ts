@@ -17,6 +17,7 @@ export class Skill_AddAttackCoin extends SkillBase
     public res:string="battle/skill/Skill_RemoteAtk.ts/Skill_AddCoin";
 
     private eventSound:string;
+    private count:number;
 
     /**
      * 
@@ -26,15 +27,17 @@ export class Skill_AddAttackCoin extends SkillBase
     {
         super(priority);
         this.eventSound = eventSound;
+        this.count = 0;
     }
 
     UseSkill(selfInfo: RoleInfo, battle: Battle, isParallel: boolean, evs?: Event[]): void
     {
         try
         {
-            if (enums.Camp.Self == selfInfo.camp)
+            if (enums.Camp.Self == selfInfo.camp && this.count < 2)
             {
-                battle.addCoin += 1;
+                battle.addCoin++;
+                this.count++;
             }
         }
         catch(error)
