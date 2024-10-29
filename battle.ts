@@ -48,6 +48,7 @@ export class Battle {
     public victory = 0;
     public faild = 0;
     public round = 0;
+    public addCoin = 0;
 
     public gamemode:enums.GameMode;
 

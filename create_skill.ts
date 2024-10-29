@@ -21,6 +21,7 @@ import * as Skill_SubstituteDamage from './skill/Skill_SubstituteDamage'
 import * as Skill_Summon from './skill/Skill_Summon'
 import * as Skill_SwapProperties from './skill/Skill_SwapProperties'
 import * as Skill_AddBuff from './skill/Skill_AddBuff'
+import * as Skill_AddAttackCoin from './skill/Skill_AddAttackCoin'
 
 export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
     let skillConfig = config.config.SkillConfig.get(skillID);
@@ -168,6 +169,11 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
         case common.SkillEffectEM.AddBuffer:
             {
                 skillObj = new Skill_AddBuff.Skill_AddBuff(skillConfig.Priority , skillConfig.AddBufferID, value0 , value1 , ObjCount);
+            }
+            break;
+        case common.SkillEffectEM.AttackCoin:
+            {
+                skillObj = new Skill_AddAttackCoin.Skill_AddAttackCoin(skillConfig.Priority);
             }
             break;
     }

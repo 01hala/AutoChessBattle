@@ -1,0 +1,47 @@
+/*
+ * Skill_AddBuff.ts
+ * author: Hotaru
+ * 2023/08/21
+ * 套buff
+ */
+import { _decorator, Component, Node } from 'cc';
+import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
+import * as enums from '../BattleEnums';
+import { Battle } from '../battle';
+import { Role } from '../role';
+import { random } from '../util';
+import * as config from '../config/config';
+
+export class Skill_AddAttackCoin extends SkillBase 
+{
+    public res:string="battle/skill/Skill_RemoteAtk.ts/Skill_AddCoin";
+
+    private eventSound:string;
+
+    /**
+     * 
+     * @param priority 优先权
+     */
+    constructor(priority:number, eventSound?:string)
+    {
+        super(priority);
+        this.eventSound = eventSound;
+    }
+
+    UseSkill(selfInfo: RoleInfo, battle: Battle, isParallel: boolean, evs?: Event[]): void
+    {
+        try
+        {
+            if (enums.Camp.Self == selfInfo.camp)
+            {
+                battle.addCoin += 1;
+            }
+        }
+        catch(error)
+        {
+            console.warn(this.res+"下的 UseSkill 错误");
+        }
+    }
+}
+
+
