@@ -108,9 +108,9 @@ export enum BufferType {
     InevitableKill = 1,
     ShareDamage = 2,
     OffsetDamage = 3,
-    ReductionAtk = 4,
+    Weak = 4,
     ReductionDamage = 5,
-    intensifierAtk = 6,
+    Strength = 6,
     Shields = 7,
 }
 

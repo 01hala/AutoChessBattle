@@ -293,7 +293,7 @@ export class Role {
 
     private checkReductionAtk() : number {
         for (let b of this.buffer) {
-            if (enums.BufferType.ReductionAtk == b.BufferType && b.Round > 0) {
+            if (enums.BufferType.Weak == b.BufferType && b.Round > 0) {
                 --b.Round;
                 return b.Value;
             }
@@ -376,7 +376,7 @@ export class Role {
 
         for(let b of this.buffer)
         {
-            if(enums.BufferType.intensifierAtk == b.BufferType && b.Round > 0)
+            if(enums.BufferType.Strength == b.BufferType && b.Round > 0)
             {
                 return b.Value;
             }
