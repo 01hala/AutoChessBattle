@@ -12,7 +12,10 @@ export class RoleSpConfig
     public Id: number;
     public IntensifierSelf:string;
     public OnSummon:string;
-    public Skill:string;
+    public UseSkill:string;
+    public IntensifierColony:string;
+    public Buff:string[];
+    public CheckSkill:string[];
 }
 
 export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
@@ -38,7 +41,12 @@ export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
                 cfg.Id = v["Id"];
                 cfg.IntensifierSelf = v["IntensifierSelf"];
                 cfg.OnSummon = v["OnSummon"];
-                cfg.Skill = v["Skill"];
+                cfg.UseSkill = v["Skill"];
+                cfg.IntensifierColony=v["intensifierColony"];
+                let tlist=v["buff"];
+                cfg.Buff=tlist.split('|');
+                tlist=v["checkSkill"];
+                cfg.CheckSkill=tlist.split('|');
     
                 map.set(parseInt(k), cfg);
             });

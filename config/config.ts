@@ -16,7 +16,7 @@ import * as  FetterIntroduceConfig from './FetterIntroduce_config';
 import * as PlotConfig from "./Plot_config";
 import * as pvevent_config from './pvevent_config';
 import * as RoleSp_config from './RoleSp_config';
-import * as RoleSpList_config from './RoleSpList_config';
+import * as SpList_config from './SpList_config';
 
 export class config {
     public static MechanicFetters = 6;
@@ -34,7 +34,7 @@ export class config {
     public static PlotConfig:Map<number,PlotConfig.PlotConfig>;
     public static PVEventConfig:Map<number,pvevent_config.PVEventConfig>;
     public static RoleSpConfig:Map<number,RoleSp_config.RoleSpConfig>;
-    public static RoleSpListConfig:Map<string,RoleSpList_config.RoleSp>;
+    public static SpListConfig:Map<string,SpList_config.SpEffect>;
 
     public static async load()
     {
@@ -50,7 +50,7 @@ export class config {
         config.FetterIntroduceConfig = await FetterIntroduceConfig.LoadFetterIntroduceConfig();
         config.PVEventConfig=await pvevent_config.LoadPVEventConfig();
         config.RoleSpConfig=await RoleSp_config.LoadRoleSpConfig();
-        config.RoleSpListConfig=await RoleSpList_config.LoadRoleSpConfig();
+        config.SpListConfig=await SpList_config.LoadSpConfig();
         //config.PlotConfig = await PlotConfig.LoadPlotConfig();
     }
 }

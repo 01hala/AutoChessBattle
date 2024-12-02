@@ -7,7 +7,7 @@ import { Direction, Priority } from '../common';
  * @author Hotaru
  * @CreateTime 2024/11/30
  */
-export class RoleSp
+export class SpEffect
 {
     public Id: number;
     public key:string;
@@ -15,11 +15,11 @@ export class RoleSp
     public name:string;
 }
 
-export async function LoadRoleSpConfig() : Promise<Map<string, RoleSp>>
+export async function LoadSpConfig() : Promise<Map<string, SpEffect>>
 {
     return new Promise((resolve)=>
     {
-        let map = new Map<string, RoleSp>();
+        let map = new Map<string, SpEffect>();
 
         console.log("Load RoleSp begin!");
         resources.load('config/RoleSpList', (err: any, res: JsonAsset) => 
@@ -34,7 +34,7 @@ export async function LoadRoleSpConfig() : Promise<Map<string, RoleSp>>
             {
                 let v = jsonData[k];
     
-                let cfg = new RoleSp();
+                let cfg = new SpEffect();
                 cfg.Id = v["Id"];
                 cfg.key = v["Key"];
                 cfg.path = v["Path"];
