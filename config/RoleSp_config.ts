@@ -25,7 +25,7 @@ export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
         let map = new Map<number, RoleSpConfig>();
 
         console.log("Load RoleSpEffect Config begin!");
-        resources.load('config/RoleSpEffect', (err: any, res: JsonAsset) => 
+        resources.load('config/RoleSp', (err: any, res: JsonAsset) => 
         {
             if (err) {
                 error(err.message || err);
