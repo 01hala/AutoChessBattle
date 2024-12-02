@@ -12,7 +12,6 @@ export class RoleSpConfig
     public Id: number;
     public IntensifierSelf:string;
     public OnSummon:string;
-    public SpecialBattle:string;
     public Skill:string;
 }
 
@@ -39,7 +38,6 @@ export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
                 cfg.Id = v["Id"];
                 cfg.IntensifierSelf = v["IntensifierSelf"];
                 cfg.OnSummon = v["OnSummon"];
-                cfg.SpecialBattle = v["SpecialBattle"];
                 cfg.Skill = v["Skill"];
     
                 map.set(parseInt(k), cfg);
