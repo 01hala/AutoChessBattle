@@ -41,7 +41,7 @@ export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
                 cfg.Id = v["Id"];
                 cfg.IntensifierSelf = v["IntensifierSelf"];
                 cfg.OnSummon = v["OnSummon"];
-                cfg.UseSkill = v["Skill"];
+                cfg.UseSkill = v["Skill"]?v["Skill"]:"null";
                 cfg.IntensifierColony=v["intensifierColony"];
                 let tlist=v["buff"];
                 cfg.Buff=tlist.split('|');
