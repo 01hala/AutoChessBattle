@@ -65,7 +65,7 @@ export function CreateFetters(level:number, fettersID:number) : skill.SkillBase 
             }
             else
             {
-                skillObj=new Skill_RemoteAtk.Skill_RemoteAtkPre(fettersConfig.Priority, count, value0, false , null,fettersConfig.FetterAudio);
+                skillObj=new Skill_RemoteAtk.Skill_RemoteAtkPre(fettersConfig.Priority, count, value0,null,fettersConfig.FetterAudio);
             }
         }
         break;

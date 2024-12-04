@@ -134,7 +134,7 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
                     case enums.SwapPropertiesType.RandomSwap:
                     case enums.SwapPropertiesType.SelfSwap:
                         {
-                            skillObj = new Skill_SwapProperties.Skill_SwapProperties(skillConfig.Priority, skillConfig.SwapPropertiesType, value0, value1);
+                            skillObj = new Skill_SwapProperties.Skill_SwapProperties(skillConfig.Priority, skillConfig.SwapPropertiesType ,0 , value0, value1);
                         }
                         break;
                     case enums.SwapPropertiesType.HpSwap:

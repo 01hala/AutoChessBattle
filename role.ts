@@ -199,7 +199,7 @@ export class Role {
                     battle.GetEnemyTeam().ReSetAttackRole();
                 }
             }
-            this.foeRoleIndex=enemy.index;
+            this.foeRoleIndex=enemy.selfCamp!=this.selfCamp?enemy.index:null;
             let ev = new skill.Event();
             ev.type = enums.EventType.Syncope;
             ev.spellcaster = new skill.RoleInfo();
@@ -493,29 +493,51 @@ export class Role {
         }
         
         let list = this.getShareDamageArray(battle);
-        let substituteTuple = this.getSubstituteDamage(battle);
-        let substitute = null;
-        let value = 0;
-        if (substituteTuple) {
-            substitute=substituteTuple[0];
-            value=substituteTuple[1];
-        }
+        //let substituteTuple = this.getSubstituteDamage(battle);
+       // let substitute = null;
+       // let value = 0;
+        //if (substituteTuple) {
+        //    substitute=substituteTuple[0];
+        //    value=substituteTuple[1];
+        //}
         let damage = enemy.GetProperty(enums.Property.Attack) + enemy.getintensifierAtk() / list.length;
         console.log("role Attack list.length:", list.length + " camp:", this.selfCamp);
-        for (let r of list) {
-            if (null != substitute && this == r) {
-                //console.log("role substitute!");
-                substitute.BeHurted(damage-value, enemy, battle, enums.EventType.AttackInjured);
-            }
-            else {
-                if (enemy.checkInevitableKill() && this == r) {
-                    //console.log("role checkInevitableKill continue!");
-                    continue;
+        if(1 == list.length)
+        {
+            this.BeHurted(damage,enemy, battle, enums.EventType.AttackInjured);
+        }
+        else
+        {
+            for(let r of list)
+            {
+                if(this == r)
+                {
+                    r.BeHurted(damage,enemy, battle, enums.EventType.AttackInjured);
                 }
-                //console.log("role AttackInjured!");
-                r.BeHurted(damage-value, enemy, battle, enums.EventType.AttackInjured);
+                else
+                {
+                    r.BeHurted(damage,this, battle, enums.EventType.RemoteInjured,true);
+                }
             }
         }
+        // for (let r of list)
+        // {
+        //     if (null != substitute && this == r)
+        //     {
+        //         //console.log("role substitute!");
+        //         substitute.BeHurted(damage - value, enemy, battle, enums.EventType.AttackInjured);
+        //     }
+        //     else
+        //     {
+        //         if (enemy.checkInevitableKill() && this == r)
+        //         {
+        //             //console.log("role checkInevitableKill continue!");
+        //             continue;
+        //         }
+        //         //console.log("role AttackInjured!");
+        //         r.BeHurted(damage - value, enemy, battle, enums.EventType.AttackInjured);
+        //     }
+        // }
 
         this.attackCnt++;
     }

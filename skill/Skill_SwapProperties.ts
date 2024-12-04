@@ -20,9 +20,10 @@ export class Skill_SwapProperties extends SkillBase
     event:Event=new Event();
 
     private type:enums.SwapPropertiesType;
+    private count:number
     private index1:number;
     private index2:number;
-    public constructor(priority:number, type:enums.SwapPropertiesType, swapper1:number,swapper2:number) {
+    public constructor(priority:number, type:enums.SwapPropertiesType, count:number ,swapper1:number,swapper2:number) {
         super(priority);
 
         this.type = type;
@@ -132,6 +133,11 @@ export class Skill_SwapProperties extends SkillBase
         {
             console.warn(this.res+"下的 SkillEffect 错误", error);
         }
+    }
+
+    private SkillEffect_2(selfInfo: RoleInfo, battle: Battle,isPar:boolean)
+    {
+
     }
 }
 

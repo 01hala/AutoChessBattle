@@ -43,6 +43,9 @@ export class Battle {
     private selfTeam : team.Team;
     private enemyTeam : team.Team;
 
+    private selfBattleData:common.UserBattleData;
+    private enemtBattleData:common.UserBattleData;
+
     public evs:skill.Event[] = [];
 
     public victory = 0;
@@ -57,10 +60,13 @@ export class Battle {
     public onPlayerOnShot : (eventSound:string) => void;
     public onKillRole : (r:common.Role) => void;
 
-    public constructor(self:common.UserBattleData, target:common.UserBattleData , gamemode:enums.GameMode) 
+    public constructor(self:common.UserBattleData, enemy:common.UserBattleData , gamemode:enums.GameMode) 
     {
+        this.selfBattleData=self;
+        this.enemtBattleData=enemy;
+
         this.selfTeam = new team.Team(battleEnums.Camp.Self, self, self.RoleList);
-        this.enemyTeam = new team.Team(battleEnums.Camp.Enemy, target, target.RoleList);
+        this.enemyTeam = new team.Team(battleEnums.Camp.Enemy, enemy, enemy.RoleList);
 
         this.selfTeam.onKillRole = (_r:common.Role) => {
             if (this.onKillRole) {
