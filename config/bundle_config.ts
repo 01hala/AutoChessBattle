@@ -9,6 +9,7 @@ import { JsonAsset, resources, error } from 'cc';
 export class BundleConfig 
 {
     public ID:number;
+    public Type:number;
     public Name:string;
     public URL:string;
     public Path:string;
@@ -32,6 +33,7 @@ export async function LoadBundleConfig() : Promise<Map<number, BundleConfig >> {
                 let bundlec = new BundleConfig();
 
                 bundlec.ID=v["ID"];
+                bundlec.Type=v["Type"];
                 bundlec.Name=v["Name"];
                 bundlec.URL=v["URL"];
                 bundlec.Path=v["Path"];
