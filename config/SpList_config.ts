@@ -22,7 +22,7 @@ export async function LoadSpConfig() : Promise<Map<string, SpEffect>>
         let map = new Map<string, SpEffect>();
 
         console.log("Load RoleSp begin!");
-        resources.load('config/RoleSpList', (err: any, res: JsonAsset) => 
+        resources.load('config/SpList', (err: any, res: JsonAsset) => 
         {
             if (err) {
                 error(err.message || err);
