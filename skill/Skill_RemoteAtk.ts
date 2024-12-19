@@ -60,7 +60,7 @@ export class Skill_RemoteAtk extends SkillBase
             }
             if(evs)
             {
-                let ev:Event;
+                let ev:Event=null;
                 for(let e of evs)
                 {
                     if(enums.EventType.ChangeLocation == e.type || enums.EventType.Summon)
@@ -69,7 +69,10 @@ export class Skill_RemoteAtk extends SkillBase
                         break;
                     }
                 }
-                this.SkillEffect_3(selfInfo,battle,isParallel,ev);
+                if(ev)
+                {
+                    this.SkillEffect_3(selfInfo,battle,isParallel,ev);
+                }
             }
             if(this.numberOfRole == 6)
             {
@@ -79,7 +82,7 @@ export class Skill_RemoteAtk extends SkillBase
         } 
         catch (error) 
         {
-            console.warn(this.res+"下的 UseSkill 错误");
+            console.error(this.res+"下的 UseSkill 错误:",error);
         }   
     }
 
@@ -126,8 +129,7 @@ export class Skill_RemoteAtk extends SkillBase
         }
         catch (error) 
         {
-            console.warn(this.res+"下的 SkillEffect 错误");
-            console.log(error);
+            console.error(this.res+"下的 SkillEffect_1 错误:",error);
         }
     }
 
@@ -169,39 +171,46 @@ export class Skill_RemoteAtk extends SkillBase
 
     private SkillEffect_3(selfInfo: RoleInfo, battle: Battle,isPar:boolean , ev:Event)        //指定对象
     {
-        let self:Role = null;
-        let enemyRoles:Role[] = battle.GetEnemyTeam().GetRoles();
-        
-        if (enums.Camp.Self == selfInfo.camp)
+        try
         {
-            self = battle.GetSelfTeam().GetRole(selfInfo.index);
-            enemyRoles=battle.GetEnemyTeam().GetRoles();
-        }
-        if (enums.Camp.Enemy == selfInfo.camp)
-        {
-            self = battle.GetEnemyTeam().GetRole(selfInfo.index);
-            enemyRoles=battle.GetSelfTeam().GetRoles();
-        }
+            let self: Role = null;
+            let enemyRoles: Role[] = battle.GetEnemyTeam().GetRoles();
 
-        let recipientRoles:Role[] = [];
-        
-
-        for(let t of ev.recipient)
-        {
-            for(let r of enemyRoles)
+            if (enums.Camp.Self == selfInfo.camp)
             {
-                if(t.index == r.index && t.camp == r.selfCamp)
+                self = battle.GetSelfTeam().GetRole(selfInfo.index);
+                enemyRoles = battle.GetEnemyTeam().GetRoles();
+            }
+            if (enums.Camp.Enemy == selfInfo.camp)
+            {
+                self = battle.GetEnemyTeam().GetRole(selfInfo.index);
+                enemyRoles = battle.GetSelfTeam().GetRoles();
+            }
+
+            let recipientRoles: Role[] = [];
+
+
+            for (let t of ev.recipient)
+            {
+                for (let r of enemyRoles)
                 {
-                    recipientRoles.push(r);
+                    if (t.index == r.index && t.camp == r.selfCamp)
+                    {
+                        recipientRoles.push(r);
+                    }
                 }
             }
-        }
 
-        for(let role of recipientRoles)
-        {
-            if (!role.CheckDead()) {
-                role.BeHurted(this.attack, self, battle , enums.EventType.RemoteInjured , isPar);
+            for (let role of recipientRoles)
+            {
+                if (!role.CheckDead())
+                {
+                    role.BeHurted(this.attack, self, battle, enums.EventType.RemoteInjured, isPar);
+                }
             }
+        } catch (error)
+        {
+            console.error(this.res+"下的 SkillEffect_3 错误:",error);
         }
     }
 
