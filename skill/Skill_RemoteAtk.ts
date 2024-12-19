@@ -58,22 +58,22 @@ export class Skill_RemoteAtk extends SkillBase
             {
                 this.SkillEffect_2(selfInfo,battle);
             }
-            if(evs)
-            {
-                let ev:Event=null;
-                for(let e of evs)
-                {
-                    if(enums.EventType.ChangeLocation == e.type || enums.EventType.Summon)
-                    {
-                        ev=e;
-                        break;
-                    }
-                }
-                if(ev)
-                {
-                    this.SkillEffect_3(selfInfo,battle,isParallel,ev);
-                }
-            }
+            // if (evs)
+            // {
+            //     let ev: Event = null;
+            //     for (let e of evs)
+            //     {
+            //         if (enums.EventType.ChangeLocation == e.type || enums.EventType.Summon)
+            //         {
+            //             ev = e;
+            //             break;
+            //         }
+            //     }
+            //     if (ev)
+            //     {
+            //         this.SkillEffect_3(selfInfo, battle, isParallel, ev);
+            //     }
+            // }
             if(this.numberOfRole == 6)
             {
                 this.SkillEffect_4(selfInfo,battle);
@@ -95,6 +95,14 @@ export class Skill_RemoteAtk extends SkillBase
             let recipientRoles:Role[] = new Array();
             let self:Role = null;
             let enemyRoles:Role[] = null;
+
+            let event = new Event();
+            event.type = enums.EventType.RemoteInjured;
+            event.spellcaster = selfInfo;
+            event.spellcaster.camp = selfInfo.camp;
+            event.spellcaster.index = selfInfo.index;
+            event.recipient = [];
+            event.value=[this.attack];
 
             if(enums.Camp.Self==selfInfo.camp)
             {
@@ -119,13 +127,20 @@ export class Skill_RemoteAtk extends SkillBase
                 recipientRoles.push(enemyRoles[index]);
                 enemyRoles.splice(index, 1);
             }
-            recipientRoles.forEach((role)=>{
-                if (!role.CheckDead()) {
-                    role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,isPar);
+            recipientRoles.forEach((role) =>
+            {
+                console.log("Skill_RemoteAtk_1 远程攻击角色受伤 :", this.attack);
+                if (!role.CheckDead())
+                {
+                    role.BeHurted(this.attack, self, battle, null, isPar);
                 }
-                console.log("Skill_RemoteAtk_3 远程攻击角色受伤 :",this.attack);
-            });
 
+                let roleInfo=new RoleInfo();
+                roleInfo.index=role.index;
+                roleInfo.camp=role.selfCamp;
+                event.recipient.push(roleInfo);
+            });
+            battle.AddBattleEvent(event);
         }
         catch (error) 
         {
@@ -136,6 +151,14 @@ export class Skill_RemoteAtk extends SkillBase
     private SkillEffect_2(selfInfo: RoleInfo, battle: Battle)         //场上全部生效
     {
         let self:Role=null;
+
+        let event = new Event();
+        event.type = enums.EventType.RemoteInjured;
+        event.spellcaster = selfInfo;
+        event.spellcaster.camp = selfInfo.camp;
+        event.spellcaster.index = selfInfo.index;
+        event.recipient = [];
+        event.value = [this.attack];
 
         if(enums.Camp.Self==selfInfo.camp)
         {
@@ -162,11 +185,17 @@ export class Skill_RemoteAtk extends SkillBase
         //同时发射子弹,同时受伤
         for(let role of recipientRoles)
         {
-            if (!role.CheckDead()) {
-                role.BeHurted(this.attack, self, battle,enums.EventType.RemoteInjured,true);       //强制并发
+            if (!role.CheckDead())
+            {
+                role.BeHurted(this.attack, self, battle, enums.EventType.RemoteInjured);       //强制并发
             }
-        }
 
+            let roleInfo=new RoleInfo();
+            roleInfo.index=role.index;
+            roleInfo.camp=role.selfCamp;
+            event.recipient.push(roleInfo);
+        }
+        battle.AddBattleEvent(event);
     }
 
     private SkillEffect_3(selfInfo: RoleInfo, battle: Battle,isPar:boolean , ev:Event)        //指定对象
@@ -219,6 +248,13 @@ export class Skill_RemoteAtk extends SkillBase
         let self:Role=null;
         let enemyRoles:Role[] = null;
 
+        let event: Event = new Event();
+        event.isParallel = false;
+        event.eventSound = this.eventSound;
+        event.spellcaster = selfInfo;
+        event.type = enums.EventType.UsedSkill;
+        event.value=[this.attack];
+
         if (enums.Camp.Self == selfInfo.camp)
         {
             self = battle.GetSelfTeam().GetRole(selfInfo.index);
@@ -232,16 +268,23 @@ export class Skill_RemoteAtk extends SkillBase
 
         for (let role of enemyRoles)
         {
-            if (!role.CheckDead()) {
-                role.BeHurted(this.attack, self, battle, enums.EventType.RemoteInjured, true);       //强制并发
+            if (!role.CheckDead())
+            {
+                role.BeHurted(this.attack, self, battle, null);
             }
+
+            let roleInfo = new RoleInfo();
+            roleInfo.index = role.index;
+            roleInfo.camp = role.selfCamp;
+            event.recipient.push(roleInfo);
         }
+        battle.AddBattleEvent(event);
     }
 }
 
 
 /*
- * Skill_RemoteAtk_3_1
+ * Skill_RemoteAtkPre
  * author: Hotaru
  * 2023/11/2
  * 对N敌方随机单位造成M点远程伤害(百分比)
@@ -322,11 +365,21 @@ export class Skill_RemoteAtkPre extends SkillBase
             let self:Role = null;
             let enemyRoles:Role[] = null;
 
+            let event = new Event();
+            event.type = enums.EventType.RemoteInjured;
+            event.spellcaster = selfInfo;
+            event.spellcaster.camp = selfInfo.camp;
+            event.spellcaster.index = selfInfo.index;
+            event.recipient = [];
+
             attack=Math.round(attack);                                          //四舍五入
             if(attack<1)
             {
                 attack=1;
             }
+
+            event.value=[attack];
+            
             console.log("try to use remote Skill_RemoteAtk_3_1 attack:", attack);
 
             if(enums.Camp.Self==selfInfo.camp)
@@ -343,24 +396,6 @@ export class Skill_RemoteAtkPre extends SkillBase
             let i=0
             while (recipientRoles.length < this.numberOfRole && enemyRoles.length > 0)
             {
-                //let targetRole:Role;
-                // switch (this.dir)
-                // {
-                //     case Direction.Back:
-                //         if (enums.Camp.Self == selfInfo.camp)
-                //         {
-                //             targetRole = battle.GetSelfTeam().GetRole(selfInfo.index + 3);
-                //         }
-                //         else
-                //         {
-                //             targetRole = battle.GetEnemyTeam().GetRole(selfInfo.index + 3);
-                //         }
-                //         break;
-                //     case Direction.None:
-                //         index = random(0, enemyRoles.length);
-                //         targetRole = enemyRoles[index];
-                //         break;
-                // }
                 let index = random(0, enemyRoles.length);
                 if(enemyRoles[index].CheckDead() && i<=enemyRoles.length)
                 {
@@ -373,12 +408,20 @@ export class Skill_RemoteAtkPre extends SkillBase
             }
             recipientRoles.forEach((role) =>
             {
-                if(null!=role && !role.CheckDead()){
-                    role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, isPar);
-                    console.log("Skill_RemoteAtk_3_1 远程攻击角色受伤 :", attack);
-                }       
-            });
+                console.log("Skill_RemoteAtkPre 远程攻击角色受伤 :", attack);
 
+                if (null != role && !role.CheckDead())
+                {
+                    role.BeHurted(attack, self, battle, null, isPar);
+                    
+                }
+
+                let roleInfo = new RoleInfo();
+                roleInfo.index = role.index;
+                roleInfo.camp = role.selfCamp;
+                event.recipient.push(roleInfo);
+            });
+            battle.AddBattleEvent(event);
         }
         catch (error) 
         {
@@ -391,11 +434,20 @@ export class Skill_RemoteAtkPre extends SkillBase
     {
         let self: Role = null;
 
+        let event = new Event();
+        event.type = enums.EventType.RemoteInjured;
+        event.spellcaster = selfInfo;
+        event.spellcaster.camp = selfInfo.camp;
+        event.spellcaster.index = selfInfo.index;
+        event.recipient = [];
+        
         attack=Math.round(attack);                                          //四舍五入
         if(attack<1)
         {
             attack=1;
         }
+
+        event.value=[attack];
 
         if (enums.Camp.Self == selfInfo.camp)
         {
@@ -419,14 +471,19 @@ export class Skill_RemoteAtkPre extends SkillBase
             if (t != self) recipientRoles.push(t);
         }
 
-        //同时发射子弹,同时受伤
         for (let role of recipientRoles)
         {
-            if (!role.CheckDead()) {
-                role.BeHurted(attack, self, battle, enums.EventType.RemoteInjured, true);
+            if (!role.CheckDead()) 
+            {
+                role.BeHurted(attack, self, battle, null);
             }
-        }
 
+            let roleInfo = new RoleInfo();
+            roleInfo.index = role.index;
+            roleInfo.camp = role.selfCamp;
+            event.recipient.push(roleInfo);
+        }
+        battle.AddBattleEvent(event);
     }
 }
 

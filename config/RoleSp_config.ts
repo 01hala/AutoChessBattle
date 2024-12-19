@@ -16,6 +16,7 @@ export class RoleSpConfig
     public IntensifierColony:string;
     public Buff:string[];
     public CheckSkill:string[];
+    public Projectiles:string[];
 }
 
 export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
@@ -47,6 +48,8 @@ export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
                 cfg.Buff=tlist.split('|');
                 tlist=v["checkSkill"];
                 cfg.CheckSkill=tlist.split('|');
+                tlist=v["projectiles"];
+                cfg.Projectiles=tlist.split('|');
     
                 map.set(parseInt(k), cfg);
             });

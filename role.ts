@@ -164,27 +164,30 @@ export class Role {
 
     
     public onKillRole : (r:common.Role) => void;
-    private sendHurtedEvent(enemy: Role, damage: number, battle: battle.Battle, Injured: enums.EventType = enums.EventType.RemoteInjured,isParallel:boolean=false) 
+    private sendHurtedEvent(enemy: Role, damage: number, battle: battle.Battle, Injured: enums.EventType = enums.EventType.AttackInjured,isParallel:boolean=false) 
     {
         let selfIndex = this.index;
         let enemyIndex = enemy.index;
 
-        let ev = new skill.Event();
-        ev.type = Injured;
-        ev.spellcaster = new skill.RoleInfo();
-        ev.spellcaster.camp = enemy.selfCamp;
-        ev.spellcaster.index = enemyIndex;
-        ev.recipient = [];
-        let recipient = new skill.RoleInfo();
-        recipient.camp = this.selfCamp;
-        recipient.index = selfIndex;
-        ev.recipient.push(recipient);
-        ev.value = [];
-        ev.value.push(damage);
-        ev.priority=0;
-        ev.isParallel=isParallel;
-        ev.roleParallel = enemy;
-        battle.AddBattleEvent(ev);
+        if(Injured)
+        {
+            let ev = new skill.Event();
+            ev.type = Injured;
+            ev.spellcaster = new skill.RoleInfo();
+            ev.spellcaster.camp = enemy.selfCamp;
+            ev.spellcaster.index = enemyIndex;
+            ev.recipient = [];
+            let recipient = new skill.RoleInfo();
+            recipient.camp = this.selfCamp;
+            recipient.index = selfIndex;
+            ev.recipient.push(recipient);
+            ev.value = [];
+            ev.value.push(damage);
+            ev.priority=0;
+            ev.isParallel=isParallel;
+            ev.roleParallel = enemy;
+            battle.AddBattleEvent(ev);
+        }
         
         if (this.CheckDead()) 
         {
@@ -542,7 +545,7 @@ export class Role {
         this.attackCnt++;
     }
 
-    public BeHurted(damage:number, enemy: Role, battle: battle.Battle, Injured: enums.EventType = enums.EventType.RemoteInjured,isParallel:boolean=false) 
+    public BeHurted(damage:number, enemy: Role, battle: battle.Battle, Injured: enums.EventType,isParallel:boolean=false) 
     {
         this.SendBeforeHurtEvent(enemy,battle,isParallel);
 
@@ -579,7 +582,7 @@ export class Role {
         {
             this.ChangeProperties(enums.Property.HP, hp);
         }
-        this.sendHurtedEvent(enemy, damage, battle, Injured,isParallel);
+        this.sendHurtedEvent(enemy, damage, battle, Injured ,isParallel);
     }
 
     public AddBuff(_id:number , _value:number=0 , _round:number=1 , _frequency:number=0) 
