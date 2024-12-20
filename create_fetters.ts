@@ -45,14 +45,14 @@ export function CreateFetters(level:number, fettersID:number) : skill.SkillBase 
             console.log("Skill_AttGain_1 fettersConfig:", fettersConfig);
             let count_index = fettersConfig.ObjCount.length < level ? fettersConfig.ObjCount.length  - 1 : level - 1;
             let count = fettersConfig.ObjCount[count_index];
-            skillObj = new Skill_AttGain_1.Skill_AttGain(fettersConfig.Priority, value0, value1,null,count,fettersConfig.EffectScope,fettersConfig.FetterAudio);
+            skillObj = new Skill_AttGain_1.Skill_AttGain(fettersConfig.Priority, value0, value1,null,count,fettersConfig.EffectScope,fettersConfig.FetterAudio,true);
         }
         break;
         case common.SkillEffectEM.RecoverHP:
         {
             let count_index = fettersConfig.ObjCount.length < level ? fettersConfig.ObjCount.length  - 1 : level - 1;
             let count = fettersConfig.ObjCount[count_index];
-            skillObj = new Skill_RecoveryHP.Skill_RecoveryHP(fettersConfig.Priority, count, value0,fettersConfig.FetterAudio);
+            skillObj = new Skill_RecoveryHP.Skill_RecoveryHP(fettersConfig.Priority, count, value0,fettersConfig.FetterAudio,true);
         }
         break;
         case common.SkillEffectEM.RemoteAttack:
@@ -61,11 +61,11 @@ export function CreateFetters(level:number, fettersID:number) : skill.SkillBase 
             let count = fettersConfig.ObjCount[count_index];
             if(value0 >= 1)
             {
-                skillObj = new Skill_RemoteAtk.Skill_RemoteAtk(fettersConfig.Priority, count, Math.floor(value0),fettersConfig.FetterAudio);
+                skillObj = new Skill_RemoteAtk.Skill_RemoteAtk(fettersConfig.Priority, count, Math.floor(value0),fettersConfig.FetterAudio,true);
             }
             else
             {
-                skillObj=new Skill_RemoteAtk.Skill_RemoteAtkPre(fettersConfig.Priority, count, value0,null,fettersConfig.FetterAudio);
+                skillObj=new Skill_RemoteAtk.Skill_RemoteAtkPre(fettersConfig.Priority, count, value0,null,fettersConfig.FetterAudio,true);
             }
         }
         break;
@@ -76,21 +76,21 @@ export function CreateFetters(level:number, fettersID:number) : skill.SkillBase 
                 p.set(enums.Property.HP, value0);
                 p.set(enums.Property.TotalHP, value0);
                 p.set(enums.Property.Attack, value1);
-                skillObj = new Skill_Summon.Skill_Summon(fettersConfig.Priority, fettersConfig.SummonId, 0, p,fettersConfig.FetterAudio);
+                skillObj = new Skill_Summon.Skill_Summon(fettersConfig.Priority, fettersConfig.SummonId, 0, p,fettersConfig.FetterAudio,true);
             }
             else {
-                skillObj = new Skill_Summon.Skill_Summon(fettersConfig.Priority, fettersConfig.SummonId, fettersConfig.SummonLevel,null,fettersConfig.FetterAudio);
+                skillObj = new Skill_Summon.Skill_Summon(fettersConfig.Priority, fettersConfig.SummonId, fettersConfig.SummonLevel,null,fettersConfig.FetterAudio,true);
             }
         }
         break;
         case common.SkillEffectEM.GainShield:
         {
-            skillObj = new Skill_Shields.Skill_Shields(fettersConfig.Priority, value0, value1,common.Direction.None,fettersConfig.FetterAudio);
+            skillObj = new Skill_Shields.Skill_Shields(fettersConfig.Priority, value0, value1,common.Direction.None,fettersConfig.FetterAudio,true);
         }
         break;
         case common.SkillEffectEM.AttackAll:
         {
-            skillObj=new Skill_AttackAll(fettersConfig.Priority,value0,fettersConfig.FetterAudio);
+            skillObj=new Skill_AttackAll(fettersConfig.Priority,value0,fettersConfig.FetterAudio,true);
         }
         break;
     }
@@ -102,6 +102,6 @@ export function CreateMechanicFettersSummon(level:number, buildValue:number) : s
     // to do ...
     let t = config.config.FettersConfig.get(6);
     let skillObj:skill.SkillBase = null;
-    skillObj=new Skill_Summon.Skill_SummonMecha(null,null,level,buildValue,null,t.FetterAudio);
+    skillObj=new Skill_Summon.Skill_SummonMecha(null,null,level,buildValue,null,t.FetterAudio,true);
     return null;
 }
