@@ -67,6 +67,7 @@ export class Role {
     public isForcedAttack=false;
 
     public skill : SkillInfo[] = []; // 一般情况只有一个技能，使用特殊食物时添加一个技能
+    public fetterSkill : SkillInfo = null;
     public fetter:common.Fetters;
     public buffer : buffer.Buffer[] = [];
     public equip:number[]=[];//装备id(一般只能装备一件装备)
@@ -123,18 +124,19 @@ export class Role {
             }
     
             if (fetters && fetters.fetters_level > 0) {
-                let skill = createFettersSkill(fetters.fetters_id, fetters.fetters_level);
-                if (skill) {
-                    this.skill.push(skill);
-                }
-    
                 if (fetters.fetters_id == config.config.MechanicFetters) {
                     let skill = new SkillInfo();
                     skill.trigger = create_trigger.CreateTrigger(common.EMSkillEvent.all_mechanic_syncope);
                     skill.skill = create_fetters.CreateMechanicFettersSummon(fetters.fetters_level, id);
                 
                     if (skill.trigger && skill.skill) {
-                        this.skill.push(skill);
+                        this.fetterSkill = skill;
+                    }
+                }
+                else {
+                    let skill = createFettersSkill(fetters.fetters_id, fetters.fetters_level);
+                    if (skill) {
+                        this.fetterSkill = skill;
                     }
                 }
             }
