@@ -7,7 +7,7 @@
 
 import { Battle } from "../battle";
 import { SkillBase, Event, RoleInfo, SkillTriggerBase, } from './skill_base';
-import * as enums from '../BattleEnums'
+import * as BattleEnums from '../BattleEnums'
 import { random } from '../util';
 
 export class Skill_ForcedAttack extends SkillBase  
@@ -16,9 +16,9 @@ export class Skill_ForcedAttack extends SkillBase
 
     private eventSound;
 
-    constructor(priority: number, eventSound?: string)
+    constructor(priority: number, eventSound?: string,isfetter:boolean=false)
     {
-        super(priority);
+        super(priority,isfetter);
 
         if (null != eventSound)
         {
@@ -30,6 +30,11 @@ export class Skill_ForcedAttack extends SkillBase
     {
         try
         {
+            let event: Event = new Event();
+            event.isParallel = isParallel;
+            event.spellcaster = selfInfo;
+            event.type = BattleEnums.EventType.UsedSkill;
+            battle.AddBattleEvent(event);
             this.SkillEffect_1(selfInfo,battle,isParallel);
         }
         catch(error)
@@ -41,14 +46,15 @@ export class Skill_ForcedAttack extends SkillBase
     SkillEffect_1(_selfInfo: RoleInfo, _battle: Battle, _isParallel: boolean)
     {
         let event = new Event();
-        event.type=enums.EventType.ForcedAttack;
+        event.type=BattleEnums.EventType.ForcedAttack;
+        event.isFetter=this.isFetter;
 
-        if(enums.Camp.Self==_selfInfo.camp)
+        if(BattleEnums.Camp.Self==_selfInfo.camp)
         {
             let radonIndex=random(3, 5);
             _battle.GetSelfTeam().SetAttackRole(radonIndex);
         }
-        if(enums.Camp.Enemy==_selfInfo.camp)
+        if(BattleEnums.Camp.Enemy==_selfInfo.camp)
         {
             let radonIndex=random(3, 5);
             _battle.GetEnemyTeam().SetAttackRole(radonIndex);

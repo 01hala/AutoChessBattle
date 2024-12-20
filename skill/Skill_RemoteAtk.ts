@@ -8,7 +8,7 @@ import { _decorator, Component, DirectionalLight, Node } from 'cc';
 
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
 import { Direction, Priority } from '../common';
-import * as enums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -16,15 +16,15 @@ import { random } from '../util';
 export class Skill_RemoteAtk extends SkillBase  
 {
     public res:string="battle/skill/Skill_RemoteAtk.ts/Skill_RemoteAtk";
-    public SkillType:enums.SkillType=enums.SkillType.Attack;
+    public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.Attack;
 
     private numberOfRole : number;
     private attack : number;
     private isAll:boolean;
     private eventSound:string;
 
-    public constructor(priority:number, numberOfRole:number, attack:number,eventSound?:string) {
-        super(priority);
+    public constructor(priority:number, numberOfRole:number, attack:number,eventSound?:string,isfetter:boolean=false) {
+        super(priority,isfetter);
 
         this.numberOfRole = numberOfRole;
         this.attack = attack;
@@ -46,7 +46,7 @@ export class Skill_RemoteAtk extends SkillBase
             event.isParallel = isParallel;
             event.eventSound = this.eventSound;
             event.spellcaster = selfInfo;
-            event.type = enums.EventType.UsedSkill;
+            event.type = BattleEnums.EventType.UsedSkill;
 
             battle.AddBattleEvent(event);
 
@@ -97,19 +97,20 @@ export class Skill_RemoteAtk extends SkillBase
             let enemyRoles:Role[] = null;
 
             let event = new Event();
-            event.type = enums.EventType.RemoteInjured;
+            event.type = BattleEnums.EventType.RemoteInjured;
             event.spellcaster = selfInfo;
             event.spellcaster.camp = selfInfo.camp;
             event.spellcaster.index = selfInfo.index;
             event.recipient = [];
             event.value=[this.attack];
+            event.isFetter=this.isFetter;
 
-            if(enums.Camp.Self==selfInfo.camp)
+            if(BattleEnums.Camp.Self==selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetEnemyTeam().GetRoles();
             }
-            if(enums.Camp.Enemy==selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetSelfTeam().GetRoles();
@@ -153,18 +154,20 @@ export class Skill_RemoteAtk extends SkillBase
         let self:Role=null;
 
         let event = new Event();
-        event.type = enums.EventType.RemoteInjured;
+        event.type = BattleEnums.EventType.RemoteInjured;
         event.spellcaster = selfInfo;
         event.spellcaster.camp = selfInfo.camp;
         event.spellcaster.index = selfInfo.index;
         event.recipient = [];
         event.value = [this.attack];
+        event.objCount=this.numberOfRole;
+        event.isFetter=this.isFetter;
 
-        if(enums.Camp.Self==selfInfo.camp)
+        if(BattleEnums.Camp.Self==selfInfo.camp)
         {
             self=battle.GetSelfTeam().GetRole(selfInfo.index);
         }
-        if(enums.Camp.Enemy==selfInfo.camp)
+        if(BattleEnums.Camp.Enemy==selfInfo.camp)
         {
             self=battle.GetEnemyTeam().GetRole(selfInfo.index);
         }
@@ -187,7 +190,7 @@ export class Skill_RemoteAtk extends SkillBase
         {
             if (!role.CheckDead())
             {
-                role.BeHurted(this.attack, self, battle, enums.EventType.RemoteInjured);       //强制并发
+                role.BeHurted(this.attack, self, battle, BattleEnums.EventType.RemoteInjured);       //强制并发
             }
 
             let roleInfo=new RoleInfo();
@@ -205,12 +208,12 @@ export class Skill_RemoteAtk extends SkillBase
             let self: Role = null;
             let enemyRoles: Role[] = battle.GetEnemyTeam().GetRoles();
 
-            if (enums.Camp.Self == selfInfo.camp)
+            if (BattleEnums.Camp.Self == selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
                 enemyRoles = battle.GetEnemyTeam().GetRoles();
             }
-            if (enums.Camp.Enemy == selfInfo.camp)
+            if (BattleEnums.Camp.Enemy == selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles = battle.GetSelfTeam().GetRoles();
@@ -234,7 +237,7 @@ export class Skill_RemoteAtk extends SkillBase
             {
                 if (!role.CheckDead())
                 {
-                    role.BeHurted(this.attack, self, battle, enums.EventType.RemoteInjured, isPar);
+                    role.BeHurted(this.attack, self, battle, BattleEnums.EventType.RemoteInjured, isPar);
                 }
             }
         } catch (error)
@@ -252,15 +255,17 @@ export class Skill_RemoteAtk extends SkillBase
         event.isParallel = false;
         event.eventSound = this.eventSound;
         event.spellcaster = selfInfo;
-        event.type = enums.EventType.UsedSkill;
+        event.type = BattleEnums.EventType.UsedSkill;
         event.value=[this.attack];
+        event.objCount=this.numberOfRole;
+        event.isFetter=this.isFetter;
 
-        if (enums.Camp.Self == selfInfo.camp)
+        if (BattleEnums.Camp.Self == selfInfo.camp)
         {
             self = battle.GetSelfTeam().GetRole(selfInfo.index);
             enemyRoles = battle.GetEnemyTeam().GetRoles();
         }
-        if (enums.Camp.Enemy == selfInfo.camp)
+        if (BattleEnums.Camp.Enemy == selfInfo.camp)
         {
             self = battle.GetEnemyTeam().GetRole(selfInfo.index);
             enemyRoles = battle.GetSelfTeam().GetRoles();
@@ -294,7 +299,7 @@ export class Skill_RemoteAtkPre extends SkillBase
 {
     
     public res:string="battle/skill/Skill_RemoteAtk.ts/Skill_RemoteAtkPre";
-    public SkillType:enums.SkillType=enums.SkillType.Attack;
+    public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.Attack;
 
     private numberOfRole : number;
     private attack : number;
@@ -302,8 +307,8 @@ export class Skill_RemoteAtkPre extends SkillBase
     private eventSound;
     private dir;
 
-    public constructor(priority:number, numberOfRole:number, attack:number,dir?:Direction,eventSound?:string) {
-        super(priority);
+    public constructor(priority:number, numberOfRole:number, attack:number,dir?:Direction,eventSound?:string,isfetter:boolean=false) {
+        super(priority,isfetter);
 
         this.numberOfRole = numberOfRole;
         this.attack = attack;
@@ -327,10 +332,8 @@ export class Skill_RemoteAtkPre extends SkillBase
         {
             let event: Event = new Event();
             event.isParallel = isParallel;
-            event.eventSound = this.eventSound;
             event.spellcaster = selfInfo;
-            event.type = enums.EventType.UsedSkill;
-
+            event.type = BattleEnums.EventType.UsedSkill;
             battle.AddBattleEvent(event);
 
             if(this.attack>0 && this.attack <=1)
@@ -338,7 +341,7 @@ export class Skill_RemoteAtkPre extends SkillBase
                 console.log("useskill Skill_RemoteAtkPre");
                 if (6 >= this.numberOfRole && !this.isAll)
                 {
-                    this.SkillEffect_1(selfInfo, battle, this.attack * (1 + selfInfo.properties.get(enums.Property.Attack)), isParallel);
+                    this.SkillEffect_1(selfInfo, battle, this.attack * (1 + selfInfo.properties.get(BattleEnums.Property.Attack)), isParallel);
                 }
                 else
                 {
@@ -346,7 +349,7 @@ export class Skill_RemoteAtkPre extends SkillBase
                 }
                 if(this.isAll)
                 {
-                    this.SkillEffect_2(selfInfo,battle,this.attack * (1 + selfInfo.properties.get(enums.Property.Attack)), isParallel);
+                    this.SkillEffect_2(selfInfo,battle,this.attack * (1 + selfInfo.properties.get(BattleEnums.Property.Attack)), isParallel);
                 }
             }
             
@@ -366,11 +369,12 @@ export class Skill_RemoteAtkPre extends SkillBase
             let enemyRoles:Role[] = null;
 
             let event = new Event();
-            event.type = enums.EventType.RemoteInjured;
+            event.type = BattleEnums.EventType.RemoteInjured;
             event.spellcaster = selfInfo;
             event.spellcaster.camp = selfInfo.camp;
             event.spellcaster.index = selfInfo.index;
             event.recipient = [];
+            event.isFetter=this.isFetter;
 
             attack=Math.round(attack);                                          //四舍五入
             if(attack<1)
@@ -382,12 +386,12 @@ export class Skill_RemoteAtkPre extends SkillBase
             
             console.log("try to use remote Skill_RemoteAtk_3_1 attack:", attack);
 
-            if(enums.Camp.Self==selfInfo.camp)
+            if(BattleEnums.Camp.Self==selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetEnemyTeam().GetRoles();
             }
-            if(enums.Camp.Enemy==selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles=battle.GetSelfTeam().GetRoles();
@@ -435,11 +439,13 @@ export class Skill_RemoteAtkPre extends SkillBase
         let self: Role = null;
 
         let event = new Event();
-        event.type = enums.EventType.RemoteInjured;
+        event.type = BattleEnums.EventType.RemoteInjured;
         event.spellcaster = selfInfo;
         event.spellcaster.camp = selfInfo.camp;
         event.spellcaster.index = selfInfo.index;
         event.recipient = [];
+        event.objCount=this.numberOfRole;
+        event.isFetter=this.isFetter;
         
         attack=Math.round(attack);                                          //四舍五入
         if(attack<1)
@@ -449,11 +455,11 @@ export class Skill_RemoteAtkPre extends SkillBase
 
         event.value=[attack];
 
-        if (enums.Camp.Self == selfInfo.camp)
+        if (BattleEnums.Camp.Self == selfInfo.camp)
         {
             self = battle.GetSelfTeam().GetRole(selfInfo.index);
         }
-        if (enums.Camp.Enemy == selfInfo.camp)
+        if (BattleEnums.Camp.Enemy == selfInfo.camp)
         {
             self = battle.GetEnemyTeam().GetRole(selfInfo.index);
         }

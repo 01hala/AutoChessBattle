@@ -9,7 +9,7 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role} from '../role';
-import * as battleEnums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 import { random } from '../util';
 import { Buffer } from '../buffer/buffer';
 import { Direction } from '../common';
@@ -17,16 +17,16 @@ import { Direction } from '../common';
 export class Skill_SubstituteDamage extends SkillBase 
 {
     public res:string="battle/skill/Skill_SubstituteDamage.ts";
-    public SkillType:battleEnums.SkillType=battleEnums.SkillType.Support;
+    public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.Support;
 
     private value:number;
     private round:number;
     private dir:Direction;
 
-    event:Event=new Event();
+    
 
-    public constructor(priority:number, value:number,round:number,dir:Direction) {
-        super(priority);
+    public constructor(priority:number, value:number,round:number,dir:Direction,eventSound?:string,isfetter:boolean=false) {
+        super(priority,isfetter);
 
         this.value=value;
         this.round=round;
@@ -37,6 +37,12 @@ export class Skill_SubstituteDamage extends SkillBase
     {
         try
         {
+            let event: Event = new Event();
+            event.isParallel = isParallel;
+            event.spellcaster = selfInfo;
+            event.type = BattleEnums.EventType.UsedSkill;
+            battle.AddBattleEvent(event);
+
             this.SkillEffect(selfInfo,battle,isParallel);          
         }
         catch (error) 
@@ -50,14 +56,17 @@ export class Skill_SubstituteDamage extends SkillBase
     {
         try 
         {
+            let event:Event=new Event();
+            event.isFetter=this.isFetter;
+
             let teamTemp:Role[]=null;
             let recipientRole:Role=null;
 
-            if(battleEnums.Camp.Self==selfInfo.camp)
+            if(BattleEnums.Camp.Self==selfInfo.camp)
             {
             teamTemp=battle.GetSelfTeam().GetRoles();
             }
-            if(battleEnums.Camp.Enemy==selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
                 teamTemp=battle.GetEnemyTeam().GetRoles();
             }
@@ -107,17 +116,17 @@ export class Skill_SubstituteDamage extends SkillBase
          
             if(null!=recipientRole)
             { 
-                this.event.isParallel = isPar;
-                this.event.spellcaster = selfInfo;
+                event.isParallel = isPar;
+                event.spellcaster = selfInfo;
                 
                 let role=new RoleInfo();
                 role.index=recipientRole.index;
                 role.camp=recipientRole.selfCamp;
 
-                this.event.recipient.push(role);
-                this.event.type = battleEnums.EventType.SubstituteDamage;
-                this.event.value.push(this.value);
-                battle.AddBattleEvent(this.event);
+                event.recipient.push(role);
+                event.type = BattleEnums.EventType.SubstituteDamage;
+                event.value.push(this.value);
+                battle.AddBattleEvent(event);
             }
 
             //let self=teamTemp[selfInfo.index];

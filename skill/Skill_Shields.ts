@@ -9,7 +9,7 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role} from '../role';
-import * as enums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 import { random } from '../util';
 import { Buffer } from '../buffer/buffer';
 import { Direction } from '../common';
@@ -17,7 +17,7 @@ import { Direction } from '../common';
 export class Skill_Shields extends SkillBase 
 {
     public res:string="battle/skill/Skill_Shields.ts";
-    public SkillType:enums.SkillType=enums.SkillType.Support;
+    public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.Support;
 
     private value:number;
     private dir:Direction;
@@ -26,9 +26,9 @@ export class Skill_Shields extends SkillBase
 
     event:Event=new Event();
 
-    public constructor(priority:number , num:number, value:number,dir?:Direction,eventSound?:string) 
+    public constructor(priority:number , num:number, value:number,dir?:Direction,eventSound?:string,isfetter:boolean=false) 
     {
-        super(priority);
+        super(priority,isfetter);
         this.numberOfRole=num;
         this.value=value;
         if(dir)
@@ -42,16 +42,13 @@ export class Skill_Shields extends SkillBase
 
     public UseSkill(selfInfo: RoleInfo, battle: Battle,isParallel:boolean): void 
     {
-        let event: Event = new Event();
-        event.isParallel = isParallel;
-        event.eventSound = this.eventSound;
-        event.spellcaster = selfInfo;
-        event.type = enums.EventType.UsedSkill;
-
-        battle.AddBattleEvent(event);
-
         try
         {
+            let event: Event = new Event();
+            event.isParallel = isParallel;
+            event.spellcaster = selfInfo;
+            event.type = BattleEnums.EventType.UsedSkill;
+            battle.AddBattleEvent(event);
             if(this.dir!=null && this.dir != Direction.None)
             {
                 this.SkillEffect_1(selfInfo,battle,isParallel);
@@ -79,13 +76,14 @@ export class Skill_Shields extends SkillBase
             event.isParallel=isPar;
             event.eventSound=this.eventSound;
             event.spellcaster=selfInfo;
-            event.type=enums.EventType.GiveShields;
+            event.type=BattleEnums.EventType.GiveShields;
+            event.isFetter=this.isFetter;
 
-            if(enums.Camp.Self==selfInfo.camp)
+            if(BattleEnums.Camp.Self==selfInfo.camp)
             {
             teamTemp=battle.GetSelfTeam().GetRoles();
             }
-            if(enums.Camp.Enemy==selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
                 teamTemp=battle.GetEnemyTeam().GetRoles();
             }
@@ -164,14 +162,15 @@ export class Skill_Shields extends SkillBase
             event.isParallel = isPar;
             event.eventSound = this.eventSound;
             event.spellcaster = selfInfo;
-            event.type = enums.EventType.GiveShields;
+            event.type = BattleEnums.EventType.GiveShields;
             event.recipient=[];
+            event.isFetter=this.isFetter;
     
-            if (enums.Camp.Self == selfInfo.camp)
+            if (BattleEnums.Camp.Self == selfInfo.camp)
             {
                 teamTemp = battle.GetSelfTeam().GetRoles();
             }
-            if (enums.Camp.Enemy == selfInfo.camp)
+            if (BattleEnums.Camp.Enemy == selfInfo.camp)
             {
                 teamTemp = battle.GetEnemyTeam().GetRoles();
             }

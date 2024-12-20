@@ -9,22 +9,22 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role } from '../role';
-import * as enums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 import { random } from '../util';
 
 export class Skill_SwapProperties extends SkillBase 
 {
     public res:string="battle/skill/Skill_SwapProperties.ts/Skill_SwapProperties";
-    public SkillType:enums.SkillType=enums.SkillType.SwapProperties;
+    public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.SwapProperties;
 
     event:Event=new Event();
 
-    private type:enums.SwapPropertiesType;
+    private type:BattleEnums.SwapPropertiesType;
     private count:number
     private index1:number;
     private index2:number;
-    public constructor(priority:number, type:enums.SwapPropertiesType, count:number ,swapper1:number,swapper2:number) {
-        super(priority);
+    public constructor(priority:number, type:BattleEnums.SwapPropertiesType, count:number ,swapper1:number,swapper2:number,isfetter:boolean=false) {
+        super(priority,isfetter);
 
         this.type = type;
         this.index1=swapper1;
@@ -49,37 +49,38 @@ export class Skill_SwapProperties extends SkillBase
         try
         {
             let event = new Event();
-            event.type = enums.EventType.SwapProperties;
+            event.type = BattleEnums.EventType.SwapProperties;
             event.spellcaster = selfInfo;
             event.recipient = [];
             event.isParallel=isPar;
+            event.isFetter=this.isFetter;
 
-            if (enums.SwapPropertiesType.SelfSwap == this.type) {
+            if (BattleEnums.SwapPropertiesType.SelfSwap == this.type) {
                 let swapRole:Role = null;
-                if(enums.Camp.Self==selfInfo.camp){
+                if(BattleEnums.Camp.Self==selfInfo.camp){
                     swapRole = battle.GetSelfTeam().GetRole(selfInfo.index);
                 }
-                if(enums.Camp.Enemy==selfInfo.camp){
+                if(BattleEnums.Camp.Enemy==selfInfo.camp){
                     swapRole = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 }
                 if (!swapRole) {
                     return;
                 }
 
-                let hp = swapRole.GetProperty(enums.Property.HP);
-                let attack = swapRole.GetProperty(enums.Property.Attack);
-                swapRole.ChangeProperties(enums.Property.HP, attack);
-                swapRole.ChangeProperties(enums.Property.Attack, hp);
+                let hp = swapRole.GetProperty(BattleEnums.Property.HP);
+                let attack = swapRole.GetProperty(BattleEnums.Property.Attack);
+                swapRole.ChangeProperties(BattleEnums.Property.HP, attack);
+                swapRole.ChangeProperties(BattleEnums.Property.Attack, hp);
 
-                event.value = [enums.SwapPropertiesType.SelfSwap];
+                event.value = [BattleEnums.SwapPropertiesType.SelfSwap];
             }
-            else if (enums.SwapPropertiesType.AssignSwap == this.type) {
+            else if (BattleEnums.SwapPropertiesType.AssignSwap == this.type) {
                 let swapRoles:Role[];
-                if(enums.Camp.Self==selfInfo.camp){
+                if(BattleEnums.Camp.Self==selfInfo.camp){
                     swapRoles.push(battle.GetSelfTeam().GetRole(this.index1));
                     swapRoles.push(battle.GetSelfTeam().GetRole(this.index2));
                 }
-                if(enums.Camp.Enemy==selfInfo.camp){
+                if(BattleEnums.Camp.Enemy==selfInfo.camp){
                     swapRoles.push(battle.GetEnemyTeam().GetRole(this.index1));
                     swapRoles.push(battle.GetEnemyTeam().GetRole(this.index2));
                 }
@@ -93,18 +94,18 @@ export class Skill_SwapProperties extends SkillBase
                     swapRoles[1].ChangeProperties(key,value);
                 });
 
-                event.value = [enums.SwapPropertiesType.AssignSwap, this.index1, this.index2];
+                event.value = [BattleEnums.SwapPropertiesType.AssignSwap, this.index1, this.index2];
             }
-            else if (enums.SwapPropertiesType.RandomSwap == this.type) {
+            else if (BattleEnums.SwapPropertiesType.RandomSwap == this.type) {
                 let swapRoles:Role[];
                 let rolesTemp:Role[]=null;     
 
                 let original:Role[] = null;
-                if(enums.Camp.Self==selfInfo.camp) {
+                if(BattleEnums.Camp.Self==selfInfo.camp) {
                     rolesTemp=battle.GetSelfTeam().GetRoles().slice();
                     original = battle.GetSelfTeam().GetRoles();
                 }
-                else if(enums.Camp.Enemy==selfInfo.camp) {
+                else if(BattleEnums.Camp.Enemy==selfInfo.camp) {
                     rolesTemp=battle.GetEnemyTeam().GetRoles().slice();
                     original = battle.GetSelfTeam().GetRoles();
                 }
@@ -125,7 +126,7 @@ export class Skill_SwapProperties extends SkillBase
                     swapRoles[1].ChangeProperties(key,value);
                 });
 
-                event.value = [enums.SwapPropertiesType.RandomSwap , swapRoles[0].index , swapRoles[1].index];
+                event.value = [BattleEnums.SwapPropertiesType.RandomSwap , swapRoles[0].index , swapRoles[1].index];
             }
             battle.AddBattleEvent(event);
         }
@@ -147,13 +148,13 @@ export class Skill_SwapProperties extends SkillBase
 export class Skill_SwapPropertiesSingle extends SkillBase 
 {
     public res:string="battle/skill/Skill_SwapProperties.ts/Skill_SwapPropertiesSingle";
-    public SkillType:enums.SkillType=enums.SkillType.SwapProperties;
+    public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.SwapProperties;
 
-    private type:enums.SwapPropertiesType;
+    private type:BattleEnums.SwapPropertiesType;
     private value:number;
 
-    public constructor(priority:number, type:enums.SwapPropertiesType, value) {
-        super(priority);
+    public constructor(priority:number, type:BattleEnums.SwapPropertiesType, value:number,isfetter:boolean=false) {
+        super(priority,isfetter);
 
         this.type = type;
         this.value=value;
@@ -162,18 +163,17 @@ export class Skill_SwapPropertiesSingle extends SkillBase
     UseSkill(selfInfo: RoleInfo, battle: Battle, isParallel: boolean): void
     {
         let event = new Event();
-        event.type = enums.EventType.UsedSkill;
+        event.type = BattleEnums.EventType.UsedSkill;
         event.spellcaster = selfInfo;
         event.recipient = [];
         event.isParallel = isParallel;
-
         battle.AddBattleEvent(event);
 
-        if(enums.SwapPropertiesType.HpSwap == this.type)
+        if(BattleEnums.SwapPropertiesType.HpSwap == this.type)
         {
             this.SkillEffect_1(selfInfo,battle,isParallel);
         }
-        if(enums.SwapPropertiesType.AttackSwap == this.type)
+        if(BattleEnums.SwapPropertiesType.AttackSwap == this.type)
         {
             this.SkillEffect_2(selfInfo,battle,isParallel);
         }
@@ -184,16 +184,17 @@ export class Skill_SwapPropertiesSingle extends SkillBase
         try
         {
             let event = new Event();
-            event.type = enums.EventType.SwapProperties;
+            event.type = BattleEnums.EventType.SwapProperties;
             event.spellcaster = _selfInfo;
             event.recipient = [];
             event.isParallel=_isPar;
+            event.isFetter=this.isFetter;
 
             let swapRole:Role = null;
-            if(enums.Camp.Self==_selfInfo.camp){
+            if(BattleEnums.Camp.Self==_selfInfo.camp){
                 swapRole = _battle.GetSelfTeam().GetRole(_selfInfo.index);
             }
-            if(enums.Camp.Enemy==_selfInfo.camp){
+            if(BattleEnums.Camp.Enemy==_selfInfo.camp){
                 swapRole = _battle.GetEnemyTeam().GetRole(_selfInfo.index);
             }
             if (!swapRole) 
@@ -201,10 +202,10 @@ export class Skill_SwapPropertiesSingle extends SkillBase
                 return;
             }
 
-            let hp = swapRole.GetProperty(enums.Property.HP) + this.value;
-            swapRole.ChangeProperties(enums.Property.Attack, hp);
+            let hp = swapRole.GetProperty(BattleEnums.Property.HP) + this.value;
+            swapRole.ChangeProperties(BattleEnums.Property.Attack, hp);
 
-            event.value = [enums.SwapPropertiesType.HpSwap , hp];
+            event.value = [BattleEnums.SwapPropertiesType.HpSwap , hp];
             _battle.AddBattleEvent(event);
         }
         catch(error)
@@ -218,16 +219,16 @@ export class Skill_SwapPropertiesSingle extends SkillBase
         try
         {
             let event = new Event();
-            event.type = enums.EventType.SwapProperties;
+            event.type = BattleEnums.EventType.SwapProperties;
             event.spellcaster = _selfInfo;
             event.recipient = [];
             event.isParallel=_isPar;
 
             let swapRole:Role = null;
-            if(enums.Camp.Self==_selfInfo.camp){
+            if(BattleEnums.Camp.Self==_selfInfo.camp){
                 swapRole = _battle.GetSelfTeam().GetRole(_selfInfo.index);
             }
-            if(enums.Camp.Enemy==_selfInfo.camp){
+            if(BattleEnums.Camp.Enemy==_selfInfo.camp){
                 swapRole = _battle.GetEnemyTeam().GetRole(_selfInfo.index);
             }
             if (!swapRole) 
@@ -235,10 +236,10 @@ export class Skill_SwapPropertiesSingle extends SkillBase
                 return;
             }
 
-            let Attack = swapRole.GetProperty(enums.Property.Attack) + this.value;
-            swapRole.ChangeProperties(enums.Property.HP, Attack);
+            let Attack = swapRole.GetProperty(BattleEnums.Property.Attack) + this.value;
+            swapRole.ChangeProperties(BattleEnums.Property.HP, Attack);
 
-            event.value = [enums.SwapPropertiesType.AttackSwap , Attack];
+            event.value = [BattleEnums.SwapPropertiesType.AttackSwap , Attack];
             _battle.AddBattleEvent(event);
         }
         catch(error)

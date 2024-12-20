@@ -2,7 +2,7 @@ import { _decorator, Component, DirectionalLight, Node } from 'cc';
 
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
 import { Direction, Priority } from '../common';
-import * as enums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -16,9 +16,9 @@ export class Skill_RepeatSkill extends SkillBase
     private eventSound:string;
     private lvl:number;
 
-    constructor(priority:number , dir:Direction , lvl:number,eventSound?:string)
+    constructor(priority:number , dir:Direction , lvl:number,eventSound?:string,isfetter:boolean=false)
     {
-        super(priority);
+        super(priority,isfetter);
 
         this.eventSound = eventSound;
         this.dir=dir;
@@ -42,7 +42,8 @@ export class Skill_RepeatSkill extends SkillBase
         try
         {
             let event:Event;
-            event.type=enums.EventType.RepeatSkill;
+            event.type=BattleEnums.EventType.RepeatSkill;
+            event.isFetter=this.isFetter;
     
             let teamTemp:Team=null;
             let recipientRole:Role=null;
@@ -51,11 +52,11 @@ export class Skill_RepeatSkill extends SkillBase
             roleInfo.camp = selfInfo.camp;
             roleInfo.index = 0;
     
-            if (enums.Camp.Self == selfInfo.camp)
+            if (BattleEnums.Camp.Self == selfInfo.camp)
             {
                 teamTemp = battle.GetSelfTeam();
             }
-            if (enums.Camp.Enemy == selfInfo.camp)
+            if (BattleEnums.Camp.Enemy == selfInfo.camp)
             {
                 teamTemp = battle.GetEnemyTeam();
             }

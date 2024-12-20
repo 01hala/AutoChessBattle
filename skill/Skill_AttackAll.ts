@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, error, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import * as enums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -18,8 +18,8 @@ export class Skill_AttackAll extends SkillBase {
     private effectiveValue:number;
     private eventSound:string;
 
-    constructor(priority:number, effectiveValue : number,eventSound?:string){
-        super(priority);
+    constructor(priority:number, effectiveValue : number,eventSound?:string,isfetter:boolean=false){
+        super(priority,isfetter);
         this.effectiveValue = effectiveValue;
         if(null!=eventSound){
             this.eventSound=eventSound;
@@ -35,11 +35,11 @@ export class Skill_AttackAll extends SkillBase {
 
             effectiveRole = battle.GetEnemyTeam().GetRoles().slice();
             for(const r of effectiveRole){
-                r.BeHurted(this.effectiveValue,null,battle,enums.EventType.AttackInjured);
+                r.BeHurted(this.effectiveValue,null,battle,null);
             }
             effectiveRole = battle.GetSelfTeam().GetRoles().slice();
             for(const r of effectiveRole){
-                r.BeHurted(this.effectiveValue,null,battle,enums.EventType.AttackInjured);
+                r.BeHurted(this.effectiveValue,null,battle,null);
             }
         }
         catch(e)

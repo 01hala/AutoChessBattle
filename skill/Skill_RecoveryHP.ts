@@ -7,7 +7,7 @@
 
 import { _decorator, Component, error, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import * as enums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -20,8 +20,8 @@ export class Skill_RecoveryHP extends SkillBase {
     private effectiveValue : number;
     private eventSound:string;
 
-    constructor(priority:number, numberOfRole:number, effectiveValue : number,eventSound?:string){
-        super(priority);
+    constructor(priority:number, numberOfRole:number, effectiveValue : number,eventSound?:string,isfetter:boolean=false){
+        super(priority,isfetter);
         this.numberOfRole = numberOfRole;
         this.effectiveValue = effectiveValue;
         if(null!=eventSound){
@@ -33,6 +33,11 @@ export class Skill_RecoveryHP extends SkillBase {
     {
         try
         {
+            let event: Event = new Event();
+            event.isParallel = isParallel;
+            event.spellcaster = selfInfo;
+            event.type = BattleEnums.EventType.UsedSkill;
+            battle.AddBattleEvent(event);
            if(this.numberOfRole<6)
            {
                 this.SkillEffect_2(selfInfo , battle, isParallel);
@@ -54,21 +59,22 @@ export class Skill_RecoveryHP extends SkillBase {
         try
         {
             let event = new Event();
-            event.type = enums.EventType.IntensifierProperties;
+            event.type = BattleEnums.EventType.IntensifierProperties;
             event.spellcaster = selfInfo;
             event.isParallel=isPar;
             event.recipient = [];
+            event.isFetter=this.isFetter;
     
             let indexs: number[] = [];
     
             let rolesTemp: Role[] = [];
     
-            if (enums.Camp.Self == selfInfo.camp)
+            if (BattleEnums.Camp.Self == selfInfo.camp)
             {
                 rolesTemp = battle.GetSelfTeam().GetRoles().slice();
             }
     
-            if (enums.Camp.Enemy == selfInfo.camp)
+            if (BattleEnums.Camp.Enemy == selfInfo.camp)
             {
                 rolesTemp = battle.GetEnemyTeam().GetRoles().slice();
             }
@@ -85,8 +91,8 @@ export class Skill_RecoveryHP extends SkillBase {
             recipientRoles.forEach((role) => 
             {
                 console.log("recipientRoles role:", role, " ChangeProperties!");
-                role.ChangeProperties(enums.Property.HP, role.GetProperty(enums.Property.HP) + this.effectiveValue);
-                role.ChangeProperties(enums.Property.TotalHP, role.GetProperty(enums.Property.TotalHP) + this.effectiveValue);
+                role.ChangeProperties(BattleEnums.Property.HP, role.GetProperty(BattleEnums.Property.HP) + this.effectiveValue);
+                role.ChangeProperties(BattleEnums.Property.TotalHP, role.GetProperty(BattleEnums.Property.TotalHP) + this.effectiveValue);
             });
     
             for(let r of rolesTemp)
@@ -113,16 +119,17 @@ export class Skill_RecoveryHP extends SkillBase {
     SkillEffect_2(selfInfo: RoleInfo, battle: Battle,isPar:boolean)
     {
         let event = new Event();
-        event.type = enums.EventType.IntensifierProperties;
+        event.type = BattleEnums.EventType.IntensifierProperties;
         event.spellcaster = selfInfo;
         event.isParallel=isPar;
         event.recipient = [];
+        event.isFetter=this.isFetter;
 
         let effectiveRole : Role[] = null;
-        if(enums.Camp.Enemy == selfInfo.camp) {
+        if(BattleEnums.Camp.Enemy == selfInfo.camp) {
             effectiveRole = battle.GetEnemyTeam().GetRoles().slice();
         }
-        else if(enums.Camp.Self == selfInfo.camp) {
+        else if(BattleEnums.Camp.Self == selfInfo.camp) {
             effectiveRole = battle.GetSelfTeam().GetRoles().slice();
         }
 
@@ -134,13 +141,13 @@ export class Skill_RecoveryHP extends SkillBase {
         }
 
         for(const r of recipientRoles) {
-            let totalHP = r.GetProperty(enums.Property.TotalHP);
-            let HP = r.GetProperty(enums.Property.HP) + this.effectiveValue;
+            let totalHP = r.GetProperty(BattleEnums.Property.TotalHP);
+            let HP = r.GetProperty(BattleEnums.Property.HP) + this.effectiveValue;
             if (HP > totalHP) {
                 HP = totalHP;
             }
             battle.onPlaySound.call(null, this.eventSound);
-            r.ChangeProperties(enums.Property.HP, HP);
+            r.ChangeProperties(BattleEnums.Property.HP, HP);
 
             let tRoleInfo=new RoleInfo();
             tRoleInfo.id=r.id;

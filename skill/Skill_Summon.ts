@@ -9,22 +9,20 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role } from '../role';
-import * as enums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 
 export class Skill_Summon extends SkillBase 
 {
     public res:string="battle/skill/Skill_Summon.ts/Skill_Summon";
-    public SkillType:enums.SkillType=enums.SkillType.Summon;
-
-    event:Event=new Event();
+    public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.Summon;
 
     private addedID: number;
     private addedLevel:number;
-    private addedProperties: Map<enums.Property, number>;
+    private addedProperties: Map<BattleEnums.Property, number>;
     private eventSound:string;
 
-    public constructor(priority:number, id : number,level:number=1,roleProperties : Map<enums.Property, number>=null,eventSound?:string) {
-        super(priority);
+    public constructor(priority:number, id : number,level:number=1,roleProperties : Map<BattleEnums.Property, number>=null,eventSound?:string,isfetter:boolean=false) {
+        super(priority,isfetter);
         this.addedID=id;
         this.addedLevel=level;
         this.addedProperties=roleProperties;
@@ -51,21 +49,22 @@ export class Skill_Summon extends SkillBase
         try
         {
             console.log("召唤技能");
-            let battleEvent : Event = new Event();
-            battleEvent.type = enums.EventType.Summon;
-            battleEvent.spellcaster = selfInfo;
-            battleEvent.recipient = [];
-            battleEvent.value = [];
-            battleEvent.isParallel=isPar;
-            battleEvent.eventSound=this.eventSound;
+            let event : Event = new Event();
+            event.type = BattleEnums.EventType.Summon;
+            event.spellcaster = selfInfo;
+            event.recipient = [];
+            event.value = [];
+            event.isParallel=isPar;
+            event.eventSound=this.eventSound;
+            event.isFetter=this.isFetter;
 
             let addedIdx:number;
-            if(enums.Camp.Self==selfInfo.camp)
+            if(BattleEnums.Camp.Self==selfInfo.camp)
             {
                 //addedIdx=new Role(-1,this.addedID,0, this.addedLevel, Camp.Self, this.addedProperties,null);
                 addedIdx = battle.GetSelfTeam().GetVacancies();
             }
-            if(enums.Camp.Enemy==selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
                 //addedIdx=new Role(-1,this.addedID,0, this.addedLevel, Camp.Enemy, this.addedProperties, null);
                 addedIdx = battle.GetEnemyTeam().GetVacancies();
@@ -84,8 +83,8 @@ export class Skill_Summon extends SkillBase
             roleInfo.properties=this.addedProperties;
             // roleInfo.hp=this.addedProperties[Property.HP];
             // roleInfo.attack=this.addedProperties[Property.Attack];
-            battleEvent.recipient.push(roleInfo);
-            battle.AddBattleEvent(battleEvent);
+            event.recipient.push(roleInfo);
+            battle.AddBattleEvent(event);
             console.log("召唤技能使用！！");
         }
         catch (error) 
@@ -104,18 +103,16 @@ export class Skill_Summon extends SkillBase
 export class Skill_SummonMecha extends SkillBase 
 {
     public res:string="battle/skill/Skill_Summon.ts/Skill_SummonMecha";
-    public SkillType:enums.SkillType=enums.SkillType.Summon;
-
-    event:Event=new Event();
+    public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.Summon;
 
     private addedID: number;
     private addedLevel:number;
-    private addedProperties: Map<enums.Property, number>;
+    private addedProperties: Map<BattleEnums.Property, number>;
     private addedBuildLevel:number;
     private eventSound:string;
 
-    public constructor(priority:number, id : number,level:number=1,buildValue:number=1,roleProperties : Map<enums.Property, number>=null,eventSound?:string) {
-        super(priority);
+    public constructor(priority:number, id : number,level:number=1,buildValue:number=1,roleProperties : Map<BattleEnums.Property, number>=null,eventSound?:string,isfetter:boolean=false) {
+        super(priority,isfetter);
 
         this.addedID=id;
         this.addedLevel=level;
@@ -130,6 +127,11 @@ export class Skill_SummonMecha extends SkillBase
     {
         try
         {
+            let event: Event = new Event();
+            event.isParallel = isParallel;
+            event.spellcaster = selfInfo;
+            event.type = BattleEnums.EventType.UsedSkill;
+            battle.AddBattleEvent(event);
             this.SkillEffect(selfInfo,battle,isParallel);          
         }
         catch (error) 
@@ -144,13 +146,14 @@ export class Skill_SummonMecha extends SkillBase
         try
         {
             console.log("召唤机甲技能");
-            let battleEvent : Event = new Event();
-            battleEvent.type = enums.EventType.Summon;
-            battleEvent.spellcaster = selfInfo;
-            battleEvent.recipient = [];
-            battleEvent.value = [];
-            battleEvent.isParallel=isPar;
-            battleEvent.eventSound=this.eventSound;
+            let event : Event = new Event();
+            event.type = BattleEnums.EventType.Summon;
+            event.spellcaster = selfInfo;
+            event.recipient = [];
+            event.value = [];
+            event.isParallel=isPar;
+            event.eventSound=this.eventSound;
+            event.isFetter=this.isFetter;
 
             let addedIdx:number;
             //机甲修建值表现
@@ -159,12 +162,12 @@ export class Skill_SummonMecha extends SkillBase
                 case 20:break;
                 case 40:break;
             }
-            if(enums.Camp.Self==selfInfo.camp)
+            if(BattleEnums.Camp.Self==selfInfo.camp)
             {
                 //addedIdx=new Role(-1,this.addedID, this.addedLevel,0, Camp.Self, this.addedProperties,null);
                 addedIdx = battle.GetSelfTeam().GetVacancies();
             }
-            if(enums.Camp.Enemy==selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
                 //addedIdx=new Role(-1,this.addedID, this.addedLevel,0, Camp.Enemy, this.addedProperties, null);
                 addedIdx= battle.GetEnemyTeam().GetVacancies();
@@ -181,8 +184,8 @@ export class Skill_SummonMecha extends SkillBase
                 roleInfo.properties=this.addedProperties;
                 // roleInfo.hp=this.addedProperties[Property.HP];
                 // roleInfo.attack=this.addedProperties[Property.Attack];
-                battleEvent.recipient.push(roleInfo);
-                battle.AddBattleEvent(battleEvent);
+                event.recipient.push(roleInfo);
+                battle.AddBattleEvent(event);
         }
         catch (error) 
         {

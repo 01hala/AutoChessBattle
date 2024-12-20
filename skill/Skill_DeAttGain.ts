@@ -9,14 +9,14 @@ import { SkillBase, Event, RoleInfo, SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role } from '../role';
-import * as enums from '../BattleEnums'
+import * as BattleEnums from '../BattleEnums'
 import { random } from '../util';
 
 
 export class Skill_DeAttGain extends SkillBase  
 {
     public res: string = "battle/skill/Skill_DeAttGain.ts/Skill_DeAttGain";
-    public SkillType: enums.SkillType = enums.SkillType.Intensifier;
+    public SkillType: BattleEnums.SkillType = BattleEnums.SkillType.Intensifier;
 
     private numberOfRole: number = null;
     private isAll:boolean;
@@ -25,9 +25,9 @@ export class Skill_DeAttGain extends SkillBase
 
     private eventSound: string;
 
-    constructor(priority: number, dehealth: number, deattack: number, isAll?:boolean ,numberOfRole?: number, eventSound?: string) 
+    constructor(priority: number, dehealth: number, deattack: number, isAll?:boolean ,numberOfRole?: number, eventSound?: string,isfetter:boolean=false) 
     {
-        super(priority);
+        super(priority,isfetter);
 
         this.deattack = deattack;
         this.dehealth = dehealth;
@@ -47,6 +47,11 @@ export class Skill_DeAttGain extends SkillBase
     {
         try
         {
+            let event: Event = new Event();
+            event.isParallel = isParallel;
+            event.spellcaster = selfInfo;
+            event.type = BattleEnums.EventType.UsedSkill;
+            battle.AddBattleEvent(event);
             if (this.isAll)
             {
                 this.SkillEffect_1(selfInfo, battle, isParallel);
@@ -74,13 +79,14 @@ export class Skill_DeAttGain extends SkillBase
             let enemyRoles: Role[] = null;
             event.isParallel = isPar
             event.eventSound = this.eventSound;
+            event.isFetter=this.isFetter;
 
-            if (enums.Camp.Self == selfInfo.camp)
+            if (BattleEnums.Camp.Self == selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
                 enemyRoles = battle.GetEnemyTeam().GetRoles().slice();
             }
-            if (enums.Camp.Enemy == selfInfo.camp)
+            if (BattleEnums.Camp.Enemy == selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles = battle.GetSelfTeam().GetRoles().slice();
@@ -90,8 +96,8 @@ export class Skill_DeAttGain extends SkillBase
             {
                 if (r != null)
                 {
-                    r.ChangeProperties(enums.Property.Attack, r.GetProperty(enums.Property.Attack) - this.deattack);
-                    r.ChangeProperties(enums.Property.HP,r.GetProperty(enums.Property.HP)-this.dehealth);
+                    r.ChangeProperties(BattleEnums.Property.Attack, r.GetProperty(BattleEnums.Property.Attack) - this.deattack);
+                    r.ChangeProperties(BattleEnums.Property.HP,r.GetProperty(BattleEnums.Property.HP)-this.dehealth);
                 }
             }
 
@@ -109,7 +115,7 @@ export class Skill_DeAttGain extends SkillBase
 export class Skill_DeAttGainPre extends SkillBase 
 {
     public res: string = "battle/skill/Skill_DeAttGain.ts/Skill_DeAttGainPre";
-    public SkillType: enums.SkillType = enums.SkillType.Intensifier;
+    public SkillType: BattleEnums.SkillType = BattleEnums.SkillType.Intensifier;
 
     private numberOfRole: number = null;
     private isAll: boolean;
@@ -118,9 +124,9 @@ export class Skill_DeAttGainPre extends SkillBase
 
     private eventSound: string;
 
-    constructor(priority: number, dehealth: number, deattack: number, isAll?: boolean, numberOfRole?: number, eventSound?: string) 
+    constructor(priority: number,isfetter:boolean=false, dehealth: number, deattack: number, isAll?: boolean, numberOfRole?: number, eventSound?: string) 
     {
-        super(priority);
+        super(priority,isfetter);
 
         this.deattack = deattack;
         this.dehealth = dehealth;
@@ -175,13 +181,14 @@ export class Skill_DeAttGainPre extends SkillBase
             let enemyRoles: Role[] = null;
             event.isParallel = isPar
             event.eventSound = this.eventSound;
+            event.isFetter=this.isFetter;
 
-            if (enums.Camp.Self == selfInfo.camp)
+            if (BattleEnums.Camp.Self == selfInfo.camp)
             {
                 self = battle.GetSelfTeam().GetRole(selfInfo.index);
                 enemyRoles = battle.GetEnemyTeam().GetRoles().slice();
             }
-            if (enums.Camp.Enemy == selfInfo.camp)
+            if (BattleEnums.Camp.Enemy == selfInfo.camp)
             {
                 self = battle.GetEnemyTeam().GetRole(selfInfo.index);
                 enemyRoles = battle.GetSelfTeam().GetRoles().slice();
@@ -195,22 +202,22 @@ export class Skill_DeAttGainPre extends SkillBase
                 {
                     if (this.deattack > 0 && this.deattack <= 1)
                     {
-                        atk=Math.round((r.GetProperty(enums.Property.Attack)*(1+this.deattack)));
+                        atk=Math.round((r.GetProperty(BattleEnums.Property.Attack)*(1+this.deattack)));
                         if(atk<1)
                         {
                             atk=1;
                         }
-                        r.ChangeProperties(enums.Property.Attack, r.GetProperty(enums.Property.Attack) - atk);
+                        r.ChangeProperties(BattleEnums.Property.Attack, r.GetProperty(BattleEnums.Property.Attack) - atk);
                     }
 
                     if (this.dehealth > 0 && this.dehealth <= 1)
                     {
-                        hp = Math.round(r.GetProperty(enums.Property.HP) * (1 + this.dehealth));
+                        hp = Math.round(r.GetProperty(BattleEnums.Property.HP) * (1 + this.dehealth));
                         if (hp < 1)
                         {
                             hp = 1;
                         }
-                        r.ChangeProperties(enums.Property.HP, r.GetProperty(enums.Property.HP) - this.dehealth);
+                        r.ChangeProperties(BattleEnums.Property.HP, r.GetProperty(BattleEnums.Property.HP) - this.dehealth);
                     }
                 }
             }

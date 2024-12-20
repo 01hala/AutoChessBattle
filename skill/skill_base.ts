@@ -18,16 +18,20 @@ export class RoleInfo {
     public Fetters:number;
 }
 
-export class Event {
-    public type : enums.EventType;
+export class Event 
+{
+    public isFetter:boolean=false;
+    public type : enums.EventType=null;
     /** 释放效果的对象 */
-    public spellcaster : RoleInfo;
+    public spellcaster : RoleInfo=null;
     /** 受到效果的对象 */
-    public recipient : RoleInfo[];
+    public recipient : RoleInfo[]=[];
     /** 生效范围 */
-    public effectScope:number;
+    public effectScope:number=0;
+    /** 生效人数 */
+    public objCount:number=0;
     /** 数值 */
-    public value : number[];
+    public value : number[]=[];
     public is_trigger_floating : boolean = false;
     public priority:number=1;
     //是否是并行发动的
@@ -41,10 +45,13 @@ export abstract class SkillTriggerBase {
     abstract CheckSkillTrigger(frameEvent: Event[], selfInfo: RoleInfo , battle?:battle.Battle): number;
 }
 
-export abstract class SkillBase {
+export abstract class SkillBase 
+{
     public Priority : number = 0;
-    public constructor(priority:number) {
+    public isFetter:boolean;
+    public constructor(priority:number,isFetter:boolean) {
         this.Priority = priority
+        this.isFetter=isFetter;
     }
 
     abstract UseSkill(selfInfo: RoleInfo, battle: battle.Battle,isParallel:boolean , evs?:Event[]): void;

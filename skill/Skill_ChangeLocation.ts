@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, error, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import * as enums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -19,13 +19,13 @@ export class Skill_ChangeLocation extends SkillBase {
 
     private index1:number;
     private index2:number;
-    private changeType : enums.ChangeLocationType;
+    private changeType : BattleEnums.ChangeLocationType;
 
     private count=0;
 
-    constructor(priority:number, changeType : enums.ChangeLocationType, change1:number, change2:number)
+    constructor(priority:number, changeType : BattleEnums.ChangeLocationType, change1:number, change2:number,eventSound?:string,isfetter:boolean=false)
     {
-        super(priority);
+        super(priority,isfetter);
 
         this.changeType = changeType;
         this.index1=change1;
@@ -37,25 +37,21 @@ export class Skill_ChangeLocation extends SkillBase {
     {
         try
         {
-            console.log("使用技能：换位" , selfInfo.camp);
-            let battleEvent : Event = new Event();
-            battleEvent.type = enums.EventType.UsedSkill;
-            battleEvent.spellcaster = selfInfo;
-            battleEvent.recipient = [];
-            battleEvent.value = [];
-            battleEvent.isParallel=isParallel;
+            let event: Event = new Event();
+            event.isParallel = isParallel;
+            event.spellcaster = selfInfo;
+            event.type = BattleEnums.EventType.UsedSkill;
+            battle.AddBattleEvent(event);
 
-            battle.AddBattleEvent(battleEvent);
-
-            if(enums.ChangeLocationType.AssignChange == this.changeType)
+            if(BattleEnums.ChangeLocationType.AssignChange == this.changeType)
             {
                this.SkillEffect_1(selfInfo,battle,isParallel);
             }
-            if(enums.ChangeLocationType.RandomChange == this.changeType)
+            if(BattleEnums.ChangeLocationType.RandomChange == this.changeType)
             {
                 this.SkillEffect_2(selfInfo,battle,isParallel);
             }
-            if(enums.ChangeLocationType.BackChange == this.changeType && this.count<1)
+            if(BattleEnums.ChangeLocationType.BackChange == this.changeType && this.count<1)
             {
                 this.SkillEffect_3(selfInfo,battle,isParallel);
                 this.count++;
@@ -71,19 +67,20 @@ export class Skill_ChangeLocation extends SkillBase {
     {
         try
         {
-            let battleEvent : Event = new Event();
-            battleEvent.type = enums.EventType.ChangeLocation;
-            battleEvent.spellcaster = _selfInfo;
-            battleEvent.recipient = [];
-            battleEvent.value = [];
-            battleEvent.isParallel=_isPar;
+            let event : Event = new Event();
+            event.type = BattleEnums.EventType.ChangeLocation;
+            event.spellcaster = _selfInfo;
+            event.recipient = [];
+            event.value = [];
+            event.isParallel=_isPar;
+            event.isFetter=this.isFetter;
     
             let originalRoleList:Team = null;
-            if(enums.Camp.Self==_selfInfo.camp)
+            if(BattleEnums.Camp.Self==_selfInfo.camp)
             {
                 originalRoleList=_battle.GetEnemyTeam();
             }
-            if(enums.Camp.Enemy==_selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==_selfInfo.camp)
             {
                 originalRoleList=_battle.GetSelfTeam();
             }
@@ -98,7 +95,7 @@ export class Skill_ChangeLocation extends SkillBase {
                 recipient = new RoleInfo();
                 recipient.index = this.index1;
                 recipient.camp = begin.selfCamp;
-                battleEvent.recipient.push(recipient);
+                event.recipient.push(recipient);
             }
            
             if(end)
@@ -106,24 +103,24 @@ export class Skill_ChangeLocation extends SkillBase {
                 recipient = new RoleInfo();
                 recipient.index = this.index2;
                 recipient.camp = end.selfCamp;
-                battleEvent.recipient.push(recipient);
+                event.recipient.push(recipient);
             }
             
     
             //提交要交换的位置信息
-            battleEvent.value.push(this.index2);
-            battleEvent.value.push(this.index1);
+            event.value.push(this.index2);
+            event.value.push(this.index1);
     
-            if (enums.Camp.Self == _selfInfo.camp)
+            if (BattleEnums.Camp.Self == _selfInfo.camp)
             {
                 _battle.GetEnemyTeam().SwitchRole(begin.index, end.index);
             }
-            if (enums.Camp.Enemy == _selfInfo.camp)
+            if (BattleEnums.Camp.Enemy == _selfInfo.camp)
             {
                 _battle.GetSelfTeam().SwitchRole(begin.index, end.index);
             }
     
-            _battle.AddBattleEvent(battleEvent);
+            _battle.AddBattleEvent(event);
         }
         catch(error)
         {
@@ -135,22 +132,23 @@ export class Skill_ChangeLocation extends SkillBase {
     {
         try
         {
-            let battleEvent: Event = new Event();
-            battleEvent.type = enums.EventType.ChangeLocation;
-            battleEvent.spellcaster = _selfInfo;
-            battleEvent.recipient = [];
-            battleEvent.value = [];
-            battleEvent.isParallel = _isPar;
+            let event: Event = new Event();
+            event.type = BattleEnums.EventType.ChangeLocation;
+            event.spellcaster = _selfInfo;
+            event.recipient = [];
+            event.value = [];
+            event.isParallel = _isPar;
+            event.isFetter=this.isFetter;
     
             let originalRoleList:Role[];
             switch(_selfInfo.camp)
             {
-                case enums.Camp.Self:
+                case BattleEnums.Camp.Self:
                     {
                         originalRoleList=_battle.GetEnemyTeam().GetRoles();
                     }
                     break;
-                case enums.Camp.Enemy:
+                case BattleEnums.Camp.Enemy:
                     {
                         originalRoleList=_battle.GetSelfTeam().GetRoles();
                     }
@@ -186,12 +184,12 @@ export class Skill_ChangeLocation extends SkillBase {
 
             switch (_selfInfo.camp)
             {
-                case enums.Camp.Self:
+                case BattleEnums.Camp.Self:
                     {
                         originalRoleList = _battle.GetEnemyTeam().GetRoles();
                     }
                     break;
-                case enums.Camp.Enemy:
+                case BattleEnums.Camp.Enemy:
                     {
                         originalRoleList = _battle.GetSelfTeam().GetRoles();
                     }
@@ -204,26 +202,26 @@ export class Skill_ChangeLocation extends SkillBase {
             let recipient = new RoleInfo();
             recipient.index = begin.index;
             recipient.camp = begin.selfCamp;
-            battleEvent.recipient.push(recipient);
+            event.recipient.push(recipient);
     
             recipient = new RoleInfo();
             recipient.index = end.index;
             recipient.camp = end.selfCamp;
-            battleEvent.recipient.push(recipient);
+            event.recipient.push(recipient);
     
-            battleEvent.value.push(end.index);
-            battleEvent.value.push(begin.index);
+            event.value.push(end.index);
+            event.value.push(begin.index);
     
-            if (enums.Camp.Self == _selfInfo.camp)
+            if (BattleEnums.Camp.Self == _selfInfo.camp)
             {
                 _battle.GetEnemyTeam().SwitchRole(begin.index, end.index);
             }
-            if (enums.Camp.Enemy == _selfInfo.camp)
+            if (BattleEnums.Camp.Enemy == _selfInfo.camp)
             {
                 _battle.GetSelfTeam().SwitchRole(begin.index, end.index);
             }
     
-            _battle.AddBattleEvent(battleEvent);
+            _battle.AddBattleEvent(event);
             console.log("换位完成");
         }
         catch(error)
@@ -234,19 +232,20 @@ export class Skill_ChangeLocation extends SkillBase {
 
     SkillEffect_3(_selfInfo: RoleInfo, _battle: Battle,_isPar:boolean)      //随机后排推到前排
     {
-        let battleEvent: Event = new Event();
-        battleEvent.type = enums.EventType.ChangeLocation;
-        battleEvent.spellcaster = _selfInfo;
-        battleEvent.recipient = [];
-        battleEvent.value = [];
-        battleEvent.isParallel = _isPar;
+        let event: Event = new Event();
+        event.type = BattleEnums.EventType.ChangeLocation;
+        event.spellcaster = _selfInfo;
+        event.recipient = [];
+        event.value = [];
+        event.isParallel = _isPar;
+        event.isFetter=this.isFetter;
 
         let originalRoleList: Team = null;
-        if (enums.Camp.Self == _selfInfo.camp)
+        if (BattleEnums.Camp.Self == _selfInfo.camp)
         {
             originalRoleList = _battle.GetEnemyTeam();
         }
-        if (enums.Camp.Enemy == _selfInfo.camp)
+        if (BattleEnums.Camp.Enemy == _selfInfo.camp)
         {
             originalRoleList = _battle.GetSelfTeam();
         }
@@ -269,7 +268,7 @@ export class Skill_ChangeLocation extends SkillBase {
             recipient = new RoleInfo();
             recipient.index = _index1;
             recipient.camp = begin.selfCamp;
-            battleEvent.recipient.push(recipient);
+            event.recipient.push(recipient);
         }
 
         if (end)
@@ -277,22 +276,22 @@ export class Skill_ChangeLocation extends SkillBase {
             recipient = new RoleInfo();
             recipient.index = _index2;
             recipient.camp = end.selfCamp;
-            battleEvent.recipient.push(recipient);
+            event.recipient.push(recipient);
         }
 
-        battleEvent.value.push(_index2);
-        battleEvent.value.push(_index1);
+        event.value.push(_index2);
+        event.value.push(_index1);
 
-        if (enums.Camp.Self == _selfInfo.camp)
+        if (BattleEnums.Camp.Self == _selfInfo.camp)
         {
             _battle.GetEnemyTeam().SwitchRole(_index1, _index2);
         }
-        if (enums.Camp.Enemy == _selfInfo.camp)
+        if (BattleEnums.Camp.Enemy == _selfInfo.camp)
         {
             _battle.GetSelfTeam().SwitchRole(_index1, _index2);
         }
 
-        _battle.AddBattleEvent(battleEvent);
+        _battle.AddBattleEvent(event);
     }
 }
 

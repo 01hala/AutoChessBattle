@@ -6,7 +6,7 @@
  */
 import { _decorator, Component, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
-import * as enums from '../BattleEnums';
+import * as BattleEnums from '../BattleEnums';
 import { Battle } from '../battle';
 import { Role } from '../role';
 import { random } from '../util';
@@ -35,9 +35,9 @@ export class Skill_AddBuff extends SkillBase
      * @param numberOfRole 生效角色数量
      * @param eventSound event音效
      */
-    constructor(priority:number, buffID:number , value:number , round:number ,numberOfRole:number ,eventSound?:string)
+    constructor(priority:number ,buffID:number , value:number , round:number ,numberOfRole:number ,eventSound?:string,isfetter:boolean=false)
     {
-        super(priority);
+        super(priority,isfetter);
         if(numberOfRole>=12) this.isAll=true;
         else this.isAll=false;
 
@@ -55,6 +55,11 @@ export class Skill_AddBuff extends SkillBase
     {
         try
         {
+            let event: Event = new Event();
+            event.isParallel = isParallel;
+            event.spellcaster = selfInfo;
+            event.type = BattleEnums.EventType.UsedSkill;
+            battle.AddBattleEvent(event);
             if(!this.isAll)
             {
                 this.SkillEffect_1(selfInfo,battle,isParallel);
@@ -68,27 +73,28 @@ export class Skill_AddBuff extends SkillBase
 
     SkillEffect_1(_selfInfo: RoleInfo, _battle: Battle,_isPar:boolean)      //随机对象套buff
     {
-        let battleEvent: Event = new Event();
-        battleEvent.type = enums.EventType.AddBuff;
-        battleEvent.spellcaster = _selfInfo;
-        battleEvent.recipient = [];
-        battleEvent.value = [this.buffID , this.value , this.round];
-        battleEvent.isParallel = _isPar;
+        let event: Event = new Event();
+        event.type = BattleEnums.EventType.AddBuff;
+        event.spellcaster = _selfInfo;
+        event.recipient = [];
+        event.value = [this.buffID , this.value , this.round];
+        event.isParallel = _isPar;
+        event.isFetter=this.isFetter;
 
         let enemyRoles:Role[] = null;
         let recipientRoles: Role[] = null;
 
-        if (enums.Camp.Self == _selfInfo.camp)
+        if (BattleEnums.Camp.Self == _selfInfo.camp)
         {
             enemyRoles = _battle.GetEnemyTeam().GetRoles();
         }
-        if (enums.Camp.Enemy == _selfInfo.camp)
+        if (BattleEnums.Camp.Enemy == _selfInfo.camp)
         {
             enemyRoles = _battle.GetSelfTeam().GetRoles();
         }
 
         let bufferConfig = config.config.BufferConfig.get(this.buffID);
-        if(enums.BufferType.OffsetDamage==bufferConfig.Type || enums.BufferType.InevitableKill == bufferConfig.Type)
+        if(BattleEnums.BufferType.OffsetDamage==bufferConfig.Type || BattleEnums.BufferType.InevitableKill == bufferConfig.Type)
         {
             this.frequency=this.value;
         }
@@ -112,10 +118,10 @@ export class Skill_AddBuff extends SkillBase
             roleInfo.camp = _selfInfo.camp;
             roleInfo.index = r.index;
 
-            battleEvent.recipient.push(roleInfo);
+            event.recipient.push(roleInfo);
         }
 
-        _battle.AddBattleEvent(battleEvent);
+        _battle.AddBattleEvent(event);
     }
     
 }

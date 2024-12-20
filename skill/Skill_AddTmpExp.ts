@@ -9,14 +9,14 @@ import { SkillBase,Event, RoleInfo,SkillTriggerBase, } from './skill_base';
 import { Battle } from '../battle';
 import { Team } from '../team';
 import { Role } from '../role';
-import * as enums from '../BattleEnums'
+import * as BattleEnums from '../BattleEnums'
 import { Direction } from '../common'
 import { random } from '../util';
 
 export class Skill_AddTmpExp extends SkillBase 
 {
     public res:string="battle/skill/Skill_AddTmpExp";
-    public SkillType:enums.SkillType=enums.SkillType.Intensifier;
+    public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.Intensifier;
 
     private numberOfRole:number=null;
     private dir:Direction=null;
@@ -25,8 +25,8 @@ export class Skill_AddTmpExp extends SkillBase
 
     event:Event=new Event();
 
-    public constructor(priority:number,health:number, attack:number,dir:Direction,numberOfRole?:number) {
-        super(priority);
+    public constructor(priority:number,health:number, attack:number,dir:Direction,numberOfRole?:number,isfetter:boolean=false) {
+        super(priority,isfetter);
 
         this.attack = attack;
         this.health=health;
@@ -45,6 +45,11 @@ export class Skill_AddTmpExp extends SkillBase
     {
         try
         {
+            let event: Event = new Event();
+            event.isParallel = isParallel;
+            event.spellcaster = selfInfo;
+            event.type = BattleEnums.EventType.UsedSkill;
+            battle.AddBattleEvent(event);
             if(!this.numberOfRole || 0==this.numberOfRole)
             {
                 this.SkillEffect_1(selfInfo,battle,isParallel);    
@@ -68,10 +73,11 @@ export class Skill_AddTmpExp extends SkillBase
         try
         {
             let event = new Event();
-            event.type = enums.EventType.IntensifierExp;
+            event.type = BattleEnums.EventType.IntensifierExp;
             event.spellcaster = selfInfo;
             event.recipient = [];
             event.isParallel=isPar;
+            event.isFetter=this.isFetter;
 
             let teamTemp:Team=null;
             let recipientRole:Role=null;
@@ -80,11 +86,11 @@ export class Skill_AddTmpExp extends SkillBase
             roleInfo.camp = selfInfo.camp;
             roleInfo.index = 0;
 
-            if(enums.Camp.Self==selfInfo.camp)
+            if(BattleEnums.Camp.Self==selfInfo.camp)
             {
                 teamTemp=battle.GetSelfTeam();  
             }
-            if(enums.Camp.Enemy==selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
                 teamTemp=battle.GetEnemyTeam();
             }
@@ -146,9 +152,9 @@ export class Skill_AddTmpExp extends SkillBase
             if(null!=recipientRole)
             {
                 console.log("recipientRole:", recipientRole, " ChangeProperties!");
-                recipientRole.ChangeProperties(enums.Property.HP, recipientRole.GetProperty(enums.Property.HP) + this.health);
-                recipientRole.ChangeProperties(enums.Property.TotalHP, recipientRole.GetProperty(enums.Property.TotalHP) + this.health);
-                recipientRole.ChangeProperties(enums.Property.Attack,recipientRole.GetProperty(enums.Property.Attack) + this.attack);
+                recipientRole.ChangeProperties(BattleEnums.Property.HP, recipientRole.GetProperty(BattleEnums.Property.HP) + this.health);
+                recipientRole.ChangeProperties(BattleEnums.Property.TotalHP, recipientRole.GetProperty(BattleEnums.Property.TotalHP) + this.health);
+                recipientRole.ChangeProperties(BattleEnums.Property.Attack,recipientRole.GetProperty(BattleEnums.Property.Attack) + this.attack);
 
                 event.recipient.push(roleInfo);
                 event.value = [this.health, this.attack];
@@ -167,18 +173,19 @@ export class Skill_AddTmpExp extends SkillBase
         try
         {
             let event = new Event();
-            event.type = enums.EventType.IntensifierExp;
+            event.type = BattleEnums.EventType.IntensifierExp;
             event.spellcaster = selfInfo;
             event.recipient = [];
+            event.isFetter=this.isFetter;
 
             let recipientRoles:Role[]=new Array();
             let rolesTemp:Role[]=null;
 
-            if(enums.Camp.Self==selfInfo.camp)
+            if(BattleEnums.Camp.Self==selfInfo.camp)
             {
                 rolesTemp=battle.GetSelfTeam().GetRoles().slice();
             }
-            if(enums.Camp.Enemy==selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
                 rolesTemp=battle.GetEnemyTeam().GetRoles().slice();
             }
@@ -199,9 +206,9 @@ export class Skill_AddTmpExp extends SkillBase
             recipientRoles.forEach((role) => 
             {
                 console.log("recipientRoles role:", role, " ChangeProperties!");
-                role.ChangeProperties(enums.Property.HP, role.GetProperty(enums.Property.HP) + this.health);
-                role.ChangeProperties(enums.Property.TotalHP, role.GetProperty(enums.Property.TotalHP) + this.health);
-                role.ChangeProperties(enums.Property.Attack,role.GetProperty(enums.Property.Attack) + this.attack);
+                role.ChangeProperties(BattleEnums.Property.HP, role.GetProperty(BattleEnums.Property.HP) + this.health);
+                role.ChangeProperties(BattleEnums.Property.TotalHP, role.GetProperty(BattleEnums.Property.TotalHP) + this.health);
+                role.ChangeProperties(BattleEnums.Property.Attack,role.GetProperty(BattleEnums.Property.Attack) + this.attack);
             });
             event.value = [this.health,this.attack];
             battle.AddBattleEvent(event);
@@ -222,20 +229,21 @@ export class Skill_AddTmpExp extends SkillBase
         try
         {
             let event = new Event();
-            event.type = enums.EventType.IntensifierExp;
+            event.type = BattleEnums.EventType.IntensifierExp;
             event.spellcaster = selfInfo;
             event.recipient = [];
+            event.isFetter=this.isFetter;
 
             let indexs:number[]=[];
 
             let rolesTemp:Role[]=[];
 
-            if(enums.Camp.Self==selfInfo.camp)
+            if(BattleEnums.Camp.Self==selfInfo.camp)
             {
                 rolesTemp=battle.GetSelfTeam().GetRoles().slice();
             }
 
-            if(enums.Camp.Enemy==selfInfo.camp)
+            if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
                 rolesTemp=battle.GetEnemyTeam().GetRoles().slice();
             }
