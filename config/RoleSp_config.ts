@@ -13,9 +13,16 @@ export class RoleSpConfig
     public IntensifierSelf:string;
     public OnSummon:string;
     public UseSkill:string;
+    /**
+     * 技能发动时
+     * @tip 只有两个元素 0为技能，1为羁绊
+     */
+    public OnSkill:string[];
     public IntensifierColony:string;
-    public Buff:string[];
-    public CheckSkill:string[];
+    /** 
+     * 飞行物列
+     * @tip 只有两个元素 0为增益球，1为远程攻击子弹
+     * */
     public Projectiles:string[];
 }
 
@@ -42,12 +49,10 @@ export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
                 cfg.Id = v["Id"];
                 cfg.IntensifierSelf = v["IntensifierSelf"];
                 cfg.OnSummon = v["OnSummon"];
-                cfg.UseSkill = v["Skill"]?v["Skill"]:"null";
+                cfg.UseSkill = v["UseSkill"]?v["UseSkill"]:"null";
+                let tlist=v["OnSkill"];
+                cfg.OnSkill = tlist.split('|');
                 cfg.IntensifierColony=v["intensifierColony"];
-                let tlist=v["buff"];
-                cfg.Buff=tlist.split('|');
-                tlist=v["checkSkill"];
-                cfg.CheckSkill=tlist.split('|');
                 tlist=v["projectiles"];
                 cfg.Projectiles=tlist.split('|');
     
