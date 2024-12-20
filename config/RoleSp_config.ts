@@ -9,21 +9,21 @@ import { Direction, Priority } from '../common';
  */
 export class RoleSpConfig
 {
-    public Id: number;
-    public IntensifierSelf:string;
-    public OnSummon:string;
-    public UseSkill:string;
+    public Id: number=0;
+    public IntensifierSelf:string="";
+    public OnSummon:string="";
+    public UseSkill:string="";
     /**
      * 技能发动时
      * @tip 只有两个元素 0为技能，1为羁绊
      */
-    public OnSkill:string[];
-    public IntensifierColony:string;
+    public OnSkill:string[]=[];
+    public IntensifierColony:string="";
     /** 
      * 飞行物列
      * @tip 只有两个元素 0为增益球，1为远程攻击子弹
      * */
-    public Projectiles:string[];
+    public Projectiles:string[]=[];
 }
 
 export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
@@ -51,7 +51,10 @@ export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
                 cfg.OnSummon = v["OnSummon"];
                 cfg.UseSkill = v["UseSkill"]?v["UseSkill"]:"null";
                 let tlist=v["OnSkill"];
-                cfg.OnSkill = tlist.split('|');
+                if(tlist)
+                {
+                    cfg.OnSkill = tlist.split('|');
+                }
                 cfg.IntensifierColony=v["intensifierColony"];
                 tlist=v["projectiles"];
                 cfg.Projectiles=tlist.split('|');
