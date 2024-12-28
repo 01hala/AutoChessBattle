@@ -298,6 +298,10 @@ export class Battle {
             return true;
         }
 
+        if (role.fetterSkill && role.fetterSkill.trigger.CheckSkillTrigger(evs, roleInfo)) {
+            return true;
+        }
+
         return false;
     }
 
@@ -368,6 +372,11 @@ export class Battle {
                 console.log("Are skills parallel:"+isPar);
                 skillImpl.UseSkill(roleInfo, this,isPar , evs);
             }
+
+            if (role.fetterSkill && role.fetterSkill.trigger.CheckSkillTrigger(evs, roleInfo)) {
+                console.log("Are skills parallel:"+isPar);
+                role.fetterSkill.skill.UseSkill(roleInfo, this,isPar , evs);
+            }
         }
 
         let enemyTeam = this.enemyTeam.GetRoles();
@@ -402,6 +411,11 @@ export class Battle {
             if (skillImpl) {
                 role.LockSkill();
                 skillImpl.UseSkill(roleInfo, this,isPar , evs);
+            }
+
+            if (role.fetterSkill && role.fetterSkill.trigger.CheckSkillTrigger(evs, roleInfo)) {
+                console.log("Are skills parallel:"+isPar);
+                role.fetterSkill.skill.UseSkill(roleInfo, this,isPar , evs);
             }
         }
     }

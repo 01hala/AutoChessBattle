@@ -17,6 +17,7 @@ import * as PlotConfig from "./Plot_config";
 import * as pvevent_config from './pvevent_config';
 import * as RoleSp_config from './RoleSp_config';
 import * as SpList_config from './SpList_config';
+import * as HotFixed_config from './HotFixed_config';
 
 export class config {
     public static MechanicFetters = 6;
@@ -35,6 +36,7 @@ export class config {
     public static PVEventConfig:Map<number,pvevent_config.PVEventConfig>;
     public static RoleSpConfig:Map<number,RoleSp_config.RoleSpConfig>;
     public static SpListConfig:Map<string,SpList_config.SpEffect>;
+    public static HotFixedConfig:HotFixed_config.HotFixed_config;
 
     public static async load()
     {
@@ -51,6 +53,7 @@ export class config {
         config.PVEventConfig=await pvevent_config.LoadPVEventConfig();
         config.RoleSpConfig=await RoleSp_config.LoadRoleSpConfig();
         config.SpListConfig=await SpList_config.LoadSpConfig();
+        config.HotFixedConfig = await HotFixed_config.LoadHotFixedConfig();
         //config.PlotConfig = await PlotConfig.LoadPlotConfig();
     }
 }
