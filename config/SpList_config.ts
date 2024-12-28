@@ -21,7 +21,7 @@ export async function LoadSpConfig() : Promise<Map<string, SpEffect>>
     {
         let map = new Map<string, SpEffect>();
 
-        console.log("Load RoleSp begin!");
+        console.log("Load SpList begin!");
         resources.load('config/SpList', (err: any, res: JsonAsset) => 
         {
             if (err) {
@@ -43,7 +43,7 @@ export async function LoadSpConfig() : Promise<Map<string, SpEffect>>
                 map.set(cfg.key , cfg);
             });
     
-            console.log("Load RoleSp end!");
+            console.log("Load SpList end! map:", map);
             resolve(map);
         });
     });
