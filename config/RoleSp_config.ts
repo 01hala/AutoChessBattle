@@ -1,4 +1,4 @@
-import { JsonAsset, resources, error } from 'cc';
+import { JsonAsset, resources, error, builtinResMgr } from 'cc';
 import * as enums from '../BattleEnums';
 import { Direction, Priority } from '../common';
 
@@ -11,7 +11,7 @@ export class RoleSpConfig
 {
     public Id: number=0;
     public IntensifierSelf:string="";
-    public OnSummon:string="";
+    public Admission:string="";
     public UseSkill:string="";
     /**
      * 技能发动时
@@ -48,16 +48,19 @@ export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
                 let cfg = new RoleSpConfig();
                 cfg.Id = v["Id"];
                 cfg.IntensifierSelf = v["IntensifierSelf"];
-                cfg.OnSummon = v["OnSummon"];
-                cfg.UseSkill = v["UseSkill"]?v["UseSkill"]:"null";
+                cfg.Admission = !(v["Admission"]==="null") || v["Admission"]?v["Admission"]:"null";
+                cfg.UseSkill = !(v["UseSkill"]==="null") || v["UseSkill"] ?v["UseSkill"]:"null";
                 let tlist=v["OnSkill"];
                 if(tlist)
                 {
-                    cfg.OnSkill = tlist.split('|');
+                    cfg.OnSkill = tlist.split(';');
                 }
                 cfg.IntensifierColony=v["intensifierColony"];
-                tlist=v["projectiles"];
-                cfg.Projectiles=tlist.split('|');
+                tlist=v["Projectiles"];
+                if(tlist)
+                {
+                    cfg.Projectiles=tlist.split(';');
+                }
     
                 map.set(parseInt(k), cfg);
             });
