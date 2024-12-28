@@ -48,8 +48,8 @@ export async function LoadRoleSpConfig() : Promise<Map<number, RoleSpConfig>>
                 let cfg = new RoleSpConfig();
                 cfg.Id = v["Id"];
                 cfg.IntensifierSelf = v["IntensifierSelf"];
-                cfg.Admission = !(v["Admission"]==="null") || v["Admission"]?v["Admission"]:"null";
-                cfg.UseSkill = !(v["UseSkill"]==="null") || v["UseSkill"] ?v["UseSkill"]:"null";
+                cfg.Admission = v["Admission"]?v["Admission"]:"null";
+                cfg.UseSkill = v["UseSkill"] ?v["UseSkill"]:"null";
                 let tlist=v["OnSkill"];
                 if(tlist)
                 {
