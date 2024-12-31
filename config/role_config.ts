@@ -23,7 +23,7 @@ export class RoleConfig {
     public Sex:string;
     public Armor:string;
 
-    GetName(language: string): string {
+    GetName(language: string = "chinese"): string {
         if (language == "chinese") {
             let cfg = config.config.LanguageConfig.get(this.Name);
             return cfg.chinese;

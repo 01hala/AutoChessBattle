@@ -32,7 +32,7 @@ export class SkillConfig {
     public AddBufferID: number;
     public SkillAudio: string;
 
-    GetName(language: string): string {
+    GetName(language: string = "chinese"): string {
         if (language == "chinese") {
             let cfg = config.config.LanguageConfig.get(this.Name);
             return cfg.chinese;
@@ -40,7 +40,7 @@ export class SkillConfig {
         return "";
     }
 
-    GetDesc(language: string): string {
+    GetDesc(language: string = "chinese"): string {
         if (language == "chinese") {
             let cfg = config.config.LanguageConfig.get(this.Desc);
             return cfg.chinese;

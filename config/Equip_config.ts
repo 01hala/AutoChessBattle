@@ -18,7 +18,7 @@ export class EquipConfig {
     public Res:string;
     public Introduce:string;
 
-    GetName(language: string): string {
+    GetName(language: string = "chinese"): string {
         if (language == "chinese") {
             let cfg = config.config.LanguageConfig.get(this.Name);
             return cfg.chinese;
@@ -26,7 +26,7 @@ export class EquipConfig {
         return "";
     }
 
-    GetIntroduce(language: string): string {
+    GetIntroduce(language: string = "chinese"): string {
         if (language == "chinese") {
             let cfg = config.config.LanguageConfig.get(this.Introduce);
             return cfg.chinese;

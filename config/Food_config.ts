@@ -20,7 +20,7 @@ export class FoodConfig {
     public Count:number;
     public Res:string;
 
-    GetName(language: string): string {
+    GetName(language: string = "chinese"): string {
         if (language == "chinese") {
             let cfg = config.config.LanguageConfig.get(this.Name);
             return cfg.chinese;
@@ -28,7 +28,7 @@ export class FoodConfig {
         return "";
     }
 
-    GetIntroduce(language: string): string {
+    GetIntroduce(language: string = "chinese"): string {
         if (language == "chinese") {
             let cfg = config.config.LanguageConfig.get(this.Introduce);
             return cfg.chinese;

@@ -16,7 +16,7 @@ export class TaskConfig {
     public tValue:number;
     public Reward : Map<string,number>;
 
-    GetName(language: string): string {
+    GetName(language: string = "chinese"): string {
         if (language == "chinese") {
             let cfg = config.config.LanguageConfig.get(this.Name);
             return cfg.chinese;
@@ -24,7 +24,7 @@ export class TaskConfig {
         return "";
     }
 
-    GetLable(language: string): string {
+    GetLable(language: string = "chinese"): string {
         if (language == "chinese") {
             let cfg = config.config.LanguageConfig.get(this.tLable);
             return cfg.chinese;
