@@ -5,6 +5,7 @@
  */
 import { JsonAsset, resources, error } from 'cc';
 import { Achievement } from '../common';
+import * as config from './config'
 
 export class TaskConfig {
     public Id : number;
@@ -14,6 +15,22 @@ export class TaskConfig {
     public Condition : string;
     public tValue:number;
     public Reward : Map<string,number>;
+
+    GetName(language: string): string {
+        if (language == "chinese") {
+            let cfg = config.config.LanguageConfig.get(this.Name);
+            return cfg.chinese;
+        }
+        return "";
+    }
+
+    GetLable(language: string): string {
+        if (language == "chinese") {
+            let cfg = config.config.LanguageConfig.get(this.tLable);
+            return cfg.chinese;
+        }
+        return "";
+    }
 }
 
 export async function LoadTaskConfig() : Promise<Map<number, TaskConfig>> {

@@ -4,6 +4,7 @@
  * 2023/10/3
  */
 import { JsonAsset, resources, error } from 'cc';
+import * as config from './config'
 
 export class RoleConfig {
     public Id : number;
@@ -21,6 +22,14 @@ export class RoleConfig {
     public Biomes:number;
     public Sex:string;
     public Armor:string;
+
+    GetName(language: string): string {
+        if (language == "chinese") {
+            let cfg = config.config.LanguageConfig.get(this.Name);
+            return cfg.chinese;
+        }
+        return "";
+    }
 }
 
 export async function LoadRoleConfig() : Promise<Map<number, RoleConfig>> {

@@ -6,11 +6,13 @@
 import { JsonAsset, resources, error } from 'cc';
 import * as enums from '../BattleEnums';
 import { Direction, Priority } from '../common';
+import * as config from './config'
 
 export class SkillConfig {
     public Id: number;
     public Name: string;
     public Type: string;
+    public Desc: string;
     public Priority: Priority;
     public EffectTime: number;
     public Effect: number;
@@ -29,6 +31,22 @@ export class SkillConfig {
     public SwapPropertiesType : enums.SwapPropertiesType;
     public AddBufferID: number;
     public SkillAudio: string;
+
+    GetName(language: string): string {
+        if (language == "chinese") {
+            let cfg = config.config.LanguageConfig.get(this.Name);
+            return cfg.chinese;
+        }
+        return "";
+    }
+
+    GetDesc(language: string): string {
+        if (language == "chinese") {
+            let cfg = config.config.LanguageConfig.get(this.Desc);
+            return cfg.chinese;
+        }
+        return "";
+    }
 }
 
 export async function LoadSkillConfig() : Promise<Map<number, SkillConfig>> {
@@ -50,6 +68,7 @@ export async function LoadSkillConfig() : Promise<Map<number, SkillConfig>> {
                 skillc.Id = v["Id"];
                 skillc.Name = v["Name"];
                 skillc.Type = v["Type"];
+                skillc.Desc = v["desc"];
                 skillc.Priority = Priority[v["Priority"] as keyof typeof Priority];
                 skillc.EffectTime = v["EffectTime"];
                 skillc.Effect = v["Effect"];

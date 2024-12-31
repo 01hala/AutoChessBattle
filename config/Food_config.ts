@@ -4,7 +4,7 @@
  * 2023/10/2
  */
 import { JsonAsset, resources, error } from 'cc';
-
+import * as config from './config'
 
 export class FoodConfig {
     public Id: number;
@@ -20,6 +20,21 @@ export class FoodConfig {
     public Count:number;
     public Res:string;
 
+    GetName(language: string): string {
+        if (language == "chinese") {
+            let cfg = config.config.LanguageConfig.get(this.Name);
+            return cfg.chinese;
+        }
+        return "";
+    }
+
+    GetIntroduce(language: string): string {
+        if (language == "chinese") {
+            let cfg = config.config.LanguageConfig.get(this.Introduce);
+            return cfg.chinese;
+        }
+        return "";
+    }
 }
 
 export async function LoadFoodConfig() : Promise<Map<number, FoodConfig>> {

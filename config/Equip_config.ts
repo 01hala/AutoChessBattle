@@ -4,6 +4,7 @@
  * 2024/1/1
  */
 import { JsonAsset, resources, error } from 'cc';
+import * as config from './config'
 
 export class EquipConfig {
     public Id: number;
@@ -16,6 +17,22 @@ export class EquipConfig {
     public Vaule:number[];
     public Res:string;
     public Introduce:string;
+
+    GetName(language: string): string {
+        if (language == "chinese") {
+            let cfg = config.config.LanguageConfig.get(this.Name);
+            return cfg.chinese;
+        }
+        return "";
+    }
+
+    GetIntroduce(language: string): string {
+        if (language == "chinese") {
+            let cfg = config.config.LanguageConfig.get(this.Introduce);
+            return cfg.chinese;
+        }
+        return "";
+    }
 }
 
 export async function LoadEquipConfig() : Promise<Map<number, EquipConfig>>
