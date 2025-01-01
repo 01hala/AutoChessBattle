@@ -15,7 +15,7 @@ export async function LoadLanguageConfig() : Promise<Map<string, LanguageConfig>
     return new Promise<Map<string, LanguageConfig>>((resolve, reject)=>{
         let map = new Map<string, LanguageConfig>();
 
-        console.log("Load Plot Config begin!");
+        console.log("Load Language Config begin!");
         resources.load('config/language', (err: any, res: JsonAsset) => {
             if (err) {
                 error(err.message || err);
@@ -33,7 +33,7 @@ export async function LoadLanguageConfig() : Promise<Map<string, LanguageConfig>
                 map.set(l.Id, l);
             });
 
-            console.log("Load Plot Config end!");
+            console.log("Load Language Config end!");
             resolve(map);
         });
     });
