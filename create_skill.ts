@@ -53,7 +53,7 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
     {
         case common.SkillEffectEM.AddTmpExp:
             {
-                skillObj = new Skill_AddTmpExp.Skill_AddTmpExp(skillConfig.Priority, value0, value1, skillConfig.ObjectDirection, skillConfig.ObjCount);
+                skillObj = new Skill_AddTmpExp.Skill_AddTmpExp(skillConfig.Priority, value0, skillConfig.ObjectDirection, skillConfig.ObjCount);
             }
             break;
         case common.SkillEffectEM.AttackAll:

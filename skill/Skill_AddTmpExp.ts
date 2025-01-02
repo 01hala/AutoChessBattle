@@ -20,16 +20,14 @@ export class Skill_AddTmpExp extends SkillBase
 
     private numberOfRole:number=null;
     private dir:Direction=null;
-    private health:number;
-    private attack:number;
+    private value:number;
 
     event:Event=new Event();
 
-    public constructor(priority:number,health:number, attack:number,dir:Direction,numberOfRole?:number,isfetter:boolean=false) {
+    public constructor(priority:number,health:number,dir:Direction,numberOfRole?:number,isfetter:boolean=false) {
         super(priority,isfetter);
 
-        this.attack = attack;
-        this.health=health;
+        this.value=health;
         if(null!=dir)
         {
             this.dir=dir;
@@ -94,70 +92,52 @@ export class Skill_AddTmpExp extends SkillBase
             {
                 teamTemp=battle.GetEnemyTeam();
             }
-            switch(this.dir)
-                {
-                    case Direction.None:
-                        recipientRole=teamTemp.GetRole(selfInfo.index);
+            switch (this.dir)
+            {
+                case Direction.None:
+                    {
+                        recipientRole = teamTemp.GetRole(selfInfo.index);
                         roleInfo.index = selfInfo.index;
-                        break;
-                    case Direction.Forward:
-                        if(selfInfo.index>=3)
-                        {
-                            recipientRole=teamTemp.GetRole(selfInfo.index-3);
-                            roleInfo.index = selfInfo.index-3;
-                        }
-                        break;
-                    case Direction.Back:
-                        if(selfInfo.index<3)
-                        {
-                            console.log("Skill_AttGain_1 SkillEffect_1! dir:", this.dir, " teamTemp:", teamTemp);
-                            recipientRole=teamTemp.GetRole(selfInfo.index+3);
-                            roleInfo.index = selfInfo.index+3;
-                        }
-                        break;
-                    case Direction.Rigiht:
-                        if(2!=selfInfo.index && 5!=selfInfo.index)
-                        {
-                            if(1==selfInfo.index||4==selfInfo.index)
-                            {
-                                recipientRole=teamTemp.GetRole(selfInfo.index-3);
-                                roleInfo.index = selfInfo.index-3;
-                            }
-                            if(0==selfInfo.index||3==selfInfo.index)
-                            {
-                                recipientRole=teamTemp.GetRole(selfInfo.index+2);
-                                roleInfo.index = selfInfo.index+2;
-                            }
-                        }
-                        break;
-                    case Direction.Left:
-                        if(1!=selfInfo.index && 4!= selfInfo.index)
-                        {
-                            if(0==selfInfo.index||3==selfInfo.index)
-                            {
-                                recipientRole=teamTemp.GetRole(selfInfo.index+1);
-                                roleInfo.index = selfInfo.index+1;
-                            }
-                            if(2==selfInfo.index||5==selfInfo.index)
-                            {
-                                recipientRole=teamTemp.GetRole(selfInfo.index-2);
-                                roleInfo.index = selfInfo.index-2;
-                            }
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                    }
+                    break;
+                case Direction.Forward:
+                    if (selfInfo.index >= 3)
+                    {
+                        recipientRole = teamTemp.GetRole(selfInfo.index - 3);
+                        roleInfo.index = selfInfo.index - 3;
+                    }
+                    break;
+                case Direction.Back:
+                    if (selfInfo.index < 3)
+                    {
+                        console.log("Skill_AttGain_1 SkillEffect_1! dir:", this.dir, " teamTemp:", teamTemp);
+                        recipientRole = teamTemp.GetRole(selfInfo.index + 3);
+                        roleInfo.index = selfInfo.index + 3;
+                    }
+                    break;
+                case Direction.Rigiht:
+                    if (2 != selfInfo.index && 5 != selfInfo.index)
+                    {
+                        recipientRole = teamTemp.GetRole(selfInfo.index + 3);
+                        roleInfo.index = selfInfo.index + 1;
+                    }
+                    break;
+                case Direction.Left:
+                    if (0 != selfInfo.index && 3 != selfInfo.index)
+                    {
+                        recipientRole = teamTemp.GetRole(selfInfo.index + 3);
+                        roleInfo.index = selfInfo.index - 1;
+                    }
+                    break;
+            }
             
             if(null!=recipientRole)
             {
                 console.log("recipientRole:", recipientRole, " ChangeProperties!");
-                recipientRole.ChangeProperties(BattleEnums.Property.HP, recipientRole.GetProperty(BattleEnums.Property.HP) + this.health);
-                recipientRole.ChangeProperties(BattleEnums.Property.TotalHP, recipientRole.GetProperty(BattleEnums.Property.TotalHP) + this.health);
-                recipientRole.ChangeProperties(BattleEnums.Property.Attack,recipientRole.GetProperty(BattleEnums.Property.Attack) + this.attack);
+                recipientRole.AddExp(this.value);
 
                 event.recipient.push(roleInfo);
-                event.value = [this.health, this.attack];
+                event.value = [this.value];
                 battle.AddBattleEvent(event);
             }
         }
@@ -206,11 +186,9 @@ export class Skill_AddTmpExp extends SkillBase
             recipientRoles.forEach((role) => 
             {
                 console.log("recipientRoles role:", role, " ChangeProperties!");
-                role.ChangeProperties(BattleEnums.Property.HP, role.GetProperty(BattleEnums.Property.HP) + this.health);
-                role.ChangeProperties(BattleEnums.Property.TotalHP, role.GetProperty(BattleEnums.Property.TotalHP) + this.health);
-                role.ChangeProperties(BattleEnums.Property.Attack,role.GetProperty(BattleEnums.Property.Attack) + this.attack);
+                role.AddExp(this.value);
             });
-            event.value = [this.health,this.attack];
+            event.value = [this.value];
             battle.AddBattleEvent(event);
         }
         catch (error) 
@@ -274,10 +252,12 @@ export class Skill_AddTmpExp extends SkillBase
                 if(null!=rolesTemp[i])
                 {
                     roleInfo.index=i;
+                    rolesTemp[i].AddExp(this.value);
                     event.recipient.push(roleInfo);
                 }
             }
-            event.value = [this.health, this.attack];
+            
+            event.value = [this.value];
             battle.AddBattleEvent(event);
         }
         catch(error)

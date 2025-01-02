@@ -438,8 +438,8 @@ export class Role {
     {
         this.exp+=_num;
 
-        this.ChangeProperties(enums.Property.HP , 1);
-        this.ChangeProperties(enums.Property.Attack , 1);
+        this.ChangeProperties(enums.Property.HP , this.GetProperty(enums.Property.HP)+1);
+        this.ChangeProperties(enums.Property.Attack , this.GetProperty(enums.Property.Attack)+1);
 
         let _level=1+Math.floor(this.exp/3);
         if(this.level < _level && _level <=3)
