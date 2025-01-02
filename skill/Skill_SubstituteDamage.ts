@@ -59,16 +59,16 @@ export class Skill_SubstituteDamage extends SkillBase
             let event:Event=new Event();
             event.isFetter=this.isFetter;
 
-            let teamTemp:Role[]=null;
+            let teamTemp=null;
             let recipientRole:Role=null;
 
             if(BattleEnums.Camp.Self==selfInfo.camp)
             {
-            teamTemp=battle.GetSelfTeam().GetRoles();
+                teamTemp=battle.GetSelfTeam();
             }
             if(BattleEnums.Camp.Enemy==selfInfo.camp)
             {
-                teamTemp=battle.GetEnemyTeam().GetRoles();
+                teamTemp=battle.GetEnemyTeam();
             }
             switch(this.dir)
             {
@@ -78,39 +78,25 @@ export class Skill_SubstituteDamage extends SkillBase
                 case Direction.Forward:
                     if(selfInfo.index>=3)
                     {
-                        recipientRole=teamTemp[selfInfo.index-3];
+                        recipientRole=teamTemp.GetRole(selfInfo.index-3);
                     }
                     break;
                 case Direction.Back:
                     if(selfInfo.index<3)
                     {
-                        recipientRole=teamTemp[selfInfo.index+3];
+                        recipientRole=teamTemp.GetRole(selfInfo.index+3);
                     }
                     break;
                 case Direction.Rigiht:
-                    if(2!=selfInfo.index && 5!=selfInfo.index)
+                    if(0!=selfInfo.index && 4!=selfInfo.index)
                     {
-                        if(1==selfInfo.index||4==selfInfo.index)
-                        {
-                            recipientRole=teamTemp[selfInfo.index-3];
-                        }
-                        if(0==selfInfo.index||3==selfInfo.index)
-                        {
-                            recipientRole=teamTemp[selfInfo.index+2];
-                        }
+                        recipientRole=teamTemp.GetRole(selfInfo.index-1);
                     }
                     break;
                 case Direction.Left:
-                    if(1!=selfInfo.index && 4!= selfInfo.index)
+                    if(2!=selfInfo.index && 5!= selfInfo.index)
                     {
-                        if(0==selfInfo.index||3==selfInfo.index)
-                        {
-                            recipientRole=battle.GetSelfTeam().GetRole(selfInfo.index+1);
-                        }
-                        if(2==selfInfo.index||5==selfInfo.index)
-                        {
-                            recipientRole=battle.GetSelfTeam().GetRole(selfInfo.index-2);
-                        }
+                        recipientRole=teamTemp.GetRole(selfInfo.index+1);
                     }
             }
          
