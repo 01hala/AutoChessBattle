@@ -58,22 +58,22 @@ export class Skill_RemoteAtk extends SkillBase
             {
                 this.SkillEffect_2(selfInfo,battle);
             }
-            // if (evs)
-            // {
-            //     let ev: Event = null;
-            //     for (let e of evs)
-            //     {
-            //         if (enums.EventType.ChangeLocation == e.type || enums.EventType.Summon)
-            //         {
-            //             ev = e;
-            //             break;
-            //         }
-            //     }
-            //     if (ev)
-            //     {
-            //         this.SkillEffect_3(selfInfo, battle, isParallel, ev);
-            //     }
-            // }
+            if (evs)
+            {
+                let ev: Event = null;
+                for (let e of evs)
+                {
+                    if (BattleEnums.EventType.ChangeLocation == e.type || BattleEnums.EventType.Summon)
+                    {
+                        ev = e;
+                        break;
+                    }
+                }
+                if (ev)
+                {
+                    this.SkillEffect_3(selfInfo, battle, isParallel, ev);
+                }
+            }
             if(this.numberOfRole == 6)
             {
                 this.SkillEffect_4(selfInfo,battle);
@@ -133,7 +133,7 @@ export class Skill_RemoteAtk extends SkillBase
                 console.log("Skill_RemoteAtk_1 远程攻击角色受伤 :", this.attack);
                 if (!role.CheckDead())
                 {
-                    role.BeHurted(this.attack, self, battle, null, isPar);
+                    role.BeHurted(this.attack, self, battle, BattleEnums.EventType.RemoteInjured, isPar);
                 }
 
                 let roleInfo=new RoleInfo();
@@ -141,7 +141,7 @@ export class Skill_RemoteAtk extends SkillBase
                 roleInfo.camp=role.selfCamp;
                 event.recipient.push(roleInfo);
             });
-            battle.AddBattleEvent(event);
+            //battle.AddBattleEvent(event);
         }
         catch (error) 
         {
@@ -198,7 +198,7 @@ export class Skill_RemoteAtk extends SkillBase
             roleInfo.camp=role.selfCamp;
             event.recipient.push(roleInfo);
         }
-        battle.AddBattleEvent(event);
+        //battle.AddBattleEvent(event);
     }
 
     private SkillEffect_3(selfInfo: RoleInfo, battle: Battle,isPar:boolean , ev:Event)        //指定对象
@@ -275,7 +275,7 @@ export class Skill_RemoteAtk extends SkillBase
         {
             if (!role.CheckDead())
             {
-                role.BeHurted(this.attack, self, battle, null);
+                role.BeHurted(this.attack, self, battle, BattleEnums.EventType.RemoteInjured);
             }
 
             let roleInfo = new RoleInfo();
@@ -283,7 +283,7 @@ export class Skill_RemoteAtk extends SkillBase
             roleInfo.camp = role.selfCamp;
             event.recipient.push(roleInfo);
         }
-        battle.AddBattleEvent(event);
+        //battle.AddBattleEvent(event);
     }
 }
 
@@ -416,7 +416,7 @@ export class Skill_RemoteAtkPre extends SkillBase
 
                 if (null != role && !role.CheckDead())
                 {
-                    role.BeHurted(attack, self, battle, null, isPar);
+                    role.BeHurted(attack, self, battle, BattleEnums.EventType.RemoteInjured, isPar);
                     
                 }
 
@@ -425,7 +425,7 @@ export class Skill_RemoteAtkPre extends SkillBase
                 roleInfo.camp = role.selfCamp;
                 event.recipient.push(roleInfo);
             });
-            battle.AddBattleEvent(event);
+           // battle.AddBattleEvent(event);
         }
         catch (error) 
         {
@@ -481,7 +481,7 @@ export class Skill_RemoteAtkPre extends SkillBase
         {
             if (!role.CheckDead()) 
             {
-                role.BeHurted(attack, self, battle, null);
+                role.BeHurted(attack, self, battle, BattleEnums.EventType.RemoteInjured);
             }
 
             let roleInfo = new RoleInfo();
@@ -489,7 +489,7 @@ export class Skill_RemoteAtkPre extends SkillBase
             roleInfo.camp = role.selfCamp;
             event.recipient.push(roleInfo);
         }
-        battle.AddBattleEvent(event);
+       // battle.AddBattleEvent(event);
     }
 }
 

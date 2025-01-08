@@ -59,7 +59,7 @@ export class Skill_SubstituteDamage extends SkillBase
             let event:Event=new Event();
             event.isFetter=this.isFetter;
 
-            let teamTemp=null;
+            let teamTemp:Team=null;
             let recipientRole:Role=null;
 
             if(BattleEnums.Camp.Self==selfInfo.camp)
@@ -88,15 +88,15 @@ export class Skill_SubstituteDamage extends SkillBase
                     }
                     break;
                 case Direction.Rigiht:
-                    if(0!=selfInfo.index && 4!=selfInfo.index)
+                    if(2!=selfInfo.index && 5!=selfInfo.index)
                     {
-                        recipientRole=teamTemp.GetRole(selfInfo.index-1);
+                        recipientRole=teamTemp.GetRole(selfInfo.index+1);
                     }
                     break;
                 case Direction.Left:
-                    if(2!=selfInfo.index && 5!= selfInfo.index)
+                    if(0!=selfInfo.index && 3!= selfInfo.index)
                     {
-                        recipientRole=teamTemp.GetRole(selfInfo.index+1);
+                        recipientRole=teamTemp.GetRole(selfInfo.index-1);
                     }
             }
          

@@ -35,11 +35,11 @@ export class Skill_AttackAll extends SkillBase {
 
             effectiveRole = battle.GetEnemyTeam().GetRoles().slice();
             for(const r of effectiveRole){
-                r.BeHurted(this.effectiveValue,null,battle,null);
+                r.BeHurted(this.effectiveValue,null,battle,BattleEnums.EventType.RemoteInjured);
             }
             effectiveRole = battle.GetSelfTeam().GetRoles().slice();
             for(const r of effectiveRole){
-                r.BeHurted(this.effectiveValue,null,battle,null);
+                r.BeHurted(this.effectiveValue,null,battle,BattleEnums.EventType.RemoteInjured);
             }
         }
         catch(e)
