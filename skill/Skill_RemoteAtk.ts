@@ -141,7 +141,7 @@ export class Skill_RemoteAtk extends SkillBase
                 roleInfo.camp=role.selfCamp;
                 event.recipient.push(roleInfo);
             });
-            //battle.AddBattleEvent(event);
+            battle.AddBattleEvent(event);
         }
         catch (error) 
         {
@@ -198,7 +198,7 @@ export class Skill_RemoteAtk extends SkillBase
             roleInfo.camp=role.selfCamp;
             event.recipient.push(roleInfo);
         }
-        //battle.AddBattleEvent(event);
+        battle.AddBattleEvent(event);
     }
 
     private SkillEffect_3(selfInfo: RoleInfo, battle: Battle,isPar:boolean , ev:Event)        //指定对象
@@ -283,7 +283,7 @@ export class Skill_RemoteAtk extends SkillBase
             roleInfo.camp = role.selfCamp;
             event.recipient.push(roleInfo);
         }
-        //battle.AddBattleEvent(event);
+        battle.AddBattleEvent(event);
     }
 }
 
@@ -425,7 +425,7 @@ export class Skill_RemoteAtkPre extends SkillBase
                 roleInfo.camp = role.selfCamp;
                 event.recipient.push(roleInfo);
             });
-           // battle.AddBattleEvent(event);
+           battle.AddBattleEvent(event);
         }
         catch (error) 
         {
@@ -489,7 +489,7 @@ export class Skill_RemoteAtkPre extends SkillBase
             roleInfo.camp = role.selfCamp;
             event.recipient.push(roleInfo);
         }
-       // battle.AddBattleEvent(event);
+       battle.AddBattleEvent(event);
     }
 }
 

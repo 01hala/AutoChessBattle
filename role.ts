@@ -584,7 +584,10 @@ export class Role {
         {
             this.ChangeProperties(enums.Property.HP, hp);
         }
-        this.sendHurtedEvent(enemy, damage, battle, Injured ,isParallel);
+        if(Injured!=enums.EventType.RemoteInjured)
+        {
+            this.sendHurtedEvent(enemy, damage, battle, Injured ,isParallel);
+        }
     }
 
     public AddBuff(_id:number , _value:number=0 , _round:number=1 , _frequency:number=0) 
