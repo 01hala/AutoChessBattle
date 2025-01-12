@@ -255,7 +255,7 @@ export class Skill_RemoteAtk extends SkillBase
         event.isParallel = false;
         event.eventSound = this.eventSound;
         event.spellcaster = selfInfo;
-        event.type = BattleEnums.EventType.UsedSkill;
+        event.type = BattleEnums.EventType.RemoteInjured;
         event.value=[this.attack];
         event.objCount=this.numberOfRole;
         event.isFetter=this.isFetter;
