@@ -18,10 +18,10 @@ export class Skill_RemoteAtk extends SkillBase
     public res:string="battle/skill/Skill_RemoteAtk.ts/Skill_RemoteAtk";
     public SkillType:BattleEnums.SkillType=BattleEnums.SkillType.Attack;
 
-    private numberOfRole : number;
-    private attack : number;
-    private isAll:boolean;
-    private eventSound:string;
+    private numberOfRole : number=0;
+    private attack : number=0;
+    private isAll:boolean=false;
+    private eventSound:string="";
 
     public constructor(priority:number, numberOfRole:number, attack:number,eventSound?:string,isfetter:boolean=false) {
         super(priority,isfetter);
@@ -50,13 +50,19 @@ export class Skill_RemoteAtk extends SkillBase
 
             battle.AddBattleEvent(event);
 
-            if(!this.isAll)
+            if(!this.isAll && this.numberOfRole<6)
             {
                 this.SkillEffect_1(selfInfo,battle,isParallel);
             }
-            else
+            else if(this.isAll)
             {
                 this.SkillEffect_2(selfInfo,battle);
+                return
+            }
+            if(this.numberOfRole>=6)
+            {
+                this.SkillEffect_4(selfInfo,battle);
+                return;
             }
             if (evs)
             {
@@ -72,13 +78,9 @@ export class Skill_RemoteAtk extends SkillBase
                 if (ev)
                 {
                     this.SkillEffect_3(selfInfo, battle, isParallel, ev);
+                    return;
                 }
             }
-            if(this.numberOfRole == 6)
-            {
-                this.SkillEffect_4(selfInfo,battle);
-            }
-            
         } 
         catch (error) 
         {
