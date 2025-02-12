@@ -20,7 +20,10 @@ export class Skill_RepeatSkill extends SkillBase
     {
         super(priority,isfetter);
 
-        this.eventSound = eventSound;
+        if(eventSound!=null)
+        {
+            this.eventSound = eventSound;
+        }
         this.dir=dir;
         this.lvl=lvl;
     }

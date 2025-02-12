@@ -2,7 +2,7 @@
  * Skill_AddBuff.ts
  * author: Hotaru
  * 2023/08/21
- * 套buff
+ * 
  */
 import { _decorator, Component, Node } from 'cc';
 import { SkillBase,Event, RoleInfo, SkillTriggerBase } from './skill_base';
@@ -23,9 +23,9 @@ export class Skill_AddAttackCoin extends SkillBase
      * 
      * @param priority 优先权
      */
-    constructor(priority:number, eventSound?:string)
+    constructor(priority:number, eventSound?:string ,isFetter:boolean=false)
     {
-        super(priority);
+        super(priority,isFetter);
         this.eventSound = eventSound;
         this.count = 0;
     }
@@ -39,6 +39,7 @@ export class Skill_AddAttackCoin extends SkillBase
                 battle.addCoin++;
                 this.count++;
             }
+            battle.onPlayerOnShot.call(null, this.eventSound);
         }
         catch(error)
         {

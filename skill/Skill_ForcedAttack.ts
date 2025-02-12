@@ -36,6 +36,7 @@ export class Skill_ForcedAttack extends SkillBase
             event.type = BattleEnums.EventType.UsedSkill;
             battle.AddBattleEvent(event);
             this.SkillEffect_1(selfInfo,battle,isParallel);
+            battle.onPlayerOnShot.call(null, this.eventSound);
         }
         catch(error)
         {

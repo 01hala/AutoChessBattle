@@ -18,7 +18,7 @@ export class Skill_AttackAll extends SkillBase {
     private effectiveValue:number;
     private eventSound:string;
 
-    constructor(priority:number, effectiveValue : number,eventSound?:string,isfetter:boolean=false){
+    constructor(priority:number, effectiveValue : number,eventSound:string,isfetter:boolean=false){
         super(priority,isfetter);
         this.effectiveValue = effectiveValue;
         if(null!=eventSound){

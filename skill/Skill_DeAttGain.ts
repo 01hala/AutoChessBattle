@@ -56,6 +56,7 @@ export class Skill_DeAttGain extends SkillBase
             {
                 this.SkillEffect_1(selfInfo, battle, isParallel);
             }
+            battle.onPlayerOnShot.call(null, this.eventSound);
         }
         catch (error)
         {

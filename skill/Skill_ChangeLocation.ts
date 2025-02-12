@@ -20,6 +20,7 @@ export class Skill_ChangeLocation extends SkillBase {
     private index1:number;
     private index2:number;
     private changeType : BattleEnums.ChangeLocationType;
+    private eventSound:string;
 
     private count=0;
 
@@ -30,6 +31,9 @@ export class Skill_ChangeLocation extends SkillBase {
         this.changeType = changeType;
         this.index1=change1;
         this.index2=change2;
+        if(null!=eventSound){
+            this.eventSound=eventSound;
+        } 
     }
 
 
@@ -56,6 +60,7 @@ export class Skill_ChangeLocation extends SkillBase {
                 this.SkillEffect_3(selfInfo,battle,isParallel);
                 this.count++;
             }
+            battle.onPlayerOnShot.call(null, this.eventSound);
         }
         catch(e)
         {

@@ -46,7 +46,7 @@ export class Skill_RecoveryHP extends SkillBase {
            {
                 this.SkillEffect_1(selfInfo , battle,true);
            }
-
+           battle.onPlayerOnShot.call(null, this.eventSound);
         }
         catch(e)
         {

@@ -82,6 +82,7 @@ export class Skill_AttGain extends SkillBase
             {
                 this.SkillEffect_4(selfInfo,battle,isParallel);
             }     
+            battle.onPlayerOnShot.call(null, this.eventSound);
         }
         catch (error) 
         {

@@ -21,10 +21,11 @@ export class Skill_AddTmpExp extends SkillBase
     private numberOfRole:number=null;
     private dir:Direction=null;
     private value:number;
+    private eventSound:string;
 
     event:Event=new Event();
 
-    public constructor(priority:number,health:number,dir:Direction,numberOfRole?:number,isfetter:boolean=false) {
+    public constructor(priority:number,health:number,dir:Direction,numberOfRole:number,eventSound:string,isfetter:boolean=false) {
         super(priority,isfetter);
 
         this.value=health;
@@ -36,7 +37,9 @@ export class Skill_AddTmpExp extends SkillBase
         {
             this.numberOfRole=numberOfRole;
         }
-        
+        if(null!=eventSound){
+            this.eventSound=eventSound;
+        }
     }
 
     public UseSkill(selfInfo: RoleInfo, battle: Battle,isParallel:boolean): void 
@@ -56,7 +59,7 @@ export class Skill_AddTmpExp extends SkillBase
             {
                 this.SkillEffect_2(selfInfo,battle,isParallel);  
             }
-                  
+            battle.onPlayerOnShot.call(null, this.eventSound);     
         }
         catch (error) 
         {

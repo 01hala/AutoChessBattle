@@ -23,19 +23,28 @@ export class Skill_SwapProperties extends SkillBase
     private count:number
     private index1:number;
     private index2:number;
-    public constructor(priority:number, type:BattleEnums.SwapPropertiesType, count:number ,swapper1:number,swapper2:number,isfetter:boolean=false) {
+
+    private eventSound:string;
+
+    public constructor(priority:number, type:BattleEnums.SwapPropertiesType, count:number ,swapper1:number,swapper2:number,eventSound:string,isfetter:boolean=false) {
         super(priority,isfetter);
 
         this.type = type;
         this.index1=swapper1;
         this.index2=swapper2;
+
+        if(eventSound!=null)
+        {
+            this.eventSound=eventSound;
+        }
     }
 
     public UseSkill(selfInfo: RoleInfo, battle: Battle,isParallel:boolean): void 
     {
         try
         {
-            this.SkillEffect(selfInfo,battle,isParallel);          
+            this.SkillEffect(selfInfo,battle,isParallel); 
+            battle.onPlayerOnShot.call(null, this.eventSound);            
         }
         catch (error) 
         {
@@ -153,11 +162,19 @@ export class Skill_SwapPropertiesSingle extends SkillBase
     private type:BattleEnums.SwapPropertiesType;
     private value:number;
 
-    public constructor(priority:number, type:BattleEnums.SwapPropertiesType, value:number,isfetter:boolean=false) {
-        super(priority,isfetter);
+    private eventSound:string;
+
+    public constructor(priority: number, type: BattleEnums.SwapPropertiesType, value: number, eventSound: string, isfetter: boolean = false)
+    {
+        super(priority, isfetter);
 
         this.type = type;
-        this.value=value;
+        this.value = value;
+
+        if (eventSound != null)
+        {
+            this.eventSound = eventSound;
+        }
     }
 
     UseSkill(selfInfo: RoleInfo, battle: Battle, isParallel: boolean): void

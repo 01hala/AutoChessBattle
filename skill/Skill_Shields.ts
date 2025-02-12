@@ -57,7 +57,7 @@ export class Skill_Shields extends SkillBase
             {
                 this.SkillEffect_2(selfInfo,battle,isParallel);
             }
-            
+            battle.onPlayerOnShot.call(null, this.eventSound);
         }
         catch (error) 
         {

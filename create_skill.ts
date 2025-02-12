@@ -53,7 +53,7 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
     {
         case common.SkillEffectEM.AddTmpExp:
             {
-                skillObj = new Skill_AddTmpExp.Skill_AddTmpExp(skillConfig.Priority, value0, skillConfig.ObjectDirection, skillConfig.ObjCount);
+                skillObj = new Skill_AddTmpExp.Skill_AddTmpExp(skillConfig.Priority, value0, skillConfig.ObjectDirection, skillConfig.ObjCount,skillConfig.SkillAudio);
             }
             break;
         case common.SkillEffectEM.AttackAll:
@@ -81,28 +81,28 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
                 console.log("Skill_AttGain_1 skillConfig:", skillConfig);
                 if (skillConfig.ObjectDirection != common.Direction.None)
                 {
-                    skillObj = new Skill_AttGain.Skill_AttGain(skillConfig.Priority, value0, value1, skillConfig.ObjectDirection);
+                    skillObj = new Skill_AttGain.Skill_AttGain(skillConfig.Priority, value0, value1, skillConfig.ObjectDirection,null,null,skillConfig.SkillAudio);
                 }
                 else
                 {
-                    skillObj = new Skill_AttGain.Skill_AttGain(skillConfig.Priority, value0, value1, null, skillConfig.ObjCount);
+                    skillObj = new Skill_AttGain.Skill_AttGain(skillConfig.Priority, value0, value1, null, skillConfig.ObjCount,null,skillConfig.SkillAudio);
                 }
             }
             break;
         case common.SkillEffectEM.RecoverHP:
             {
-                skillObj = new Skill_RecoveryHP.Skill_RecoveryHP(skillConfig.Priority, skillConfig.ObjCount, value0);
+                skillObj = new Skill_RecoveryHP.Skill_RecoveryHP(skillConfig.Priority, skillConfig.ObjCount, value0,skillConfig.SkillAudio);
             }
             break;
         case common.SkillEffectEM.RemoteAttack:
             {
                 if (value0 >= 1)
                 {
-                    skillObj = new Skill_RemoteAtk.Skill_RemoteAtk(skillConfig.Priority, skillConfig.ObjCount, Math.floor(value0));
+                    skillObj = new Skill_RemoteAtk.Skill_RemoteAtk(skillConfig.Priority, skillConfig.ObjCount, Math.floor(value0),skillConfig.SkillAudio);
                 }
                 else
                 {
-                    skillObj = new Skill_RemoteAtk.Skill_RemoteAtkPre(skillConfig.Priority, skillConfig.ObjCount, value0);
+                    skillObj = new Skill_RemoteAtk.Skill_RemoteAtkPre(skillConfig.Priority, skillConfig.ObjCount, value0,null,skillConfig.SkillAudio);
                 }
             }
             break;
@@ -123,7 +123,7 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
                 p.set(enums.Property.TotalHP, value0);
                 p.set(enums.Property.Attack, value1);
 
-                skillObj = new Skill_Summon.Skill_Summon(skillConfig.Priority, skillConfig.SummonId[0], skillConfig.SummonLevel, p);
+                skillObj = new Skill_Summon.Skill_Summon(skillConfig.Priority, skillConfig.SummonId[0], skillConfig.SummonLevel, p,skillConfig.SkillAudio);
             }
             break;
         case common.SkillEffectEM.ExchangeProperty:
@@ -134,13 +134,13 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
                     case enums.SwapPropertiesType.RandomSwap:
                     case enums.SwapPropertiesType.SelfSwap:
                         {
-                            skillObj = new Skill_SwapProperties.Skill_SwapProperties(skillConfig.Priority, skillConfig.SwapPropertiesType ,0 , value0, value1);
+                            skillObj = new Skill_SwapProperties.Skill_SwapProperties(skillConfig.Priority, skillConfig.SwapPropertiesType ,0 , value0, value1,skillConfig.SkillAudio);
                         }
                         break;
                     case enums.SwapPropertiesType.HpSwap:
                     case enums.SwapPropertiesType.AttackSwap:
                         {
-                            skillObj = new Skill_SwapProperties.Skill_SwapPropertiesSingle(skillConfig.Priority, skillConfig.SwapPropertiesType, value0);
+                            skillObj = new Skill_SwapProperties.Skill_SwapPropertiesSingle(skillConfig.Priority, skillConfig.SwapPropertiesType, value0,skillConfig.SkillAudio);
                         }
                         break;
                     default:
@@ -153,27 +153,27 @@ export function CreateSkill(level:number, skillID:number) : skill.SkillBase {
             break;
         case common.SkillEffectEM.GainShield:
             {
-                skillObj = new Skill_Shields.Skill_Shields(skillConfig.Priority, skillConfig.ObjCount ,value0 , skillConfig.ObjectDirection);
+                skillObj = new Skill_Shields.Skill_Shields(skillConfig.Priority, skillConfig.ObjCount ,value0 , skillConfig.ObjectDirection,skillConfig.SkillAudio);
             }
             break;
         case common.SkillEffectEM.ChangePosition:
             {
-                skillObj = new Skill_ChangePosition.Skill_ChangeLocation(skillConfig.Priority, skillConfig.ChangeLocationType, value0, value1);
+                skillObj = new Skill_ChangePosition.Skill_ChangeLocation(skillConfig.Priority, skillConfig.ChangeLocationType, value0, value1,skillConfig.SkillAudio);
             }
             break;
         case common.SkillEffectEM.ReductionHurt: 
             {
-                skillObj = new Skill_SubstituteDamage.Skill_SubstituteDamage(skillConfig.Priority, skillConfig.ChangeLocationType, value0, value1);
+                skillObj = new Skill_SubstituteDamage.Skill_SubstituteDamage(skillConfig.Priority, skillConfig.ChangeLocationType, value0, value1,skillConfig.SkillAudio);
             }
             break;
         case common.SkillEffectEM.AddBuffer:
             {
-                skillObj = new Skill_AddBuff.Skill_AddBuff(skillConfig.Priority , skillConfig.AddBufferID, value0 , value1 , ObjCount);
+                skillObj = new Skill_AddBuff.Skill_AddBuff(skillConfig.Priority , skillConfig.AddBufferID, value0 , value1 , ObjCount,skillConfig.SkillAudio);
             }
             break;
         case common.SkillEffectEM.AttackCoin:
             {
-                skillObj = new Skill_AddAttackCoin.Skill_AddAttackCoin(skillConfig.Priority);
+                skillObj = new Skill_AddAttackCoin.Skill_AddAttackCoin(skillConfig.Priority,skillConfig.SkillAudio);
             }
             break;
     }

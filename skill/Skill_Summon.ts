@@ -35,7 +35,8 @@ export class Skill_Summon extends SkillBase
     {
         try
         {
-            this.SkillEffect(selfInfo,battle,isParallel);          
+            this.SkillEffect(selfInfo,battle,isParallel);     
+            battle.onPlayerOnShot.call(null, this.eventSound);        
         }
         catch (error) 
         {

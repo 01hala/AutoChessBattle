@@ -23,7 +23,7 @@ export class Skill_SubstituteDamage extends SkillBase
     private round:number;
     private dir:Direction;
 
-    
+    private eventSound:string;    
 
     public constructor(priority:number, value:number,round:number,dir:Direction,eventSound?:string,isfetter:boolean=false) {
         super(priority,isfetter);
@@ -31,6 +31,11 @@ export class Skill_SubstituteDamage extends SkillBase
         this.value=value;
         this.round=round;
         this.dir=dir;
+
+        if(eventSound!=null)
+        {
+            this.eventSound=eventSound;
+        }
     }
 
     public UseSkill(selfInfo: RoleInfo, battle: Battle,isParallel:boolean): void 
@@ -43,7 +48,9 @@ export class Skill_SubstituteDamage extends SkillBase
             event.type = BattleEnums.EventType.UsedSkill;
             battle.AddBattleEvent(event);
 
-            this.SkillEffect(selfInfo,battle,isParallel);          
+            this.SkillEffect(selfInfo,battle,isParallel);    
+
+            battle.onPlayerOnShot.call(null, this.eventSound);     
         }
         catch (error) 
         {

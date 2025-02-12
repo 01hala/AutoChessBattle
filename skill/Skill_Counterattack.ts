@@ -43,6 +43,7 @@ export class Skill_Counterattack extends SkillBase
             event.type = BattleEnums.EventType.UsedSkill;
             battle.AddBattleEvent(event);
             this.SkillEffect_1(selfInfo,battle,this.attack,isParallel);
+            battle.onPlayerOnShot.call(null, this.eventSound);
         }
         catch(error)
         {

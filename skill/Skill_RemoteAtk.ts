@@ -81,6 +81,7 @@ export class Skill_RemoteAtk extends SkillBase
                     return;
                 }
             }
+            battle.onPlayerOnShot.call(null, this.eventSound);
         } 
         catch (error) 
         {
