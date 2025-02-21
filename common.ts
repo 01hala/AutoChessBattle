@@ -1,3 +1,4 @@
+import * as client_handle from "./client_handle";
 /*this enum code is codegen by abelkhan codegen for ts*/
 
 export enum BattleVictory{
@@ -161,7 +162,10 @@ export enum SkillEffectEM{
     AddPropertyLevel3 = 27,
     CopySkill = 28,
     NextRoundCoin = 29,
-    AttackCoin = 30
+    AttackCoin = 30,
+    AddPropertyCoin5 = 31,
+    AddPropertyMoreCoin = 32,
+    AddPropertyHasEquip = 33
 }
 
 export enum ShopIndex{
@@ -508,6 +512,7 @@ export class UserData
     public guideStep : GuideStep = GuideStep.None;
     public RoleList : number[] = [];
     public roleGroup : RoleGroup[] = [];
+    public GuideSteps : GuideStep[] = [];
 
 }
 
@@ -571,6 +576,12 @@ export function protcol_to_UserData(_protocol:any){
             _struct.roleGroup = [];
             for(let v_ of val as any) {
                 _struct.roleGroup.push(protcol_to_RoleGroup(v_));
+            }
+        }
+        else if (key === "GuideSteps"){
+            _struct.GuideSteps = [];
+            for(let v_ of val as any) {
+                _struct.GuideSteps.push(v_);
             }
         }
     }
