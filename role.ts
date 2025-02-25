@@ -70,8 +70,7 @@ export class Role {
     public fetterSkill : SkillInfo = null;
     public fetter:common.Fetters;
     public buffer : buffer.Buffer[] = [];
-    public equip:number[]=[];//装备id(一般只能装备一件装备)
-    private skill_is_lock : boolean = false;
+    public equip:number=null;//装备id(一般只能装备一件装备)
 
     private properties : Map<enums.Property, number> = new Map<enums.Property, number>();
     private tempProperties:Map<enums.Property, number> = new Map<enums.Property, number>();
@@ -92,7 +91,7 @@ export class Role {
         this.selfCamp = selfCamp;
         this.fetter=fetters;
         this.attackCnt=0;
-        this.equip.push(equipID);
+        this.equip = equipID;
         
         properties.forEach((v, k) => {
             this.properties.set(k, v);
@@ -155,15 +154,6 @@ export class Role {
     public CheckSkillIsLock() {
         return false;
     }
-
-    public LockSkill() {
-        this.skill_is_lock = true;
-    }
-
-    public UnlockSkill() {
-        this.skill_is_lock = false;
-    }
-
     
     public onKillRole : (r:common.Role) => void;
     private sendHurtedEvent(enemy: Role, damage: number, battle: battle.Battle, Injured: enums.EventType = enums.EventType.AttackInjured,isParallel:boolean=false) 

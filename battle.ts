@@ -107,16 +107,6 @@ export class Battle {
     private battle() {
         console.log("battle begin!");
 
-        let selfTeam = this.selfTeam.GetRoles();
-        for(let role of selfTeam) {
-            role.UnlockSkill();
-        }
-
-        let enemyTeam = this.enemyTeam.GetRoles();
-        for(let role of enemyTeam) {
-            role.UnlockSkill();
-        }
-
         let self = this.selfTeam.GetLasterRole();
         let enemy = this.enemyTeam.GetLasterRole();
         if (self && !self.CheckDead() && enemy && !enemy.CheckDead()) {
@@ -368,7 +358,6 @@ export class Battle {
                 }
             }
             if (skillImpl) {
-                role.LockSkill();
                 console.log("Are skills parallel:"+isPar);
                 skillImpl.UseSkill(roleInfo, this,isPar , evs);
             }
@@ -409,7 +398,6 @@ export class Battle {
                 }
             }
             if (skillImpl) {
-                role.LockSkill();
                 skillImpl.UseSkill(roleInfo, this,isPar , evs);
             }
 
