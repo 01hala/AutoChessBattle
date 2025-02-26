@@ -11,7 +11,7 @@ export class EquipConfig {
     public Name: string;
     public Price:number;
     public Stage:number;
-    public Effect: number[];
+    public Effect: number;
     public AttackBonus:number;
     public HpBonus:number;
     public Vaule:number[];
@@ -58,14 +58,7 @@ export async function LoadEquipConfig() : Promise<Map<number, EquipConfig>>
                 equipc.Stage = v["Price"];
                 equipc.Introduce=v["Introduce"];
 
-                let effect=v["Effect"];
-                let es:string[]=effect.split('|');
-                let e:number[]=[];
-                for(let s of es)
-                {
-                    e.push(parseInt(s));
-                }
-                equipc.Effect=e;
+                equipc.Effect=v["Effect"];
                 equipc.AttackBonus= v["AttackBonus"];
                 equipc.HpBonus = v["HpBonus"];
 

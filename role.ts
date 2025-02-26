@@ -11,6 +11,7 @@ import * as common from './common'
 import * as create_skill from './create_skill'
 import * as create_fetters from './create_fetters'
 import * as create_trigger from './create_trigger'
+import * as create_equip_skill from './create_equip_skill'
 import * as create_buffer from './create_buffer'
 import * as config from './config/config'
 
@@ -45,6 +46,10 @@ function createFettersSkill(id:number, level:number) : SkillInfo {
         }
     }
     return null;
+}
+
+function createEquipSkill(equipId:number) : SkillInfo {
+    return create_equip_skill.createEquipSkill(equipId);
 }
 
 function createBuffer(id:number , value?:number , round?:number , frequency?:number) : buffer.Buffer {
@@ -107,6 +112,13 @@ export class Role {
             let buffer = createBuffer(roleConfig.SkillID);
             if (buffer) {
                 this.buffer.push(buffer);
+            }
+        }
+
+        if (this.equip) {
+            let skill = createEquipSkill(this.equip);
+            if (skill) {
+                this.skill.push(skill);
             }
         }
 
