@@ -48,8 +48,8 @@ function createFettersSkill(id:number, level:number) : SkillInfo {
     return null;
 }
 
-function createEquipSkill(equipId:number) : SkillInfo {
-    return create_equip_skill.createEquipSkill(equipId);
+function createEquipSkill(r:Role, equipId:number) {
+    create_equip_skill.createEquipSkill(r, equipId);
 }
 
 function createBuffer(id:number , value?:number , round?:number , frequency?:number) : buffer.Buffer {
@@ -116,10 +116,7 @@ export class Role {
         }
 
         if (this.equip) {
-            let skill = createEquipSkill(this.equip);
-            if (skill) {
-                this.skill.push(skill);
-            }
+            createEquipSkill(this, this.equip);
         }
 
         if(additionSkill)
