@@ -90,7 +90,7 @@ export function createEquipSkill(r:Role, equipID:number) {
         {
             let bufferConfig = config.config.BufferConfig.get(enums.BufferType.InevitableKill);
             if (bufferConfig) {
-                let buf = create_buffer.CreateBuff(bufferConfig.Id, equip.Vaule[0]);
+                let buf = create_buffer.CreateBuff(bufferConfig.Id, equip.Vaule[0], 10);
                 r.buffer.push(buf);
             }
         }
