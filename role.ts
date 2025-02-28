@@ -77,7 +77,7 @@ export class Role {
     public buffer : buffer.Buffer[] = [];
     public equip:number=null;//装备id(一般只能装备一件装备)
 
-    private properties : Map<enums.Property, number> = new Map<enums.Property, number>();
+    public properties : Map<enums.Property, number> = new Map<enums.Property, number>();
     private tempProperties:Map<enums.Property, number> = new Map<enums.Property, number>();
     public selfCamp: enums.Camp;
 
@@ -336,6 +336,29 @@ export class Role {
         return list;
     }
 
+    private getBackRole(battle: battle.Battle) : Role {
+        let target_index = -1;
+        if (this.index == 0)
+        {
+            target_index = 3;
+        }
+        else if (this.index == 1)
+        {
+            target_index = 4;
+        }
+        else if (this.index == 2)
+        {
+            target_index = 5;
+        }
+
+        if (target_index == -1) {
+            return null;
+        }
+
+        let selfTeam = this.selfCamp == enums.Camp.Self ? battle.GetSelfTeam() : battle.GetEnemyTeam();
+        return selfTeam.GetRole(target_index);
+    }
+
     // 代替当前被攻击角色受伤害
     // Role 代替受伤的角色
     // number 代替受伤的伤害上限
@@ -386,6 +409,18 @@ export class Role {
             }
         }
 
+        return 0;
+    }
+
+    private getEquipAttack():number {
+        if (this.equip) {
+            let equip = config.config.EquipConfig.get(this.equip);
+            if (equip) {
+               if (equip.Effect == create_equip_skill.EquipEffectEM.FirstAttackDoubleDamage) {
+                    return this.GetProperty(enums.Property.Attack);
+               } 
+            }
+        }
         return 0;
     }
 
@@ -497,14 +532,7 @@ export class Role {
         }
         
         let list = this.getShareDamageArray(battle);
-        //let substituteTuple = this.getSubstituteDamage(battle);
-       // let substitute = null;
-       // let value = 0;
-        //if (substituteTuple) {
-        //    substitute=substituteTuple[0];
-        //    value=substituteTuple[1];
-        //}
-        let damage = enemy.GetProperty(enums.Property.Attack) + enemy.getintensifierAtk() / list.length;
+        let damage = enemy.GetProperty(enums.Property.Attack) + enemy.getEquipAttack() + enemy.getintensifierAtk() / list.length;
         console.log("role Attack list.length:", list.length + " camp:", this.selfCamp);
         if(1 == list.length)
         {
@@ -524,24 +552,18 @@ export class Role {
                 }
             }
         }
-        // for (let r of list)
-        // {
-        //     if (null != substitute && this == r)
-        //     {
-        //         //console.log("role substitute!");
-        //         substitute.BeHurted(damage - value, enemy, battle, enums.EventType.AttackInjured);
-        //     }
-        //     else
-        //     {
-        //         if (enemy.checkInevitableKill() && this == r)
-        //         {
-        //             //console.log("role checkInevitableKill continue!");
-        //             continue;
-        //         }
-        //         //console.log("role AttackInjured!");
-        //         r.BeHurted(damage - value, enemy, battle, enums.EventType.AttackInjured);
-        //     }
-        // }
+        
+        if (enemy.equip) {
+            let equip = config.config.EquipConfig.get(enemy.equip);
+            if (equip) {
+               if (equip.Effect == create_equip_skill.EquipEffectEM.PiercingDamage) {
+                    let r = this.getBackRole(battle);
+                    if (r) {
+                        r.BeHurted(equip.Vaule[0], enemy, battle, enums.EventType.AttackInjured);
+                    }
+               } 
+            }
+        }
 
         this.attackCnt++;
     }

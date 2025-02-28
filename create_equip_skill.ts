@@ -11,8 +11,9 @@ import * as Skill_Summon from './skill/Skill_Summon'
 import * as create_trigger from './create_trigger'
 import * as create_buffer from './create_buffer'
 import {SkillInfo, Role} from './role'
+import { Skill_Avoid_Killed } from './equip/Equip_Skill_Avoid_Killed'
 
-enum EquipEffectEM{
+export enum EquipEffectEM{
     AddHP = 1,                      //提高生命值
     AddAttack = 2,                  //提高攻击力
     DeDamage = 3,                   //抵抗伤害
@@ -93,6 +94,15 @@ export function createEquipSkill(r:Role, equipID:number) {
                 let buf = create_buffer.CreateBuff(bufferConfig.Id, equip.Vaule[0], 10);
                 r.buffer.push(buf);
             }
+        }
+        break;
+
+        case EquipEffectEM.ImmuneFatalDamage:
+        {
+            let skill = new SkillInfo();
+            skill.trigger = create_trigger.CreateTrigger(common.EMSkillEvent.syncope);
+            skill.skill = new Skill_Avoid_Killed(common.Priority.Normal);
+            r.skill.push(skill);
         }
         break;
     }
