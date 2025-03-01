@@ -29,6 +29,9 @@ export enum EquipEffectEM{
 
 export function createEquipSkill(r:Role, equipID:number) {
     let equip = config.config.EquipConfig.get(equipID);
+    if (!equip) {
+        return null;
+    }
 
     switch(equip.Effect) {
         case EquipEffectEM.Summon:
