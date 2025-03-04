@@ -160,10 +160,6 @@ export class Role {
         }
     }
 
-    public CheckSkillIsLock() {
-        return false;
-    }
-    
     public onKillRole : (r:common.Role) => void;
     private sendHurtedEvent(enemy: Role, damage: number, battle: battle.Battle, Injured: enums.EventType = enums.EventType.AttackInjured,isParallel:boolean=false) 
     {

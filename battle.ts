@@ -168,10 +168,10 @@ export class Battle {
         await this.on_event.call(null, evs);
         this.tickSkill(evs);  
 
-        this.CheckRemoveDeadRole();
         if (this.CheckEndBattle()) {
             return;
         }
+        this.CheckRemoveDeadRole();
 
         let _evs = this.evs.slice();
         this.evs = [];
@@ -179,10 +179,10 @@ export class Battle {
         await this.tickInjuredEvent(injuredEvs);
         await this.tickInjuredEventChain(normalEvs);
 
-        this.CheckRemoveDeadRole();
         if (this.CheckEndBattle()) {
             return;
         }
+        this.CheckRemoveDeadRole();
 
         _evs = this.evs.slice();
         this.evs = [];
@@ -216,10 +216,10 @@ export class Battle {
         if (tmpPriorityEvs.length > 0) {
             this.tickSkill(tmpPriorityEvs);
 
-            this.CheckRemoveDeadRole();
             if (this.CheckEndBattle()) {
                 return;
             }
+            this.CheckRemoveDeadRole();
     
             let _evs = this.evs.slice();
             this.evs = [];
@@ -227,10 +227,10 @@ export class Battle {
             await this.tickInjuredEvent(injuredEvs);
             await this.tickInjuredEventChain(normalEvs);
 
-            this.CheckRemoveDeadRole();
             if (this.CheckEndBattle()) {
                 return;
             }
+            this.CheckRemoveDeadRole();
     
             _evs = this.evs.slice();
             this.evs = [];
@@ -250,10 +250,10 @@ export class Battle {
         await this.on_event.call(null, evs);
         this.tickSkill(evs);
         
-        this.CheckRemoveDeadRole();
         if (this.CheckEndBattle()) {
             return;
         }
+        this.CheckRemoveDeadRole();
 
         let _evs = this.evs.slice();
         this.evs = [];
@@ -263,10 +263,6 @@ export class Battle {
     }
 
     public CheckRoleTriggerSkill(role:role.Role, evs:skill.Event[]) {
-        if (role.CheckSkillIsLock()) {
-            return false;
-        }
-
         let roleInfo = new skill.RoleInfo();
         roleInfo.properties=role.GetProperties();
         console.log("战斗事件中角色攻击力:")
@@ -327,9 +323,6 @@ export class Battle {
         let selfTeam = this.selfTeam.GetRoles();
         for(let index in selfTeam) {
             let role = selfTeam[index];
-            if (role.CheckSkillIsLock()) {
-                continue;
-            }
 
             let roleInfo = new skill.RoleInfo();
             roleInfo.properties=role.GetProperties();
@@ -371,9 +364,6 @@ export class Battle {
         let enemyTeam = this.enemyTeam.GetRoles();
         for(let index in enemyTeam) {
             let role = enemyTeam[index];
-            if (role.CheckSkillIsLock()) {
-                continue;
-            }
 
             let roleInfo = new skill.RoleInfo();
             roleInfo.properties=role.GetProperties();
@@ -434,10 +424,10 @@ export class Battle {
         await this.tickInjuredEvent(injuredEvs);
         await this.tickInjuredEventChain(normalEvs);
 
-        this.CheckRemoveDeadRole();
         if (this.CheckEndBattle()) {
             return false;
         }
+        this.CheckRemoveDeadRole();
         
         let self = this.selfTeam.GetLasterRole();
         let enemy = this.enemyTeam.GetLasterRole();
