@@ -50,20 +50,6 @@ export class Skill_RemoteAtk extends SkillBase
 
             battle.AddBattleEvent(event);
 
-            if(!this.isAll && this.numberOfRole<6)
-            {
-                this.SkillEffect_1(selfInfo,battle,isParallel);
-            }
-            else if(this.isAll)
-            {
-                this.SkillEffect_2(selfInfo,battle);
-                return
-            }
-            if(this.numberOfRole>=6)
-            {
-                this.SkillEffect_4(selfInfo,battle);
-                return;
-            }
             if (evs)
             {
                 let ev: Event = null;
@@ -81,6 +67,22 @@ export class Skill_RemoteAtk extends SkillBase
                     return;
                 }
             }
+            if(!this.isAll && this.numberOfRole<6)
+            {
+                this.SkillEffect_1(selfInfo,battle,isParallel);
+                return;
+            }
+            else if(this.isAll)
+            {
+                this.SkillEffect_2(selfInfo,battle);
+                return
+            }
+            if(this.numberOfRole>=6)
+            {
+                this.SkillEffect_4(selfInfo,battle);
+                return;
+            }
+           
             battle.onPlayerOnShot.call(null, this.eventSound);
         } 
         catch (error) 
@@ -209,7 +211,17 @@ export class Skill_RemoteAtk extends SkillBase
         try
         {
             let self: Role = null;
-            let enemyRoles: Role[] = battle.GetEnemyTeam().GetRoles();
+            let enemyRoles: Role[] = null;
+
+            let event = new Event();
+            event.type = BattleEnums.EventType.RemoteInjured;
+            event.spellcaster = selfInfo;
+            event.spellcaster.camp = selfInfo.camp;
+            event.spellcaster.index = selfInfo.index;
+            event.recipient = [];
+            event.value = [this.attack];
+            event.objCount = this.numberOfRole;
+            event.isFetter = this.isFetter;
 
             if (BattleEnums.Camp.Self == selfInfo.camp)
             {
@@ -223,7 +235,6 @@ export class Skill_RemoteAtk extends SkillBase
             }
 
             let recipientRoles: Role[] = [];
-
 
             for (let t of ev.recipient)
             {
@@ -242,7 +253,13 @@ export class Skill_RemoteAtk extends SkillBase
                 {
                     role.BeHurted(this.attack, self, battle, BattleEnums.EventType.RemoteInjured, isPar);
                 }
+                let roleInfo = new RoleInfo();
+                roleInfo.index = role.index;
+                roleInfo.camp = role.selfCamp;
+                event.recipient.push(roleInfo);
             }
+
+            battle.AddBattleEvent(event);
         } catch (error)
         {
             console.error(this.res+"下的 SkillEffect_3 错误:",error);
